@@ -4,29 +4,9 @@ import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
 import { List } from 'react-native-paper';
-import Carousel from 'react-native-snap-carousel';
 
 
 export default function Home() {
-
-
-    interface Item {
-        id: string;
-        title: string;
-      }
-      
-
-        const data: Item[] = [
-          { id: '1', title: 'Título 1' },
-          { id: '2', title: 'Título 2' },
-          { id: '3', title: 'Título 3' },
-        ];
-
-      const renderItem = ({ item }: { item: Item }) => (
-        <View style={{ width: 250, height: 200, backgroundColor: 'lightgray', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>{item.title}</Text>
-        </View>
-      );
 
     return (
         <View style={styles.container}>
@@ -57,18 +37,7 @@ export default function Home() {
                     <Text style={styles.title2}>Próximos Eventos</Text>
                     <View style={{ flex: 1, width: "100%", alignSelf: "flex-start" }}>
                  
-                        <Carousel
-                            data={data}
-                            renderItem={renderItem}
-                            sliderWidth={300}
-                            itemWidth={250}
-                            layout="default"
-                            loop
-                            autoplay
-                            autoplayInterval={3000} // Intervalo de 3 segundos entre os slides
-                            inactiveSlideScale={0.9} // Escala dos slides inativos
-                            inactiveSlideOpacity={0.7} // Opacidade dos slides inativos
-                        />
+                      
                     </View>
                 </View>
                 <View style={styles.containerSalasFavoritas}>
