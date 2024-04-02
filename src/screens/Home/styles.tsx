@@ -61,5 +61,17 @@ export default StyleSheet.create({
         backgroundColor: "#D9D9D9",
         marginBottom: 10,
         borderRadius: 10
+    },
+    itemEvento: {
+        backgroundColor: "#D9D9D9",
+        width: '27%',
+        marginRight: 20,
+        borderRadius: 15
+    },
+    titleEvento: {
+
+    },
+    descEvento: {
+
     }
 });

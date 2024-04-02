@@ -1,48 +1,84 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
 import { List } from 'react-native-paper';
+import Animated, { useAnimatedRef, useScrollViewOffset } from 'react-native-reanimated';
 
 
 export default function Home() {
 
+    const { width } = Dimensions.get('window');
+    const animatedRef = useAnimatedRef<Animated.ScrollView>();
+    const scrollOffset = useScrollViewOffset(animatedRef);
+
     return (
-        <View style={styles.container}>
+        <Animated.View style={styles.container}>
             <StatusBar style="light" hidden={true} />
-            <View style={styles.navbar}>
-                <View style={{ flex: 1 }}>
+            <Animated.View style={styles.navbar}>
+                <Animated.View style={{ flex: 1 }}>
                     <Image source={require("@/assets/images/icon-prof.png")} style={styles.image}></Image>
-                </View>
-                <View style={[{ flex: 3 }, styles.infoProf]}>
+                </Animated.View>
+                <Animated.View style={[{ flex: 3 }, styles.infoProf]}>
                     <Text>Boa noite,</Text>
                     <Text style={{
                         fontWeight: "bold",
                         fontSize: 20
                     }}>Graves Emanuel</Text>
                     <Text>Matricula 287451 - 5° DSM</Text>
-                </View>
-                <View style={{ flex: 0.3 }}>
+                </Animated.View>
+                <Animated.View style={{ flex: 0.3 }}>
                     <TouchableOpacity>
-                        <View>
+                        <Animated.View>
                             <Ionicons style={{ marginTop: 10 }}
                                 name='settings-outline' size={20} color={"#000000"} />
-                        </View>
+                        </Animated.View>
                     </TouchableOpacity>
-                </View>
-            </View>
-            <View style={styles.containerPrincipal}>
-                <View style={styles.containerProximosEventos}>
+                </Animated.View>
+            </Animated.View>
+            <Animated.View style={styles.containerPrincipal}>
+                <Animated.View style={styles.containerProximosEventos}>
                     <Text style={styles.title2}>Próximos Eventos</Text>
-                    <View style={{ flex: 1, width: "100%", alignSelf: "flex-start" }}>
-                 
-                      
-                    </View>
-                </View>
-                <View style={styles.containerSalasFavoritas}>
+                    <Animated.View style={{ flex: 1, width: "100%", alignSelf: "flex-start" }}>
+                        <Animated.ScrollView
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            pagingEnabled
+                            ref={animatedRef}
+                        >
+                            <TouchableOpacity style={styles.itemEvento}>
+                                <Animated.View style={{ padding: 10 }}>
+                                    <Text style={styles.titleEvento}>Evento 1</Text>
+                                    <Text style={styles.descEvento}>Descrição do evento 1</Text>
+                                </Animated.View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.itemEvento}>
+                                <Animated.View style={{ padding: 10 }}>
+                                    <Text style={styles.titleEvento}>Evento 2</Text>
+                                    <Text style={styles.descEvento}>Descrição do evento 2</Text>
+                                </Animated.View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.itemEvento}>
+                                <Animated.View style={{ padding: 10 }}>
+                                    <Text style={styles.titleEvento}>Evento 3</Text>
+                                    <Text style={styles.descEvento}>Descrição do evento 3</Text>
+                                </Animated.View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.itemEvento}>
+                                <Animated.View style={{ padding: 10 }}>
+                                    <Text style={styles.titleEvento}>Evento 4</Text>
+                                    <Text style={styles.descEvento}>Descrição do evento 4</Text>
+                                </Animated.View>
+                            </TouchableOpacity>
+
+                        </Animated.ScrollView>
+
+                    </Animated.View>
+                </Animated.View>
+                <Animated.View style={styles.containerSalasFavoritas}>
                     <Text style={styles.title2}>Salas Favoritas</Text>
-                    <ScrollView>
+                    <Animated.ScrollView>
 
                         {/*<FlashList
                         data={DATA}
@@ -81,11 +117,11 @@ export default function Home() {
                                 <List.Item title="1 Computador" />
                             </List.Accordion>
                         </List.AccordionGroup>
-                    </ScrollView>
-                </View>
-            </View>
+                    </Animated.ScrollView>
+                </Animated.View>
+            </Animated.View>
 
 
-        </View >
+        </Animated.View >
     );
 }
