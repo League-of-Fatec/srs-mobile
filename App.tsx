@@ -5,7 +5,7 @@ import Login from '@/screens/Login';
 
 export default function App() {
 
-  const logado = false;
+  const logado = true;
 
   if (logado) {
     return <TabNavigator />;
