@@ -5,9 +5,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
 import { List } from 'react-native-paper';
 import Animated, { useAnimatedRef, useScrollViewOffset } from 'react-native-reanimated';
+import { NavigationProp } from '@react-navigation/native';
 
 
-export default function Home() {
+export default function Home({ navigation }: { navigation: NavigationProp<any> }) {
 
     const { width } = Dimensions.get('window');
     const animatedRef = useAnimatedRef<Animated.ScrollView>();
@@ -29,7 +30,7 @@ export default function Home() {
                     <Text>Matricula 287451 - 5° DSM</Text>
                 </Animated.View>
                 <Animated.View style={{ flex: 0.3 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>
                         <Animated.View>
                             <Ionicons style={{ marginTop: 10 }}
                                 name='settings-outline' size={20} color={"#000000"} />
@@ -40,41 +41,38 @@ export default function Home() {
             <Animated.View style={styles.containerPrincipal}>
                 <Animated.View style={styles.containerProximosEventos}>
                     <Text style={styles.title2}>Próximos Eventos</Text>
-                    <Animated.View style={{ flex: 1, width: "100%", alignSelf: "flex-start" }}>
-                        <Animated.ScrollView
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            pagingEnabled
-                            ref={animatedRef}
-                        >
-                            <TouchableOpacity style={styles.itemEvento}>
-                                <Animated.View style={{ padding: 10 }}>
-                                    <Text style={styles.titleEvento}>Evento 1</Text>
-                                    <Text style={styles.descEvento}>Descrição do evento 1</Text>
-                                </Animated.View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemEvento}>
-                                <Animated.View style={{ padding: 10 }}>
-                                    <Text style={styles.titleEvento}>Evento 2</Text>
-                                    <Text style={styles.descEvento}>Descrição do evento 2</Text>
-                                </Animated.View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemEvento}>
-                                <Animated.View style={{ padding: 10 }}>
-                                    <Text style={styles.titleEvento}>Evento 3</Text>
-                                    <Text style={styles.descEvento}>Descrição do evento 3</Text>
-                                </Animated.View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.itemEvento}>
-                                <Animated.View style={{ padding: 10 }}>
-                                    <Text style={styles.titleEvento}>Evento 4</Text>
-                                    <Text style={styles.descEvento}>Descrição do evento 4</Text>
-                                </Animated.View>
-                            </TouchableOpacity>
+                    <Animated.ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={true}
+                        ref={animatedRef}
+                        contentContainerStyle={{ paddingHorizontal: 10 }}
+                    >
+                        <TouchableOpacity style={styles.itemEvento}>
+                            <Animated.View style={styles.viewEvento}>
+                                <Text style={styles.titleEvento}>Evento 1</Text>
+                                <Text style={styles.descEvento}>Descrição do evento 1</Text>
+                            </Animated.View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.itemEvento}>
+                            <Animated.View style={{}}>
+                                <Text style={styles.titleEvento}>Evento 2</Text>
+                                <Text style={styles.descEvento}>Descrição do evento 2</Text>
+                            </Animated.View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.itemEvento}>
+                            <Animated.View style={{}}>
+                                <Text style={styles.titleEvento}>Evento 3</Text>
+                                <Text style={styles.descEvento}>Descrição do evento 3</Text>
+                            </Animated.View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.itemEvento}>
+                            <Animated.View style={{}}>
+                                <Text style={styles.titleEvento}>Evento 4</Text>
+                                <Text style={styles.descEvento}>Descrição do evento 4</Text>
+                            </Animated.View>
+                        </TouchableOpacity>
 
-                        </Animated.ScrollView>
-
-                    </Animated.View>
+                    </Animated.ScrollView>
                 </Animated.View>
                 <Animated.View style={styles.containerSalasFavoritas}>
                     <Text style={styles.title2}>Salas Favoritas</Text>

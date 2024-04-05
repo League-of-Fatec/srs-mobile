@@ -64,14 +64,19 @@ export default StyleSheet.create({
     },
     itemEvento: {
         backgroundColor: "#D9D9D9",
-        width: '27%',
-        marginRight: 20,
-        borderRadius: 15
+        //  width: 'auto',
+        width: 215,
+        borderRadius: 15,
+        marginRight: 15,
+        padding: 10
     },
     titleEvento: {
 
     },
     descEvento: {
+
+    },
+    viewEvento: {
 
     }
 });
