@@ -8,6 +8,7 @@ import Salas from '../screens/Salas/index';
 import Notificacoes from '../screens/Notificacoes/index';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import HomeStackNavigator from './HomeStackNavigator';
 
 
 const Tab = createBottomTabNavigator();
@@ -35,7 +36,7 @@ export default function TabNavigator() {
                     }}>
                 <Tab.Screen
                     name="Home"
-                    component={Home}
+                    component={HomeStackNavigator}
                     options={{
                         tabBarIcon: ({ color, size }) => <Ionicons
                             name='home-outline'
