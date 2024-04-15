@@ -29,13 +29,13 @@ export default StyleSheet.create({
     containerProximosEventos: {
         //marginTop: '5%',
         paddingTop: '5%',
-        height: '50%',
+        height: '45%',
         //marginBottom: '3%'
         paddingBottom: '3%'
 
     },
     containerSalasFavoritas: {
-        height: '50%'
+        height: '55%'
     },
     page: {
         backgroundColor: "#D9D9D9",
@@ -64,7 +64,6 @@ export default StyleSheet.create({
     },
     itemEvento: {
         backgroundColor: "#D9D9D9",
-        //  width: 'auto',
         width: 215,
         borderRadius: 15,
         marginRight: 15,
