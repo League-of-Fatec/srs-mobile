@@ -10,7 +10,7 @@ export default function HomeStackNavigator() {
     return (
         <Stack.Navigator >
             <Stack.Screen name="HomeStack" component={Home} options={{ headerShown: false }} />
-            <Stack.Screen name="Configuracoes" component={Configuracoes} options={{ headerTitle: '' }} />
+            <Stack.Screen name="Configuracoes" component={Configuracoes} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     );
