@@ -4,14 +4,29 @@ import { useState } from 'react';
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native'
 
-export default function Login() {
+type StackLoginProps = {
+    HomeContext: any,
+}
 
+export default function Login({ navigation }: { navigation: NavigationProp<StackLoginProps> }) {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [isSelected, setSelection] = useState(false);
+
+    const loginProcess = () => {
+        navigation.navigate("HomeContext")
+
+        // Código para não permitir que o usuário volte para a tela de login
+        /* navigation.reset({
+             index: 0,
+             routes: [{ name: 'Home' }],
+         });
+         */
+    }
+
 
     return (
         <View style={styles.containerFoto}>
@@ -45,7 +60,7 @@ export default function Login() {
                         </View>
 
 
-                        <TouchableOpacity style={styles.loginBtn}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={loginProcess}>
                             <Text style={{}}>ENTRAR</Text>
                         </TouchableOpacity>
 
