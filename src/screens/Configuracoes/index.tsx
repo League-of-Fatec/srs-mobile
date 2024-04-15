@@ -4,11 +4,11 @@ import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 
-type StackTest = {
+type StackProps = {
     Home: undefined
 }
 
-export default function Configuracoes({ navigation }: { navigation: NavigationProp<StackTest> }) {
+export default function Configuracoes({ navigation }: { navigation: NavigationProp<StackProps> }) {
 
     const [isEnabledModoNoturno, setIsEnabledModoNoturno] = useState(false);
     const [isEnabledNotificacoes, setIsEnabledNotificacoes] = useState(false);
