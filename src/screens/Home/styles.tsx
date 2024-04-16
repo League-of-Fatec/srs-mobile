@@ -4,7 +4,7 @@ export default StyleSheet.create({
     container: {
         flex: 1
     },
-    navbar: {
+    headerHome: {
         backgroundColor: "#D9D9D9",
         padding: 30,
         borderBottomLeftRadius: 35,
@@ -26,7 +26,7 @@ export default StyleSheet.create({
         paddingLeft: 13,
         paddingRight: 13
     },
-    containerProximosEventos: {
+    containerProximasAulas: {
         //marginTop: '5%',
         paddingTop: '5%',
         height: '45%',
@@ -62,7 +62,7 @@ export default StyleSheet.create({
         marginBottom: 10,
         borderRadius: 10
     },
-    itemEvento: {
+    itemAula: {
         backgroundColor: "#D9D9D9",
         width: 215,
         borderRadius: 15,
