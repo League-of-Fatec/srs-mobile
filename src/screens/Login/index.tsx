@@ -31,7 +31,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
     return (
         <View style={styles.containerFoto}>
             <View style={{ flex: 1, height: '30%', width: '100%' }}>
-                <Image source={require("@/assets/images/img-reuniao.jpg")} style={styles.image}></Image>
+                <Image source={require("@/assets/images/login/img-reuniao.jpg")} style={styles.image}></Image>
 
                 <View style={styles.container}>
 

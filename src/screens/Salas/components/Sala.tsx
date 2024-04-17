@@ -9,96 +9,98 @@ const Sala = () => {
 
     const [corBotao, setarCorBotao] = useState(['#6DCE31', '#FAAF40', '#B54646']);
 
+    const andaresSalas = [
+        {
+            nomeAndar: "1° Andar",
+            salas: [
+                {
+                    nomeSala: "Sala 10",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 11",
+                    icon: "",
+                    situacao: 1
+                },
+                {
+                    nomeSala: "Sala 12",
+                    icon: "",
+                    situacao: 2
+                },
+                {
+                    nomeSala: "Sala 13",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 8",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 9",
+                    icon: "",
+                    situacao: 2
+                }
+            ]
+        },
+        {
+            nomeAndar: "2° Andar",
+            salas: [
+                {
+                    nomeSala: "Sala 20",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 21",
+                    icon: "",
+                    situacao: 1
+                },
+                {
+                    nomeSala: "Sala 22",
+                    icon: "",
+                    situacao: 2
+                },
+                {
+                    nomeSala: "Sala 26",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 27",
+                    icon: "",
+                    situacao: 0
+                },
+                {
+                    nomeSala: "Sala 28",
+                    icon: "",
+                    situacao: 2
+                },
+            ]
+        }
+    ]
+
     return (
+
         <View style={styles.containerAndares}>
-            <Text style={styles.nomeAndar}>1° Andar</Text>
-            <View style={styles.containerSalas}>
-                <ScrollView>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 10</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[1] }]}>
-                        <Text style={styles.nomeSala}>Sala 11</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[2] }]}>
-                        <Text style={styles.nomeSala}>Sala 12</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 13</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 8</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[2] }]}>
-                        <Text style={styles.nomeSala}>Sala 9</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
+            {andaresSalas.map((andarSala, index) => (
+                <View style={styles.containerSalas}>
+                    <Text style={styles.nomeAndar}>{andarSala.nomeAndar}</Text>
+                    <ScrollView style={styles.scrollSalas}>
+                        {andarSala.salas.map((sala, index) => (
+                            <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]}>
+                                <Text style={styles.nomeSala}>{sala.nomeSala}</Text>
+                                <Ionicons
+                                    style={styles.infoIcons} name='desktop-outline'
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
 
-
-                </ScrollView>
-
-            </View>
-
-            <Text style={styles.nomeAndar}>2° Andar</Text>
-            <View style={styles.containerSalas}>
-                <ScrollView>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 20</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[1] }]}>
-                        <Text style={styles.nomeSala}>Sala 21</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[2] }]}>
-                        <Text style={styles.nomeSala}>Sala 22</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 26</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[0] }]}>
-                        <Text style={styles.nomeSala}>Sala 27</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[2] }]}>
-                        <Text style={styles.nomeSala}>Sala 28</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='desktop-outline'
-                        />
-                    </TouchableOpacity>
-
-
-                </ScrollView>
-            </View>
+                </View>
+            ))}
         </View>
     );
 }

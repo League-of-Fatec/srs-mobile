@@ -9,7 +9,7 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
     return (
         <View style={styles.headerHome}>
             <View style={{ flex: 1 }}>
-                <Image source={require("@/assets/images/icon-prof.png")} style={styles.image}></Image>
+                <Image source={require("@/assets/images/home/icon-prof.png")} style={styles.image}></Image>
             </View>
             <View style={[{ flex: 3 }, styles.infoProf]}>
                 <Text>Boa noite,</Text>

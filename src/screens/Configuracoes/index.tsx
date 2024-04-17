@@ -32,7 +32,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
 
                 <View style={styles.containerInfo}>
                     <View>
-                        <Image source={require("@/assets/images/icon-prof.png")} style={styles.image}></Image>
+                        <Image source={require("@/assets/images/configuracoes/icon-prof.png")} style={styles.image}></Image>
                     </View>
                     <View style={styles.infoConta}>
                         <Text style={styles.nomeConta}>Graves Emanuel</Text>

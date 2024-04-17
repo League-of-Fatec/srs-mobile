@@ -13,10 +13,6 @@ import SalasFavoritas from './components/SalasFavoritas';
 
 export default function Home({ navigation }: { navigation: NavigationProp<any> }) {
 
-
-
-
-
     return (
         <View style={styles.container}>
             <HeaderHome navigation={navigation} />
