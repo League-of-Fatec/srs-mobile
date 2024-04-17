@@ -16,8 +16,13 @@ export default StyleSheet.create({
     },
     containerSalas: {
         flex: 1,
-        margin: '4%',
+        margin: '0%',
         //backgroundColor: 'blue',
+    },
+    scrollSalas: {
+        flex: 1,
+        margin: '4%',
+
     },
     nomeAndar: {
         fontSize: 18,

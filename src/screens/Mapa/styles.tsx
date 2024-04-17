@@ -10,4 +10,15 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
+    containerImagem: {
+        flex: 1,
+        //backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 25
+    },
+    imageViewer: {
+        flex: 1,
+
+    }
 });
