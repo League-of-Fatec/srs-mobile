@@ -86,11 +86,11 @@ const Sala = () => {
 
         <View style={styles.containerAndares}>
             {andaresSalas.map((andarSala, index) => (
-                <View style={styles.containerSalas}>
+                <View style={styles.containerSalas} key={index}>
                     <Text style={styles.nomeAndar}>{andarSala.nomeAndar}</Text>
                     <ScrollView style={styles.scrollSalas}>
                         {andarSala.salas.map((sala, index) => (
-                            <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]}>
+                            <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]} key={index}>
                                 <Text style={styles.nomeSala}>{sala.nomeSala}</Text>
                                 <Ionicons
                                     style={styles.infoIcons} name='desktop-outline'
