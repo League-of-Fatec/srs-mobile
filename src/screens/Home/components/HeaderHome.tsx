@@ -6,6 +6,16 @@ import { NavigationProp } from '@react-navigation/native';
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
+
+    const aluno =
+    {
+        nome: "Graves Emanuel",
+        matricula: "Matricula 287451 - 5° DSM",
+        icon: ""
+    }
+
+
+
     return (
         <View style={styles.headerHome}>
             <View style={{ flex: 1 }}>
@@ -16,8 +26,8 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 <Text style={{
                     fontWeight: "bold",
                     fontSize: 20
-                }}>Graves Emanuel</Text>
-                <Text>Matricula 287451 - 5° DSM</Text>
+                }}>{aluno.nome}</Text>
+                <Text>{aluno.matricula}</Text>
             </View>
             <View style={{ flex: 0.3 }}>
                 <TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>
