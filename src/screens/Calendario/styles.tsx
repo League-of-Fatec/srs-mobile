@@ -2,10 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-
+    flex: 1,
   },
   weekDayText: {
     color: 'gray',
@@ -49,5 +46,35 @@ export default StyleSheet.create({
   },
   mesEano: {
     fontSize: 20
+  },
+  agenda: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    height: 'auto',
+  },
+  icons: {
+    fontSize: 35,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    paddingLeft: 10,
+    paddingRight: 20,
+    paddingVertical: 25
+  },
+  timeInfo: {
+    marginBottom: 15
+  },
+  timeIcon: {
+
+  },
+  linhaOpcoes: {
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    width: '100%',
+    opacity: 1,
+    alignSelf: 'center'
+  },
+  containerTime: {
+    flexDirection: 'row',
+    marginTop: 15
   }
 });
