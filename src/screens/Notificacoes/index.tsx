@@ -44,7 +44,7 @@ export default function Notificacoes() {
             <ScrollView>
                 {notificacoes.map((notificacao, index) => (
 
-                    <TouchableOpacity style={styles.containerNotificacoes}>
+                    <TouchableOpacity style={styles.containerNotificacoes} key={index}>
                         <Text style={styles.textoData}>{notificacao.data}</Text>
                         <View style={styles.infoNotificacao}>
                             <Image source={imagensProf[index]} style={styles.imgProf}></Image>
