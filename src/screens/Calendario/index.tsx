@@ -65,7 +65,6 @@ export default function Calendario() {
                         [selected]: {
                             selected: true,
                             disableTouchEvent: false,
-                            dotColor: 'blue',
                             selectedColor: '#6D1C1C'
                         }
                     }}

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF'
   },
   weekDayText: {
     color: 'gray',
@@ -48,7 +49,7 @@ export default StyleSheet.create({
     fontSize: 20
   },
   agenda: {
-    borderWidth: 1,
+    //backgroundColor: "#FFFFFF",
     borderColor: 'gray',
     height: 'auto',
   },
