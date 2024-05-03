@@ -3,7 +3,7 @@ import { ScrollView, Text, View, } from 'react-native';
 import styles from './styles';
 //import WeekCalendar from './calendario';
 import Header from '@/components/shared/HeaderEstatico';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import formatDate from './utils/formatDate';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -20,22 +20,22 @@ export default function Calendario() {
     const infoDays = [
         {
             statusClass: "Próxima Aula",
-            class: "Laboratório A",
+            class: "LaboratórioA",
+            local: "1° Andar - Sala A55",
+            className: "RDC - Tipos de conexão"
+
+        },
+        {
+            statusClass: "Próxima Aula",
+            class: "Laboratório B",
             local: "1° Andar - Sala A112",
             className: "RDC - Tipos de conexão"
 
         },
         {
             statusClass: "Próxima Aula",
-            class: "Laboratório A",
-            local: "1° Andar - Sala A112",
-            className: "RDC - Tipos de conexão"
-
-        },
-        {
-            statusClass: "Próxima Aula",
-            class: "Laboratório A",
-            local: "1° Andar - Sala A112",
+            class: "Laboratório C",
+            local: "1° Andar - Sala A153",
             className: "RDC - Tipos de conexão"
 
         },
@@ -56,6 +56,7 @@ export default function Calendario() {
 
             <View style={{ flex: 0.5 }}>
                 <Calendar style={styles.agenda}
+
                     onDayPress={day => {
                         const data = formatDate(day, today);
                         setSelected(day.dateString);
@@ -66,8 +67,13 @@ export default function Calendario() {
                             selected: true,
                             disableTouchEvent: false,
                             selectedColor: '#6D1C1C'
-                        }
+                        },
                     }}
+                    theme={{
+                        arrowColor: '#6D1C1C',
+                        todayTextColor: '#6D1C1C',
+                    }}
+
                 />
             </View>
             <View style={{ flex: 0.5 }}>
@@ -77,7 +83,6 @@ export default function Calendario() {
                         if (truth) {
                             return (
                                 <View key={index}>
-                                    <View style={styles.linhaOpcoes} />
                                     <View style={styles.containerTime}>
                                         <View >
                                             <Ionicons

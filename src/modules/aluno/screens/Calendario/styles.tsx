@@ -57,9 +57,12 @@ export default StyleSheet.create({
     fontSize: 35,
     alignSelf: 'center',
     justifyContent: 'center',
-    paddingLeft: 10,
-    paddingRight: 20,
-    paddingVertical: 25
+    marginLeft: 10,
+    marginRight: 20,
+    marginVertical: 25,
+    padding: 10,
+    backgroundColor: '#D9D9D9',
+    borderRadius: 100
   },
   timeInfo: {
     marginBottom: 15
