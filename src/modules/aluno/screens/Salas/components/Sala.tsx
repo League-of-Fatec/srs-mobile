@@ -11,6 +11,12 @@ type Sala = {
     situacao: number;
 };
 
+type itensSala = {
+    qtd: number,
+    icon: string,
+    nomeItem: string
+}
+
 const Sala = () => {
 
     const [corBotao, setarCorBotao] = useState(['#6DCE31', '#FAAF40', '#B54646']);
@@ -89,6 +95,29 @@ const Sala = () => {
         }
     ]
 
+    const itensSala: itensSala[] = [
+        {
+            qtd: 20,
+            icon: "",
+            nomeItem: "Computadores"
+        },
+        {
+            qtd: 1,
+            icon: "",
+            nomeItem: "Projetores"
+        },
+        {
+            qtd: 2,
+            icon: "",
+            nomeItem: "Ar-condicionado"
+        },
+        {
+            qtd: 30,
+            icon: "",
+            nomeItem: "Capacidade"
+        }
+    ]
+
     return (
 
         <View style={styles.containerAndares}>
@@ -126,11 +155,36 @@ const Sala = () => {
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{selectedSala?.nomeSala}</Text>
+                        <View>
+                            <Text style={styles.modalNomeSala}>{selectedSala?.nomeSala}</Text>
+                            <Text style={styles.modalText}>Disponivel até</Text>
+                            <View style={styles.viewHorarios}>
+                                <Text style={styles.modalHorario}>12:00</Text>
+                                <Text style={styles.modalHorario}>12:00</Text>
+                                <Text style={styles.modalHorario}>12:00</Text>
+                            </View>
+                        </View>
+                        <View style={styles.viewItens}>
+                            <Text>Itens</Text>
+                            <View>
+                                {itensSala.map((itemSala, index) => {
+                                    return (
+                                        <View style={styles.viewItem} key={index}>
+                                            <Text style={styles.qtdItens}>{itemSala.qtd}</Text>
+                                            <Ionicons
+                                                style={styles.iconItem} name='desktop-outline'
+                                            />
+                                            <Text style={styles.nomeItem}>{itemSala.nomeItem}</Text>
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </View>
+
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textStyle}>Hide Modal</Text>
+                            <Text style={styles.textStyle}>Fechar</Text>
                         </Pressable>
                     </View>
                 </View>

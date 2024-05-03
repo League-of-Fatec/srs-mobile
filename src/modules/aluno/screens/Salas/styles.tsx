@@ -46,7 +46,6 @@ export default StyleSheet.create({
     infoIcons: {
         fontSize: 25,
         marginRight: 12,
-
     },
 
     centeredView: {
@@ -61,8 +60,7 @@ export default StyleSheet.create({
         borderRadius: 20,
         width: 300,
         height: 'auto',
-        padding: 50,
-        alignItems: 'center',
+        padding: 20,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -73,23 +71,62 @@ export default StyleSheet.create({
         elevation: 5,
     },
     button: {
+        alignSelf: 'center',
+        marginTop: 40,
         borderRadius: 20,
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         elevation: 2,
     },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#6D1C1C',
     },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
-        textAlign: 'center',
+    },
+    modalNomeSala: {
+        fontWeight: 'bold',
+        marginBottom: 15,
     },
     modalText: {
         marginBottom: 15,
-        textAlign: 'center',
     },
+    modalHorario: {
+        textAlign: 'center',
+        borderRadius: 5,
+        padding: 5,
+        backgroundColor: '#D9D9D9',
+        marginBottom: 5,
+    },
+    viewHorarios: {
+        width: '35%',
+    },
+    viewItens: {
+        marginTop: 25
+    },
+    viewItem: {
+        marginTop: 10,
+        flexDirection: 'row'
+    },
+    qtdItens: {
+        textAlign: 'center',
+        borderRadius: 5,
+        width: 35,
+        paddingVertical: 6,
+        marginRight: 25,
+        backgroundColor: '#D9D9D9',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+    iconItem: {
+        fontSize: 23,
+        marginRight: 20,
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+    nomeItem: {
+        fontSize: 17,
+    },
+
 });
