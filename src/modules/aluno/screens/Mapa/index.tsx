@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, Modal, Image } from 'react-native';
 import styles from './styles';
-import Header from '@/components/HeaderEstatico';
+import Header from '@/components/shared/HeaderEstatico';
 import Gallery from 'react-native-awesome-gallery';
 
 export default function Mapa() {

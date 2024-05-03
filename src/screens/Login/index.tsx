@@ -7,7 +7,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationProp } from '@react-navigation/native'
 
 type StackLoginProps = {
-    HomeContext: any,
+    HomeAluno: any,
+    HomeProfessor: any,
 }
 
 export default function Login({ navigation }: { navigation: NavigationProp<StackLoginProps> }) {
@@ -16,8 +17,10 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
     const [senha, setSenha] = useState('');
     const [isSelected, setSelection] = useState(false);
 
-    const loginProcess = () => {
-        navigation.navigate("HomeContext")
+    const handleSubmitLogin = (email: string, senha: string) => {
+
+        // Autenticação
+        navigation.navigate("HomeAluno")
 
         // Código para não permitir que o usuário volte para a tela de login
         /* navigation.reset({
@@ -60,7 +63,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                         </View>
 
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={loginProcess}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha)}>
                             <Text style={{}}>ENTRAR</Text>
                         </TouchableOpacity>
 

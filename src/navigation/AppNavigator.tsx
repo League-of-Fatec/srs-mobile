@@ -1,9 +1,10 @@
 
-import Home from '@/screens/Home';
+import Home from '@/aluno/screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '@/screens/Login';
 import { NavigationContainer } from '@react-navigation/native';
-import TabNavigator from './TabNavigator';
+import AlunoTabNavigator from '@/aluno/navigation/AlunoTabNavigator'
+import ProfessorTabNavigator from '@/professor/navigation/ProfessorTabNavigator';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,8 @@ export default function AppNavigator() {
         <NavigationContainer>
             <Stack.Navigator >
                 <Stack.Screen name="LoginInicial" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="HomeContext" component={TabNavigator} options={{ headerShown: false }} />
+                <Stack.Screen name="HomeProfessor" component={ProfessorTabNavigator} options={{ headerShown: false }} />
+                <Stack.Screen name="HomeAluno" component={AlunoTabNavigator} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
 

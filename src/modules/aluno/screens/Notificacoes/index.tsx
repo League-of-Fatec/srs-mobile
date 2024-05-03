@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import Header from '@/components/HeaderEstatico';
+import Header from '@/components/shared/HeaderEstatico';
 
 const notificacoes = [
     {

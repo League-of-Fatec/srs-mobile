@@ -1,20 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import React from 'react';
-import Home from '../screens/Home/index';
 import Calendario from '../screens/Calendario/index';
 import Mapa from '../screens/Mapa/index';
 import Salas from '../screens/Salas/index';
 import Notificacoes from '../screens/Notificacoes/index';
-import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeStackNavigator from './HomeStackNavigator';
+import HomeStackNavigator from './AlunoHomeStackNavigator';
 
 
 const Tab = createBottomTabNavigator();
 
 
-export default function TabNavigator() {
+export default function AlunoTabNavigator() {
     return (
         <Tab.Navigator
             screenOptions={

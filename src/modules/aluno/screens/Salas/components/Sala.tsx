@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable } from 'react-native';
 import { List } from 'react-native-paper';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BotaoSala from './BotaoSala';
 
+type Sala = {
+    nomeSala: string;
+    icon: string;
+    situacao: number;
+};
+
 const Sala = () => {
 
     const [corBotao, setarCorBotao] = useState(['#6DCE31', '#FAAF40', '#B54646']);
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedSala, setSelectedSala] = useState<Sala | null>(null);
     const andaresSalas = [
         {
             nomeAndar: "1° Andar",
@@ -90,7 +97,15 @@ const Sala = () => {
                     <Text style={styles.nomeAndar}>{andarSala.nomeAndar}</Text>
                     <ScrollView style={styles.scrollSalas}>
                         {andarSala.salas.map((sala, index) => (
-                            <TouchableOpacity style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]} key={index}>
+
+                            <TouchableOpacity
+                                style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]}
+                                key={index}
+                                onPress={() => {
+                                    setModalVisible(true)
+                                    setSelectedSala(sala);
+                                }}>
+
                                 <Text style={styles.nomeSala}>{sala.nomeSala}</Text>
                                 <Ionicons
                                     style={styles.infoIcons} name='desktop-outline'
@@ -101,6 +116,25 @@ const Sala = () => {
 
                 </View>
             ))}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>{selectedSala?.nomeSala}</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styles.textStyle}>Hide Modal</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
