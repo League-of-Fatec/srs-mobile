@@ -71,12 +71,14 @@ export default StyleSheet.create({
         padding: 10
     },
     titleEvento: {
-
+        fontWeight: 'bold',
+        fontSize: 17,
+        marginBottom: 10
     },
     descEvento: {
 
     },
     viewEvento: {
-
+        padding: 10
     }
 });
