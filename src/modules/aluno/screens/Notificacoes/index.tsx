@@ -6,25 +6,25 @@ import Header from '@/components/shared/HeaderEstatico';
 const notificacoes = [
     {
         data: "Hoje",
-        nome: "Fiora - Solicitou o uso de sala",
+        nome: "Fiora - Cancelou a aula",
         sala: "Sala 37",
         andarHorario: "3 Andar - 17:00"
     },
     {
         data: "Ontem",
-        nome: "Marcelo - Cancelou uma reserva",
+        nome: "Marcelo - Mudou de sala",
         sala: "Sala 13",
         andarHorario: "1 Andar - 17:00"
     },
     {
         data: "Semana Passada",
-        nome: "Michelly - Solicitou o uso de sala",
+        nome: "Michelly -Cancelou a aula",
         sala: "Sala 22",
         andarHorario: "2 Andar - 17:00"
     },
     {
         data: "1 de Abril de 2023",
-        nome: "Caio - Solicitou o uso de sala",
+        nome: "Caio - Cancelou a aula",
         sala: "Sala 44",
         andarHorario: "4 Andar - 17:00"
     },

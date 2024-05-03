@@ -10,9 +10,8 @@ export default StyleSheet.create({
     containerNotificacoes: {
         //backgroundColor: 'red',
         flex: 1,
-        marginTop: '3%',
+        marginTop: '1.5%',
         marginHorizontal: '2%',
-        marginBottom: '1%',
         padding: '2%'
     },
     notificacao: {
