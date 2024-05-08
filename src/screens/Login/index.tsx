@@ -21,11 +21,12 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
     const handleSubmitLogin = (email: string, password: string) => {
 
-        if (email === "prof" && password === "123") {
-            navigation.navigate("HomeProfessor");
-        } else if (email === "aluno" && password === "123") {
-            navigation.navigate("HomeAluno");
-        }
+        navigation.navigate("HomeProfessor");
+        // if (email === "prof" && password === "123") {
+        //     navigation.navigate("HomeProfessor");
+        // } else if (email === "aluno" && password === "123") {
+        //     navigation.navigate("HomeAluno");
+        // }
 
 
 
