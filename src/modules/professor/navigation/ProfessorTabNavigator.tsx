@@ -7,6 +7,10 @@ import React from 'react';
 //import Notificacoes from '../screens/Notificacoes/index';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfessorHomeStackNavigator from '@/professor/navigation/ProfessorHomeStackNavigator';
+import Calendario from '../screens/Calendario';
+import Mapa from '../screens/Mapa';
+import Salas from '../screens/Salas';
+import Notificacoes from '../screens/Notificacoes';
 
 
 const Tab = createBottomTabNavigator();
@@ -40,7 +44,7 @@ export default function ProfessorTabNavigator() {
                         style={{ marginTop: '15%' }} />,
                 }}
             />
-            {/* }
+
             <Tab.Screen
                 name="Calendário"
                 component={Calendario}
@@ -77,7 +81,7 @@ export default function ProfessorTabNavigator() {
                         style={{ marginTop: '15%' }} />
                 }}
             />
-            */}
+
 
         </Tab.Navigator>
 

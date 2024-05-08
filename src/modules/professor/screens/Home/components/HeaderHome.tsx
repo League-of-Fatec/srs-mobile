@@ -31,7 +31,7 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
             </View>
             <View style={{ flex: 0.3 }}>
                 {/*<TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>*/}
-                <TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ConfiguracoesProfessor")}>
                     <View>
                         <Ionicons style={{ marginTop: 10 }}
                             name='settings-outline' size={20} color={"#000000"} />
