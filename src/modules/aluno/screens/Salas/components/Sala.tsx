@@ -1,141 +1,71 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable } from 'react-native';
 import { List } from 'react-native-paper';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BotaoSala from './BotaoSala';
+import ModalAluno from './ModalAluno';
+import { api_url_local } from '@/utils/API_URLS';
+import Loading from '@/components/shared/Loading';
+import { ClassRoom, ResponseTypeClassRooms } from '../types/SalaTypes';
 
-type Sala = {
-    nomeSala: string;
-    icon: string;
-    situacao: number;
-};
 
-type itensSala = {
-    qtd: number,
-    icon: string,
-    nomeItem: string
-}
+
 
 const Sala = () => {
 
-    const [corBotao, setarCorBotao] = useState(['#6DCE31', '#FAAF40', '#B54646']);
+    const [colorButton, setColorButton] = useState(['#6DCE31', '#FAAF40', '#B54646']);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedSala, setSelectedSala] = useState<Sala | null>(null);
-    const andaresSalas = [
-        {
-            nomeAndar: "1° Andar",
-            salas: [
-                {
-                    nomeSala: "Sala 10",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 11",
-                    icon: "",
-                    situacao: 1
-                },
-                {
-                    nomeSala: "Sala 12",
-                    icon: "",
-                    situacao: 2
-                },
-                {
-                    nomeSala: "Sala 13",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 8",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 9",
-                    icon: "",
-                    situacao: 2
-                }
-            ]
-        },
-        {
-            nomeAndar: "2° Andar",
-            salas: [
-                {
-                    nomeSala: "Sala 20",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 21",
-                    icon: "",
-                    situacao: 1
-                },
-                {
-                    nomeSala: "Sala 22",
-                    icon: "",
-                    situacao: 2
-                },
-                {
-                    nomeSala: "Sala 26",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 27",
-                    icon: "",
-                    situacao: 0
-                },
-                {
-                    nomeSala: "Sala 28",
-                    icon: "",
-                    situacao: 2
-                },
-            ]
-        }
-    ]
+    const [selectClassRoom, setSelectClassRoom] = useState<ClassRoom | null>(null);
+    const [floors, setFloors] = useState<string[]>();
+    const [response, setResponse] = useState<ResponseTypeClassRooms>();
+    const [isLoading, setIsLoading] = useState(true);
 
-    const itensSala: itensSala[] = [
-        {
-            qtd: 20,
-            icon: "",
-            nomeItem: "Computadores"
-        },
-        {
-            qtd: 1,
-            icon: "",
-            nomeItem: "Projetores"
-        },
-        {
-            qtd: 2,
-            icon: "",
-            nomeItem: "Ar-condicionado"
-        },
-        {
-            qtd: 30,
-            icon: "",
-            nomeItem: "Capacidade"
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${api_url_local}/classrooms`, {
+                    method: "GET",
+                });
+                const responseJson: ResponseTypeClassRooms = await response.json();
+                const floors = (Object.keys(responseJson));
+                setFloors(floors);
+                setResponse(responseJson);
+                setIsLoading(false)
+
+            } catch (error) {
+                console.error(error);
+            }
         }
-    ]
+
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    const numAleat = () => {
+        const numAleat = Math.floor(Math.random() * 3)
+        return numAleat;
+    }
 
     return (
-
         <View style={styles.containerAndares}>
-            {andaresSalas.map((andarSala, index) => (
+            {floors?.map((floor, index) => (
                 <View style={styles.containerSalas} key={index}>
-                    <Text style={styles.nomeAndar}>{andarSala.nomeAndar}</Text>
+                    <Text style={styles.nomeAndar}>{floor}° Andar</Text>
                     <ScrollView style={styles.scrollSalas}>
-                        {andarSala.salas.map((sala, index) => (
+                        {response && response[floor].map((classroom, index) => (
 
                             <TouchableOpacity
-                                style={[styles.botaoSala, { backgroundColor: corBotao[sala.situacao] }]}
+                                style={[styles.botaoSala, { backgroundColor: colorButton[numAleat()] }]}
                                 key={index}
                                 onPress={() => {
                                     setModalVisible(true)
-                                    setSelectedSala(sala);
+                                    setSelectClassRoom(classroom);
                                 }}>
 
-                                <Text style={styles.nomeSala}>{sala.nomeSala}</Text>
+                                <Text style={styles.nomeSala}>{classroom.name}</Text>
                                 <Ionicons
                                     style={styles.infoIcons} name='desktop-outline'
                                 />
@@ -145,50 +75,12 @@ const Sala = () => {
 
                 </View>
             ))}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <View>
-                            <Text style={styles.modalNomeSala}>{selectedSala?.nomeSala}</Text>
-                            <Text style={styles.modalText}>Disponivel até</Text>
-                            <View style={styles.viewHorarios}>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                            </View>
-                        </View>
-                        <View style={styles.viewItens}>
-                            <Text>Itens</Text>
-                            <View>
-                                {itensSala.map((itemSala, index) => {
-                                    return (
-                                        <View style={styles.viewItem} key={index}>
-                                            <Text style={styles.qtdItens}>{itemSala.qtd}</Text>
-                                            <Ionicons
-                                                style={styles.iconItem} name='desktop-outline'
-                                            />
-                                            <Text style={styles.nomeItem}>{itemSala.nomeItem}</Text>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>
-
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textStyle}>Fechar</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
+            <ModalAluno
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                selectedClassRoom={selectClassRoom}
+                setSelectedClassRoom={setSelectClassRoom}
+            />
         </View>
     );
 }
