@@ -16,11 +16,25 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [isSelected, setSelection] = useState(false);
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
-    const handleSubmitLogin = (email: string, senha: string) => {
+    const handleSubmitLogin = (email: string, password: string) => {
 
-        // Autenticação
-        navigation.navigate("HomeAluno")
+        if (email === "prof" && password === "123") {
+            navigation.navigate("HomeProfessor");
+        } else if (email === "aluno" && password === "123") {
+            navigation.navigate("HomeAluno");
+        }
+
+
+
+
+
+
+
+
+
 
         // Código para não permitir que o usuário volte para a tela de login
         /* navigation.reset({
@@ -37,16 +51,17 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                 <Image source={require("@/assets/images/login/img-reuniao.jpg")} style={styles.image}></Image>
 
                 <View style={styles.container}>
-
-
-                    <GestureHandlerRootView style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
                         <Text style={styles.textEmail}>E-mail</Text>
                         <View style={styles.inputView}>
                             <TextInput style={styles.TextInput}
+                                inputMode='email'
                                 placeholder='Digite seu email.'
                                 placeholderTextColor={'#003f5c'}
                                 onChangeText={(email) => setEmail(email)} />
+                            <Text style={styles.textError}>{emailError}</Text>
                         </View>
+
 
                         <Text style={styles.textSenha}>Senha</Text>
                         <View style={styles.inputView}>
@@ -56,6 +71,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                                 placeholderTextColor="#003f5c"
                                 secureTextEntry={true}
                                 onChangeText={(senha) => setSenha(senha)} />
+                            <Text style={styles.textError}>{passwordError}</Text>
                         </View>
 
                         <View>
@@ -64,13 +80,13 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
 
                         <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha)}>
-                            <Text style={{}}>ENTRAR</Text>
+                            <Text style={styles.textColorBtn}>ENTRAR</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity>
                             <Text style={styles.forgot_button}>Esqueci minha senha</Text>
                         </TouchableOpacity>
-                    </GestureHandlerRootView>
+                    </View>
                 </View>
 
             </View>

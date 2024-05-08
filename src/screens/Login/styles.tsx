@@ -13,7 +13,7 @@ export default StyleSheet.create({
 
     },
     textEmail: {
-        fontSize: 20,
+        fontSize: 15,
         marginTop: 63,
     },
     textSenha: {
@@ -31,11 +31,9 @@ export default StyleSheet.create({
         height: 45,
         marginTop: 2,
         marginBottom: 20,
-        alignItems: "flex-start",
+
     },
     TextInput: {
-        height: 50,
-        flex: 1,
         padding: 10,
     },
     forgot_button: {
@@ -47,12 +45,21 @@ export default StyleSheet.create({
     },
     loginBtn: {
         width: "100%",
-        borderRadius: 25,
-        height: 50,
+        borderRadius: 10,
+        height: 45,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 20,
         backgroundColor: "#3E74FF",
     },
+    textColorBtn: {
+        color: 'white'
+    },
+    textError: {
+        color: 'red',
+        fontSize: 12,
+        textAlign: 'right',
+        marginRight: 10,
+    }
 
 });
