@@ -31,8 +31,12 @@ type MarkedDatesType = {
 const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom }: ModalAlunoProps,) => {
 
     const [availability, setAvailability] = useState('N');
+
     const [isBeginTimePickerVisible, setBeginTimePickerVisibility] = useState(false);
     const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
+    const [isBeginTime, setBeginTime] = useState("");
+    const [isEndTime, setEndTime] = useState("");
+
     const [minimumDate, setMinimumDate] = useState('');
     const [maximumDate, setMaximumDate] = useState('');
     const [markedDates, setMarkedDates] = useState<MarkedDatesType>({})
@@ -46,20 +50,28 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     };
 
     const hideBeginningTime = () => {
-        setBeginTimePickerVisibility(false)
+        setBeginTimePickerVisibility(false);
     };
     const hideEndTime = () => {
         setEndTimePickerVisibility(false);
     };
 
     const handleConfirmTimeBegin = (date: Date) => {
-        console.warn("A date has been picked: ", date);
+        date.setHours(date.getHours() - 1);
+        const dateTime = date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' });
+        const time = dateTime.split(" ")[1];
+        console.warn("A date has been picked: ", date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' }));
+        setBeginTime(time);
         hideBeginningTime();
     };
 
     const handleConfirmTimeEnd = (date: Date) => {
-        console.warn("A date has been picked: ", date);
-        hideBeginningTime();
+        date.setHours(date.getHours() - 1);
+        const dateTime = date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' });
+        const time = dateTime.split(" ")[1];
+        console.warn("A date has been picked: ", date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' }));
+        setEndTime(time);
+        hideEndTime();
     };
 
 
@@ -84,11 +96,11 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
     useEffect(() => {
         if (minimumDate && maximumDate && times === 2) {
-            marcarDias();
+            markDays();
         }
     }, [minimumDate, maximumDate, times]);
 
-    const marcarDias = () => {
+    const markDays = () => {
         const startDate = parseLocalDate(minimumDate);
         const endDate = parseLocalDate(maximumDate);
 
@@ -117,6 +129,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setMinimumDate("");
         setTimes(0);
         setMarkedDates({});
+        setBeginTime("");
+        setEndTime("");
 
     }
 
@@ -190,6 +204,10 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     [maximumDate]: { endingDay: true, marked: true, color: 'yellow' },
                                     ...markedDates
                                 }}
+                                theme={{
+                                    arrowColor: '#6D1C1C',
+                                    todayTextColor: '#6D1C1C',
+                                }}
                             />
                         </View>
                         <View style={styles.containerReservation}>
@@ -204,16 +222,42 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     <Text>{maximumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
                                 </View>
                             </View>
-                            <HorizontalRow />
+                            <View style={styles.selectTimeView}>
+                                <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
+                                <Text style={{ fontSize: 18 }}>Selecione um horário</Text>
+                                <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginLeft: 10 }} />
+                            </View>
+
                             <View style={styles.startAndEndTime}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text>Inicio: 19:00</Text>
-                                    <Text></Text>
+                                    <TouchableOpacity onPress={showBeginTimePicker}>
+                                        <Text>Inicio: </Text>
+                                    </TouchableOpacity>
+                                    <Text>{isBeginTime}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text>Fim: 20:40</Text>
-                                    <Text></Text>
+                                    <TouchableOpacity onPress={showEndTimePicker}>
+                                        <Text>Fim: </Text>
+                                    </TouchableOpacity>
+                                    <Text>{isEndTime}</Text>
                                 </View>
+
+                                <DateTimePickerModal
+                                    isVisible={isBeginTimePickerVisible}
+                                    mode="time"
+                                    is24Hour={true}
+                                    onConfirm={handleConfirmTimeBegin}
+                                    onCancel={hideBeginningTime}
+                                />
+
+                                <DateTimePickerModal
+                                    isVisible={isEndTimePickerVisible}
+                                    mode="time"
+                                    is24Hour={true}
+                                    onConfirm={handleConfirmTimeEnd}
+                                    onCancel={hideEndTime}
+                                />
+
                             </View>
 
                             <HorizontalRow />
@@ -240,24 +284,11 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 <Text>Motivo</Text>
                                 <TextInput style={styles.reasonTextInput}
                                     multiline={true}
+                                    placeholder='Esta mensagem será encaminhada
+                                    para o professor - Limite 280 caracteres'
+
                                 />
 
-                                <Button title="Escolher horário inicial" onPress={showBeginTimePicker} />
-                                <DateTimePickerModal
-                                    isVisible={isBeginTimePickerVisible}
-                                    mode="time"
-                                    is24Hour={true}
-                                    onConfirm={handleConfirmTimeBegin}
-                                    onCancel={hideBeginningTime}
-                                />
-                                <Button title="Escolher horário final" onPress={showEndTimePicker} />
-                                <DateTimePickerModal
-                                    isVisible={isEndTimePickerVisible}
-                                    mode="time"
-                                    is24Hour={true}
-                                    onConfirm={handleConfirmTimeEnd}
-                                    onCancel={hideEndTime}
-                                />
 
 
                                 <Pressable

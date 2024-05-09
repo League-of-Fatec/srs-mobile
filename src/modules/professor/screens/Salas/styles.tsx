@@ -145,7 +145,13 @@ export default StyleSheet.create({
     containerReservation: {
 
     },
+    selectTimeView: {
+        marginVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
     startAndEndDate: {
+        paddingVertical: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
