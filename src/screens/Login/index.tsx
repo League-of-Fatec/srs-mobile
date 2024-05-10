@@ -9,6 +9,7 @@ import { NavigationProp } from '@react-navigation/native'
 type StackLoginProps = {
     HomeAluno: any,
     HomeProfessor: any,
+    ForgotPassword: any
 }
 
 export default function Login({ navigation }: { navigation: NavigationProp<StackLoginProps> }) {
@@ -27,14 +28,6 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
         // } else if (email === "aluno" && password === "123") {
         //     navigation.navigate("HomeAluno");
         // }
-
-
-
-
-
-
-
-
 
 
         // Código para não permitir que o usuário volte para a tela de login
