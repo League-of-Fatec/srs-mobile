@@ -76,7 +76,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
 
     const handleDayPress = (day: DateData) => {
-        console.log(times)
+
         if (times == 0) {
             setMinimumDate(day.dateString);
             setTimes(times + 1);
@@ -140,7 +140,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
                 setModalVisible(!modalVisible);
             }}>
             <View style={styles.centeredView}>
@@ -249,7 +248,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     onConfirm={handleConfirmTimeBegin}
                                     onCancel={hideBeginningTime}
                                 />
-
                                 <DateTimePickerModal
                                     isVisible={isEndTimePickerVisible}
                                     mode="time"
@@ -259,7 +257,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 />
 
                             </View>
-
                             <HorizontalRow />
                             <View>
                                 <Text>Disponível para troca?</Text>
@@ -280,7 +277,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             </View>
                             <HorizontalRow />
                             <View>
-
                                 <Text>Motivo</Text>
                                 <TextInput style={styles.reasonTextInput}
                                     multiline={true}
@@ -288,9 +284,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     para o professor - Limite 280 caracteres'
 
                                 />
-
-
-
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => console.log("Teste")}>
