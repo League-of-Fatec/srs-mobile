@@ -17,7 +17,7 @@ export default StyleSheet.create({
         marginTop: 63,
     },
     textSenha: {
-        fontSize: 20,
+        fontSize: 15,
         marginTop: 10,
     },
     image: {
