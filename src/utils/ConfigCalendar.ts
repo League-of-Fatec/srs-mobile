@@ -18,7 +18,7 @@ localeConfigData.locales['br'] = {
     'Dezembro',
   ],
   monthNamesShort: [
-    'Jan.',
+    'Jan',
     'Fev',
     'Mar',
     'Abr',
