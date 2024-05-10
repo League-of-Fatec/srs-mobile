@@ -17,6 +17,6 @@ export default function App() {
   //   return alert("Erro no login!")
   // }
 
-  return <AppNavigator />
+  return <AppNavigator />;
 
 }

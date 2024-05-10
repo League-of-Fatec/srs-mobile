@@ -15,12 +15,10 @@ export default StyleSheet.create({
         //backgroundColor: 'pink',
     },
     containerSalas: {
-        flex: 1,
         margin: '0%',
         //backgroundColor: 'blue',
     },
     scrollSalas: {
-        flex: 1,
         margin: '4%',
 
     },
@@ -33,6 +31,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         //backgroundColor: 'yellow',
+
         height: 57,
         borderRadius: 7,
         marginVertical: 5

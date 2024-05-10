@@ -7,6 +7,8 @@ import ModalAluno from './ModalAluno';
 import { api_url_local } from '@/utils/API_URLS';
 import Loading from '@/components/shared/Loading';
 import { ClassRoom, ResponseTypeClassRooms } from '../types/SalaTypes';
+import Accordion from '@/components/shared/Accordion';
+
 
 
 
@@ -51,36 +53,39 @@ const Sala = () => {
 
     return (
         <View style={styles.containerAndares}>
-            {floors?.map((floor, index) => (
-                <View style={styles.containerSalas} key={index}>
-                    <Text style={styles.nomeAndar}>{floor}° Andar</Text>
-                    <ScrollView style={styles.scrollSalas}>
-                        {response && response[floor].map((classroom, index) => (
+            <ScrollView>
+                {floors?.map((floor, index) => (
+                    <View style={styles.containerSalas} key={index}>
+                        <Accordion title={`${floor}° Andar`}>
+                            <ScrollView style={styles.scrollSalas}>
+                                {response && response[floor].map((classroom, index) => (
 
-                            <TouchableOpacity
-                                style={[styles.botaoSala, { backgroundColor: colorButton[numAleat()] }]}
-                                key={index}
-                                onPress={() => {
-                                    setModalVisible(true)
-                                    setSelectClassRoom(classroom);
-                                }}>
+                                    <TouchableOpacity
+                                        style={[styles.botaoSala, { backgroundColor: colorButton[numAleat()] }]}
+                                        key={index}
+                                        onPress={() => {
+                                            setModalVisible(true)
+                                            setSelectClassRoom(classroom);
+                                        }}>
 
-                                <Text style={styles.nomeSala}>{classroom.name}</Text>
-                                <Ionicons
-                                    style={styles.infoIcons} name='desktop-outline'
-                                />
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
+                                        <Text style={styles.nomeSala}>{classroom.name}</Text>
+                                        <Ionicons
+                                            style={styles.infoIcons} name='desktop-outline'
+                                        />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                        </Accordion>
 
-                </View>
-            ))}
-            <ModalAluno
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                selectedClassRoom={selectClassRoom}
-                setSelectedClassRoom={setSelectClassRoom}
-            />
+                    </View>
+                ))}
+                <ModalAluno
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    selectedClassRoom={selectClassRoom}
+                    setSelectedClassRoom={setSelectClassRoom}
+                />
+            </ScrollView>
         </View>
     );
 }
