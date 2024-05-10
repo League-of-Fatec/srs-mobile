@@ -167,6 +167,10 @@ export default StyleSheet.create({
         borderColor: '#BFBFBF',
         backgroundColor: "#F6F6F6",
         height: 100
+    },
+    textError: {
+        fontSize: 12,
+        color: 'red'
     }
 
 });

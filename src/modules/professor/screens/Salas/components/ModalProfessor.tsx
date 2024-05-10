@@ -10,6 +10,7 @@ import HorizontalRow from './HorizontalRow';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { eachDayOfInterval, format } from 'date-fns';
+import { errors } from '../utils/errors';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -30,7 +31,9 @@ type MarkedDatesType = {
 
 const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom }: ModalAlunoProps,) => {
 
-    const [availability, setAvailability] = useState('N');
+    const [availability, setAvailability] = useState('S');
+    const [isSubject, setSubject] = useState("")
+    const [isErrors, setErrors] = useState(errors);
 
     const [isBeginTimePickerVisible, setBeginTimePickerVisibility] = useState(false);
     const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
@@ -41,6 +44,9 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const [maximumDate, setMaximumDate] = useState('');
     const [markedDates, setMarkedDates] = useState<MarkedDatesType>({})
     const [times, setTimes] = useState(0);
+
+    const [isReason, setReason] = useState("");
+
 
     const showBeginTimePicker = () => {
         setBeginTimePickerVisibility(true);
@@ -131,7 +137,10 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setMarkedDates({});
         setBeginTime("");
         setEndTime("");
+    }
 
+    const checkInputs = () => {
+        //if (!isSubject);
     }
 
     return (
@@ -172,27 +181,21 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                         </View>
                         <View style={styles.containerSubjects}>
                             <Text style={styles.subjectName}>Matéria:</Text>
-                            {/*
-                            <Picker
-                                selectedValue={selectedValueSubject}
-                                style={styles.pickerSubjects}
-                                onValueChange={(itemValue, itemIndex) => setSelectedValueSubject(itemValue)}
-                            >
-                                <Picker.Item label='DSM' value="DSM" />
-                                <Picker.Item label='Redes de Computadores' value="RC" />
-                                <Picker.Item label='Manutenção industrial' value="MI" />
-                            </Picker>
-                             */}
                             <RNPickerSelect
-                                onValueChange={(value) => console.log(value)}
-                                placeholder={{ label: "Escolha a matéria:", value: null }}
+                                onValueChange={(value) => setSubject(value)}
+                                placeholder={{ label: "Escolha a matéria:", value: "" }}
                                 items={[
                                     { label: 'DSM', value: 'DSM', key: 1 },
                                     { label: 'Redes de Computadores', value: 'RC', key: 2 },
                                     { label: 'Manutenção industrial', value: 'MI', key: 3 }
                                 ]}
-
                             />
+                            {!isSubject ? (
+                                <Text style={styles.textError}>{errors.subjectErrors.text}</Text>
+                            ) : (
+                                <Text style={styles.textError}></Text>
+                            )}
+
                         </View>
                         <View style={styles.containerCalendar}>
                             <Calendar
@@ -220,6 +223,13 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     <Text>Data Fim: </Text>
                                     <Text>{maximumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
                                 </View>
+                                {!minimumDate || !maximumDate ? (
+                                    <Text style={styles.textError}>{errors.chooseDate.text}</Text>
+                                ) : (
+                                    <Text style={styles.textError}></Text>
+                                )
+
+                                }
                             </View>
                             <View style={styles.selectTimeView}>
                                 <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
@@ -257,6 +267,16 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 />
 
                             </View>
+                            {!isBeginTime || !isEndTime ? (
+                                <Text style={[styles.textError, {
+                                    textAlign: 'center'
+                                }]}>{errors.chooseTime.text}</Text>
+                            ) : (
+                                <Text style={[styles.textError, {
+                                    textAlign: 'center'
+                                }]}></Text>
+                            )}
+
                             <HorizontalRow />
                             <View>
                                 <Text>Disponível para troca?</Text>
@@ -282,8 +302,16 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     multiline={true}
                                     placeholder='Esta mensagem será encaminhada
                                     para o professor - Limite 280 caracteres'
+                                    onChangeText={(value) => setReason(value)}
 
                                 />
+
+                                {!isReason ? (
+                                    <Text style={styles.textError}>{errors.reason.text}</Text>
+                                ) : (
+                                    <Text style={styles.textError}></Text>
+                                )}
+
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => console.log("Teste")}>
