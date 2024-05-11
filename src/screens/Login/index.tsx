@@ -5,6 +5,12 @@ import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationProp } from '@react-navigation/native'
+import User from '@/utils/User';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { userSlice } from '@/redux/UserSlice';
+
+
 
 type StackLoginProps = {
     HomeAluno: any,
@@ -20,9 +26,25 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    const handleSubmitLogin = (email: string, password: string) => {
+    const dispatch = useDispatch();
 
-        navigation.navigate("HomeProfessor");
+    const handleSubmitLogin = (email: string, password: string, type: string) => {
+
+        const user: User = {
+            firstName: "Geraldo",
+            lastName: "Vicente",
+            course: "DSM",
+            semester: "5°",
+            registration: "214921414"
+        }
+
+        dispatch(userSlice.actions.login(user));
+
+        if (type === "aluno") navigation.navigate("HomeAluno");
+
+
+        if (type === "prof") navigation.navigate("HomeProfessor");
+
         // if (email === "prof" && password === "123") {
         //     navigation.navigate("HomeProfessor");
         // } else if (email === "aluno" && password === "123") {
@@ -37,6 +59,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
          });
          */
     }
+
 
 
     return (
@@ -73,8 +96,11 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                         </View>
 
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha)}>
-                            <Text style={styles.textColorBtn}>ENTRAR</Text>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "prof")}>
+                            <Text style={styles.textColorBtn}>ENTRAR PROFESSOR</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "aluno")}>
+                            <Text style={styles.textColorBtn}>ENTRAR ALUNO</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity>

@@ -3,10 +3,14 @@ import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions } from 'rea
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { UserState } from '@/redux/UserSlice';
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
+    const user = useSelector((state: { user: UserState }) => state.user);
+    console.warn("O usuário: ", user.user?.firstName, "está logado!");
     const aluno =
     {
         nome: "Graves Emanuel",
