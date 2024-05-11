@@ -33,6 +33,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
     const [availability, setAvailability] = useState('S');
     const [isSubject, setSubject] = useState("")
+    const [isCourse, setCourse] = useState("")
     const [isErrors, setErrors] = useState(errors);
 
     const [isBeginTimePickerVisible, setBeginTimePickerVisibility] = useState(false);
@@ -137,6 +138,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setMarkedDates({});
         setBeginTime("");
         setEndTime("");
+        setCourse("");
+        setSubject("");
     }
 
     const checkInputs = () => {
@@ -179,24 +182,42 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 })}
                             </View>
                         </View>
-                        <View style={styles.containerSubjects}>
-                            <Text style={styles.subjectName}>Matéria:</Text>
+                        <View style={styles.containerCourses}>
+                            <Text style={styles.courseName}>Curso:</Text>
                             <RNPickerSelect
-                                onValueChange={(value) => setSubject(value)}
-                                placeholder={{ label: "Escolha a matéria:", value: "" }}
+                                onValueChange={(value) => setCourse(value)}
+                                placeholder={{ label: "Escolha o curso:", value: "" }}
                                 items={[
                                     { label: 'DSM', value: 'DSM', key: 1 },
                                     { label: 'Redes de Computadores', value: 'RC', key: 2 },
                                     { label: 'Manutenção industrial', value: 'MI', key: 3 }
                                 ]}
                             />
+                            {!isCourse ? (
+                                <Text style={styles.textError}>{errors.course.text}</Text>
+                            ) : (
+                                <Text style={styles.textError}></Text>
+                            )}
+                        </View>
+                        <View style={styles.containerSubjects}>
+                            <Text style={styles.subjectName}>Matéria:</Text>
+                            <RNPickerSelect
+                                onValueChange={(value) => setSubject(value)}
+                                placeholder={{ label: "Escolha a matéria:", value: "" }}
+                                items={[
+                                    { label: 'Álgebra Linear', value: 'AL', key: 1 },
+                                    { label: 'Desenvolvimento Web', value: 'DW', key: 2 },
+                                    { label: 'Design Digital', value: 'DD', key: 3 }
+                                ]}
+                            />
                             {!isSubject ? (
-                                <Text style={styles.textError}>{errors.subjectErrors.text}</Text>
+                                <Text style={styles.textError}>{errors.subject.text}</Text>
                             ) : (
                                 <Text style={styles.textError}></Text>
                             )}
 
                         </View>
+
                         <View style={styles.containerCalendar}>
                             <Calendar
                                 markingType='period'

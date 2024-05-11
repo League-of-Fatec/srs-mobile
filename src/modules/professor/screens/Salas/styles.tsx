@@ -134,6 +134,12 @@ export default StyleSheet.create({
     subjectName: {
 
     },
+    containerCourses: {
+
+    },
+    courseName: {
+
+    },
     pickerSubjects: {
 
     },
@@ -155,7 +161,6 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     startAndEndTime: {
-        flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 30
     },
@@ -169,6 +174,7 @@ export default StyleSheet.create({
         height: 100
     },
     textError: {
+        textAlign: 'right',
         fontSize: 12,
         color: 'red'
     }
