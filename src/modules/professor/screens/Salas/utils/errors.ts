@@ -1,6 +1,9 @@
 export const errors = {
-  subjectErrors: {
+  subject: {
     text: 'É necessário preencher a matéria!',
+  },
+  course: {
+    text: 'É necessário preencher o curso!',
   },
   chooseDate: {
     text: 'Escolha a data inicial e final!',
