@@ -2,6 +2,8 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import AppNavigator from '@/navigation/AppNavigator';
 import localeConfigData from '@/utils/ConfigCalendar';
+import { Provider } from 'react-redux';
+import { store } from '@/redux/Store';
 
 localeConfigData;
 
@@ -17,6 +19,10 @@ export default function App() {
   //   return alert("Erro no login!")
   // }
 
-  return <AppNavigator />;
+  return (
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
+  );
 
 }
