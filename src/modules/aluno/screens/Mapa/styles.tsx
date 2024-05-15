@@ -20,6 +20,19 @@ export default StyleSheet.create({
     },
     imageViewer: {
         flex: 1,
-
+    },
+    botaoAbrir: {
+        borderRadius: 20,
+        padding: 15,
+        backgroundColor: "#6D1C1C",
+    },
+    botaoFechar: {
+        padding: 15,
+        backgroundColor: "#6D1C1C",
+    },
+    textoBotao: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#FFFFFF'
     }
 });
