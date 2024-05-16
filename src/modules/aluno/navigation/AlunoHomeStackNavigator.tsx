@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import Home from '@/aluno/screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
-import Configuracoes from '../screens/Configuracoes/index';
+import Configuracoes from '@/screens/Configuracoes';
 
 const Stack = createStackNavigator();
 

@@ -8,9 +8,9 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfessorHomeStackNavigator from '@/professor/navigation/ProfessorHomeStackNavigator';
 import Calendario from '../screens/Calendario';
-import Mapa from '../screens/Mapa';
 import Salas from '../screens/Salas';
 import Notificacoes from '../screens/Notificacoes';
+import Mapa from '@/screens/Mapa';
 
 
 const Tab = createBottomTabNavigator();
