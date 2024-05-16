@@ -1,8 +1,9 @@
+import { Professor, Student } from '@/screens/Login';
 import User from '@/utils/User';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type UserState = {
-  user: User | null;
+  user: Student | Professor | null;
   token: string | null;
 };
 
@@ -12,7 +13,7 @@ export const initialState: UserState = {
 };
 
 export type PayloadUserAction = {
-  user: User;
+  user: Student | Professor;
   //token: string;
 };
 
