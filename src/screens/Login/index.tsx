@@ -1,25 +1,22 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationProp } from '@react-navigation/native'
-import User from '@/utils/User';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import { userSlice } from '@/redux/UserSlice';
-import { loginUser } from './utils/loginUser';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import fetchDataUser from './utils/fetchDataUser';
 
 
 
-type StackLoginProps = {
+export type StackLoginProps = {
     loginInicial: any,
     HomeAluno: any,
     HomeProfessor: any,
     ForgotPassword: any
 }
+
+
 
 export default function Login({ navigation }: { navigation: NavigationProp<StackLoginProps> }) {
 
@@ -31,51 +28,15 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
     const dispatch = useDispatch();
 
-    const handleSubmitLogin = async (email: string, password: string, type: string) => {
+    const handleSubmitLogin = (email: string, password: string) => {
 
-        // Lógica de login com a api do backend
-        //const { user, token } =  await loginUser()
-
-        const user: User = {
-            firstName: "Geraldo",
-            lastName: "Vicente",
-            course: "DSM",
-            semester: "5°",
-            registration: "214921414"
+        // Tratamento de erros
+        if (!email && !password) {
+            throw new Error("Falta a senha e o email");
         }
 
-        const token = 'token';
-
-        //dispatch(userSlice.actions.login({ user, token }));
-        dispatch(userSlice.actions.login({ user }));
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('userType', 'aluno');
-
-        const currentToken = await AsyncStorage.getItem("token");
-        const currentUserType = await AsyncStorage.getItem("userType");
-        console.log(currentUserType);
-
-        if (currentUserType === "aluno") {
-            navigation.navigate("HomeAluno");
-        }
-
-
-        if (currentUserType === "professor") {
-            navigation.navigate("HomeProfessor");
-        }
-
-        // if (email === "prof" && password === "123") {
-        //     navigation.navigate("HomeProfessor");
-        // } else if (email === "aluno" && password === "123") {
-        //     navigation.navigate("HomeAluno");
-        // }
-
-
-        // Código para não permitir que o usuário volte para a tela de login
-        navigation.reset({
-            index: 0,
-            routes: [{ name: currentUserType === "professor" ? "HomeProfessor" : currentUserType === "aluno" ? "HomeAluno" : "loginInicial" }]
-        });
+        // Lógica de login para o back End
+        fetchDataUser(email, password, dispatch, navigation);
 
     }
 
@@ -115,16 +76,21 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                         </View>
 
 
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha)}>
+                            <Text style={styles.textColorBtn}>ENTRAR</Text>
+                        </TouchableOpacity>
+                        {/* 
                         <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "prof")}>
                             <Text style={styles.textColorBtn}>ENTRAR PROFESSOR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "aluno")}>
                             <Text style={styles.textColorBtn}>ENTRAR ALUNO</Text>
                         </TouchableOpacity>
-
+                        */}
                         <TouchableOpacity>
                             <Text style={styles.forgot_button}>Esqueci minha senha</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
 
