@@ -14,10 +14,14 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
-                <Stack.Screen name="LoginInicial" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="HomeProfessor" component={ProfessorTabNavigator} options={{ headerShown: false }} />
-                <Stack.Screen name="HomeAluno" component={AlunoTabNavigator} options={{ headerShown: false }} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+                <Stack.Group>
+                    <Stack.Screen name="LoginInicial" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+                </Stack.Group>
+                <Stack.Group>
+                    <Stack.Screen name="HomeProfessor" component={ProfessorTabNavigator} options={{ headerShown: false }} />
+                    <Stack.Screen name="HomeAluno" component={AlunoTabNavigator} options={{ headerShown: false }} />
+                </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>
 

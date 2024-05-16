@@ -22,7 +22,7 @@ export default function Mapa() {
             <Header title='Mapa' />
 
             <View style={styles.containerImagem}>
-                <Modal visible={modalIsVisible} transparent={true} >
+                <Modal visible={modalIsVisible} transparent={true}>
                     <ImageViewer imageUrls={images} />
                     <TouchableOpacity onPress={() => setModalVisibility(false)} style={styles.botaoFechar}>
                         <Text style={styles.textoBotao}>Sair</Text>

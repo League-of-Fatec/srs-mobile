@@ -5,12 +5,20 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/redux/UserSlice';
+import FatecSvg from '@/assets/svg/FatecSvg';
+
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
-    const user = useSelector((state: { user: UserState }) => state.user);
-    console.warn("O usuário: ", user.user?.firstName, "está logado!");
+    const { user, token } = useSelector((state: { user: UserState }) => state.user);
+
+    if (user !== undefined) {
+        if (user?.firstName !== undefined) {
+            console.warn("O usuário: ", user?.firstName, "está logado!");
+            console.log("O usuário: ", user?.firstName, "está logado!");
+        }
+    }
     const aluno =
     {
         nome: "Graves Emanuel",
@@ -18,26 +26,26 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
         icon: ""
     }
 
+    const formattedName = aluno.nome.split(" ")[0];
 
 
     return (
         <View style={styles.headerHome}>
             <View style={{ flex: 1 }}>
-                <Image source={require("@/assets/images/home/icon-prof.png")} style={styles.image}></Image>
+                <View style={styles.logo}>
+                    <Image source={require("@/assets/images/home/logo_fatec_osasco.png")} style={styles.image}></Image>
+                </View>
+                <View style={styles.infoProf}>
+                    <Text style={styles.textHomeSaudacao}>Olá, </Text>
+                    <Text style={styles.textHome}>{formattedName}</Text>
+                </View>
             </View>
-            <View style={[{ flex: 3 }, styles.infoProf]}>
-                <Text>Boa noite,</Text>
-                <Text style={{
-                    fontWeight: "bold",
-                    fontSize: 20
-                }}>{aluno.nome}</Text>
-                <Text>{aluno.matricula}</Text>
-            </View>
-            <View style={{ flex: 0.3 }}>
+
+            <View style={styles.config}>
                 <TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>
                     <View>
-                        <Ionicons style={{ marginTop: 10 }}
-                            name='settings-outline' size={20} color={"#000000"} />
+                        <Ionicons style={{ paddingTop: 10 }}
+                            name='settings-outline' size={30} color={"#000000"} />
                     </View>
                 </TouchableOpacity>
             </View>

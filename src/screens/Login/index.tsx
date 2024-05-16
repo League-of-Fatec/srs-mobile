@@ -9,10 +9,13 @@ import User from '@/utils/User';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { userSlice } from '@/redux/UserSlice';
+import { loginUser } from './utils/loginUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 type StackLoginProps = {
+    loginInicial: any,
     HomeAluno: any,
     HomeProfessor: any,
     ForgotPassword: any
@@ -28,7 +31,10 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
     const dispatch = useDispatch();
 
-    const handleSubmitLogin = (email: string, password: string, type: string) => {
+    const handleSubmitLogin = async (email: string, password: string, type: string) => {
+
+        // Lógica de login com a api do backend
+        //const { user, token } =  await loginUser()
 
         const user: User = {
             firstName: "Geraldo",
@@ -38,12 +44,25 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
             registration: "214921414"
         }
 
-        dispatch(userSlice.actions.login(user));
+        const token = 'token';
 
-        if (type === "aluno") navigation.navigate("HomeAluno");
+        //dispatch(userSlice.actions.login({ user, token }));
+        dispatch(userSlice.actions.login({ user }));
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('userType', 'aluno');
+
+        const currentToken = await AsyncStorage.getItem("token");
+        const currentUserType = await AsyncStorage.getItem("userType");
+        console.log(currentUserType);
+
+        if (currentUserType === "aluno") {
+            navigation.navigate("HomeAluno");
+        }
 
 
-        if (type === "prof") navigation.navigate("HomeProfessor");
+        if (currentUserType === "professor") {
+            navigation.navigate("HomeProfessor");
+        }
 
         // if (email === "prof" && password === "123") {
         //     navigation.navigate("HomeProfessor");
@@ -53,11 +72,11 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
 
         // Código para não permitir que o usuário volte para a tela de login
-        /* navigation.reset({
-             index: 0,
-             routes: [{ name: 'Home' }],
-         });
-         */
+        navigation.reset({
+            index: 0,
+            routes: [{ name: currentUserType === "professor" ? "HomeProfessor" : currentUserType === "aluno" ? "HomeAluno" : "loginInicial" }]
+        });
+
     }
 
 

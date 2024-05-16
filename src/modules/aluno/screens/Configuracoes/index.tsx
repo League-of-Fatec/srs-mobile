@@ -3,16 +3,18 @@ import { Image, Switch, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { UserState } from '@/redux/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSlice, UserState } from '@/redux/UserSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type StackProps = {
-    Home: undefined
+    Home: undefined,
+    LoginInicial: undefined
 }
 
 export default function Configuracoes({ navigation }: { navigation: NavigationProp<StackProps> }) {
 
-
+    const dispatch = useDispatch();
     const [isEnabledModoNoturno, setIsEnabledModoNoturno] = useState(false);
     const [isEnabledNotificacoes, setIsEnabledNotificacoes] = useState(false);
     const [isEnabledAcessoViaDigital, setIsEnabledAcessoViaDigital] = useState(false);
@@ -22,7 +24,16 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
     const toggleSwitchAcessoViaDigital = () => setIsEnabledAcessoViaDigital(previousState => !previousState);
 
     const user = useSelector((state: { user: UserState }) => state.user);
-    console.warn("O usuário: ", user.user?.firstName, "está logado!");
+
+    const logout = () => {
+        AsyncStorage.clear();
+        dispatch(userSlice.actions.logout());
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'LoginInicial' }],
+        });
+    }
+
 
     return (
         <View style={styles.container}>
@@ -108,7 +119,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                         />
                     </TouchableOpacity>
                     <View style={styles.linhaOpcoes} />
-                    <TouchableOpacity style={styles.itemOpcoes}>
+                    <TouchableOpacity style={styles.itemOpcoes} onPress={logout}>
                         <Ionicons
                             style={styles.infoIcons} name='list-outline'
                         />

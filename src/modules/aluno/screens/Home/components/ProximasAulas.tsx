@@ -1,41 +1,72 @@
-import React from 'react';
-import { Text, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Text, TouchableOpacity, View, ScrollView, Dimensions, Animated } from 'react-native';
 import styles from '../styles';
 import { useAnimatedRef } from 'react-native-reanimated';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type proxAulas = {
-    nomeEvento: string,
+    nomeSala: string,
+    andar: string,
     nomeProfessor: string,
     curso: string,
     horario: string
 }
 
-const ProximasAulas = () => {
+const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
+
+    // const moveAnimation = useRef(new Animated.Value(0)).current;
+
+    // const startAnimation = () => {
+    //     Animated.loop(
+    //         Animated.sequence([
+    //             Animated.timing(moveAnimation, {
+    //                 toValue: -1,
+    //                 duration: 5000,
+    //                 useNativeDriver: true,
+    //             }),
+    //             Animated.timing(moveAnimation, {
+    //                 toValue: 0,
+    //                 duration: 5000,
+    //                 useNativeDriver: true,
+    //             }),
+    //         ]),
+    //     ).start();
+    // };
+
+    // useEffect(() => {
+    //     startAnimation();
+    // }, []);
+
 
     const proximasAulas: proxAulas[] = [
         {
-            nomeEvento: "Laboratório A",
-            nomeProfessor: "Professor tergolina",
+            nomeSala: "Laboratório A",
+            andar: "1° Andar",
+            nomeProfessor: "Professor tergolina Da silva cruz",
             curso: "Banco de dados relacional",
-            horario: "12:00 - 13:00"
+            horario: "12:00 -> 13:00"
         },
         {
-            nomeEvento: "Laboratório B",
+            nomeSala: "Laboratório B",
+            andar: "1° Andar",
             nomeProfessor: "Professor Frietz",
             curso: "Desenvolvimento Mobile",
-            horario: "19:00 - 20:40"
+            horario: "19:00 -> 20:40"
         },
         {
-            nomeEvento: "Laboratório C",
+            nomeSala: "Laboratório C",
+            andar: "1° Andar",
             nomeProfessor: "Professor Stephania",
             curso: "Design Digital",
-            horario: "20:40 - 22:40"
+            horario: "20:40 -> 22:40"
         },
         {
-            nomeEvento: "Laboratório D",
+            nomeSala: "Laboratório D",
+            andar: "1° Andar",
             nomeProfessor: "Professor Eduardo",
             curso: "Álgebra Linear",
-            horario: "09:00 - 10:40"
+            horario: "09:00 -> 10:40"
         },
     ]
 
@@ -43,26 +74,57 @@ const ProximasAulas = () => {
 
     return (
         <View style={styles.containerProximasAulas}>
-            <Text style={styles.title2}>Próximas Aulas</Text>
+            <Text style={styles.titleProximasAulas}>Próximas Aulas</Text>
             <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={true}
                 ref={animatedRef}
-                contentContainerStyle={{ paddingHorizontal: 10 }}
+                contentContainerStyle={{ paddingLeft: 10 }}
             >
                 {proximasAulas.map((proxAula, index) => {
                     return (
                         <TouchableOpacity style={styles.itemAula} key={index}>
-                            <View style={styles.viewEvento}>
-                                <Text style={styles.titleEvento}>{proxAula.nomeEvento}</Text>
-                                <Text style={styles.descEvento}>{proxAula.nomeProfessor}</Text>
-                                <Text style={styles.descEvento}>{proxAula.curso}</Text>
-                                <Text style={styles.descEvento}>{proxAula.horario}</Text>
+                            <View style={styles.cardAula}>
+                                <Ionicons style={styles.iconProf}
+                                    name='person' />
+                                <View style={styles.cardDescAula}>
+                                    <Text style={styles.nomeProfessor}>{proxAula.nomeProfessor}</Text>
+                                    <Text style={styles.descAula}>{proxAula.curso}</Text>
+                                </View>
                             </View>
+                            <View style={styles.cardDescSala}>
+                                <Text style={styles.titleAula}>{proxAula.nomeSala}</Text>
+                                <Text style={styles.descSala}>{proxAula.horario}</Text>
+                                {/* 
+                                    <Animated.Text style={{
+                                        transform: [
+                                            {
+                                                translateX: moveAnimation.interpolate({
+                                                    inputRange: [0, 1],
+                                                    outputRange: [0, -50], // ajuste este valor de acordo com o tamanho do seu texto
+                                                })
+                                            }
+                                        ],
+                                        fontSize: 24,
+                                        fontWeight: 'bold',
+                                        flexWrap: 'nowrap',
+                                        zIndex: 10,
+                                    }}>
+                                        Este é um Animated.texto de exemplo que se move horizontalmente como em uma vitrine tecnológica.
+                                    </Animated.Text>
+                                    */}
+                            </View>
+
+
                         </TouchableOpacity>
                     )
                 })}
             </ScrollView>
+            <View style={{ width: '100%' }}>
+                <TouchableOpacity style={styles.botaoVerMais} onPress={() => navigation.navigate("Calendário")}>
+                    <Text style={styles.textoBotaoVerMais}>Ver mais</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }

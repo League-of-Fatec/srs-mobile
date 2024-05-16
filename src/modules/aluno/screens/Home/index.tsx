@@ -4,7 +4,7 @@ import styles from './styles';
 import { NavigationProp } from '@react-navigation/native';
 import HeaderHome from './components/HeaderHome';
 import ProximasAulas from './components/ProximasAulas';
-import SalasFavoritas from "./components/SalasFavoritas";
+import InfoAluno from "./components/InfoAluno";
 
 
 export default function Home({ navigation }: { navigation: NavigationProp<any> }) {
@@ -13,8 +13,8 @@ export default function Home({ navigation }: { navigation: NavigationProp<any> }
         <View style={styles.container}>
             <HeaderHome navigation={navigation} />
             <View style={styles.containerPrincipal}>
-                <ProximasAulas />
-                <SalasFavoritas />
+                <InfoAluno />
+                <ProximasAulas navigation={navigation} />
             </View>
         </View >
     );
