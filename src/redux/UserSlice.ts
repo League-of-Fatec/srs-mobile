@@ -1,5 +1,4 @@
-import { Professor, Student } from '@/screens/Login';
-import User from '@/utils/User';
+import { Professor, Student } from '@/screens/Login/utils/loginTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type UserState = {

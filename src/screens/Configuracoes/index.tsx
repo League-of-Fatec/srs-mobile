@@ -4,8 +4,8 @@ import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { userSlice, UserState } from '@/redux/UserSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { userSlice, UserState } from '@/redux/UserSlice';
 
 type StackProps = {
     Home: undefined,
@@ -23,7 +23,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
     const toggleSwitchNotificacoes = () => setIsEnabledNotificacoes(previousState => !previousState);
     const toggleSwitchAcessoViaDigital = () => setIsEnabledAcessoViaDigital(previousState => !previousState);
 
-    const user = useSelector((state: { user: UserState }) => state.user);
+    const { user, token } = useSelector((state: { user: UserState }) => state.user);
 
     const logout = () => {
         AsyncStorage.clear();
@@ -52,7 +52,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                         <Image source={require("@/assets/images/configuracoes/icon-prof.png")} style={styles.image}></Image>
                     </View>
                     <View style={styles.infoConta}>
-                        <Text style={styles.nomeConta}>Graves Emanuel</Text>
+                        <Text style={styles.nomeConta}>{user?.firstName} {user?.lastName}</Text>
                         <TouchableOpacity>
                             <Text style={styles.editarConta}>Editar Conta</Text>
                         </TouchableOpacity>
