@@ -5,9 +5,9 @@ import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalProfessor from './ModalProfessor';
 import { api_url_local } from '@/utils/API_URLS';
-import Loading from '@/components/shared/Loading';
 import { ClassRoom, ResponseTypeClassRooms } from '../types/SalaTypes';
 import Accordion from '@/components/shared/Accordion';
+import LoadingSalas from '@/components/shared/LoadingSalas';
 
 
 
@@ -43,7 +43,7 @@ const Sala = () => {
     }, []);
 
     if (isLoading) {
-        return <Loading />
+        return <LoadingSalas />
     }
 
     const numAleat = () => {

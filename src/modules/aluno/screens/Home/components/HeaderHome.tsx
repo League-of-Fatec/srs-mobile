@@ -26,7 +26,6 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
         icon: ""
     }
 
-    const formattedName = aluno.nome.split(" ")[0];
 
 
     return (
@@ -37,7 +36,7 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 </View>
                 <View style={styles.infoProf}>
                     <Text style={styles.textHomeSaudacao}>Olá, </Text>
-                    <Text style={styles.textHome}>{formattedName}</Text>
+                    <Text style={styles.textHome}>{user?.firstName}</Text>
                 </View>
             </View>
 

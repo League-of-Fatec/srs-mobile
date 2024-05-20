@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
-import { List } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalCarteirinha from './ModalCarteirinha';
 import ModalQrCode from './ModalQrCode';
+import { useSelector } from 'react-redux';
+import { UserState } from '@/redux/UserSlice';
 
 const InfoAluno = () => {
 
     const [modalCarteirinhaVisible, setModalCarteirinhaVisibility] = useState(false);
     const [modalQrCodeVisible, setModalQrCodeVisibility] = useState(false);
-    const nome = "Gabriel de Melo Faustino Santos";
-    const novoNome = nome.split(" ");
 
+    const { user, token } = useSelector((state: { user: UserState }) => state.user);
 
     return (
         <View style={styles.containerInfoAluno}>
@@ -25,18 +25,18 @@ const InfoAluno = () => {
                     </View>
                     <View style={styles.infoAlunoView}>
                         <View style={styles.infoAluno}>
-                            <Text style={styles.nomeAluno}>Gabriel de Melo Faustino Santos</Text>
+                            <Text style={styles.nomeAluno}>{user?.firstName} {user?.lastName}</Text>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>Curso:</Text>
-                                <Text style={styles.descAluno}>DSM</Text>
+                                <Text style={styles.descAluno}>Curso: </Text>
+                                <Text style={styles.descAluno}>{user?.userStudent?.course}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>Período:</Text>
-                                <Text style={styles.descAluno}>Noturno</Text>
+                                <Text style={styles.descAluno}>Período: </Text>
+                                <Text style={styles.descAluno}>{user?.userStudent?.period}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>RA:</Text>
-                                <Text style={styles.descAluno}>1212112111</Text>
+                                <Text style={styles.descAluno}>RA: </Text>
+                                <Text style={styles.descAluno}>{user?.userStudent?.studentId}</Text>
                             </View>
                         </View>
 

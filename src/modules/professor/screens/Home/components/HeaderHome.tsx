@@ -3,17 +3,13 @@ import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions } from 'rea
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { UserState } from '@/redux/UserSlice';
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
-    const aluno =
-    {
-        nome: "Graves Emanuel",
-        matricula: "Matricula 287451 - 5° DSM",
-        icon: ""
-    }
-
+    const { user, token } = useSelector((state: { user: UserState }) => state.user);
 
 
     return (
@@ -22,12 +18,12 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 <Image source={require("@/assets/images/home/icon-prof.png")} style={styles.image}></Image>
             </View>
             <View style={[{ flex: 3 }, styles.infoProf]}>
-                <Text>Boa noite,</Text>
+                <Text>Professor,</Text>
                 <Text style={{
                     fontWeight: "bold",
                     fontSize: 20
-                }}>{aluno.nome}</Text>
-                <Text>{aluno.matricula}</Text>
+                }}>{user?.firstName}</Text>
+                <Text>{user?.userTeacher?.car}</Text>
             </View>
             <View style={{ flex: 0.3 }}>
                 {/*<TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>*/}
