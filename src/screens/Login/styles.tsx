@@ -21,8 +21,10 @@ export default StyleSheet.create({
         marginTop: 10,
     },
     image: {
-        height: '30%',
+        height: '35%',
         width: '100%',
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
     },
     inputView: {
         backgroundColor: "#E5E4E2",

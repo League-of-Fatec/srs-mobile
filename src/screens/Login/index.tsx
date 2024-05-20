@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { NavigationProp } from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
 import fetchDataUser from './utils/fetchDataUser';
+import LoadingLogin from '@/components/shared/LoadingLogin';
 
 
 
@@ -26,17 +27,29 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const dispatch = useDispatch();
 
-    const handleSubmitLogin = (email: string, password: string) => {
+    const handleSubmitLogin = async (email: string, password: string) => {
+        setIsLoading(true);
 
-        // Tratamento de erros
-        if (!email && !password) {
-            throw new Error("Falta a senha e o email");
+        try {
+
+            // Tratamento de erros
+            if (!email && !password) {
+                setIsLoading(false);
+                throw new Error("Falta a senha e o email");
+            }
+
+            await fetchDataUser(email, password, dispatch, navigation);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
-
         // Lógica de login para o back End
-        fetchDataUser(email, password, dispatch, navigation);
+
 
     }
 
@@ -77,7 +90,9 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
 
                         <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha)}>
-                            <Text style={styles.textColorBtn}>ENTRAR</Text>
+                            <Text style={styles.textColorBtn}>
+                                {!isLoading ? "ENTRAR" : <LoadingLogin />}
+                            </Text>
                         </TouchableOpacity>
                         {/* 
                         <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "prof")}>

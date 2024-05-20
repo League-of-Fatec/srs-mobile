@@ -1,14 +1,14 @@
 import { ActivityIndicator, View } from "react-native";
 import loadingStyle from "./styles/loadingStyle";
 
-const Loading = () => {
+const LoadingLogin = () => {
     return (
-        <View style={loadingStyle.loadingContainer}>
+        <View style={loadingStyle.loadingContainerLogin}>
             <ActivityIndicator
                 size="large"
-                color={"red"}
+                color={"#FFFFFF"}
             />
         </View>);
 }
 
-export default Loading;
+export default LoadingLogin;
