@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import React from 'react';
 //import Calendario from '../screens/Calendario/index';
@@ -18,22 +18,24 @@ const Tab = createBottomTabNavigator();
 
 export default function ProfessorTabNavigator() {
     return (
-        <Tab.Navigator
-            screenOptions={
-                {
-                    headerShown: false,
-                    tabBarStyle: {
-                        backgroundColor: '#fff',
-                        minHeight: '9%',
-                        maxHeight: '9%',
-                    },
+        <Tab.Navigator screenOptions={
+            {
+                headerShown: false,
+                tabBarStyle: {
+                    backgroundColor: '#fff',
+                    minHeight: '9%',
+                    maxHeight: '9%',
+                },
 
-                    tabBarLabelStyle: {
-                        position: 'relative',
-                        marginBottom: '17%'
-                    }
+                tabBarLabelStyle: {
+                    position: 'relative',
+                    marginBottom: '17%'
+                },
+                tabBarInactiveTintColor: '#000000',
+                tabBarActiveTintColor: '#6D1C1C',
 
-                }}>
+            }
+        }>
             <Tab.Screen
                 name="Home"
                 component={ProfessorHomeStackNavigator}
