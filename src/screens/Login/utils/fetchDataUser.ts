@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dispatch } from '@reduxjs/toolkit';
 import { NavigationProp } from '@react-navigation/native';
 import { StackLoginProps } from '..';
-import { userSlice } from '@/redux/UserSlice';
+import { professorSlice, studentSlice } from '@/redux/UserSlice';
 
 const fetchDataUser = async (
   email: string,
@@ -31,16 +31,16 @@ const fetchDataUser = async (
     const id = responseLoginJson[0].id;
     const userType = responseLoginJson[0].userType;
 
-    // //const { user } = await getUserData(id);
+    //const { user } = await getUserData(id);
 
     if (userType === 'ALUNO') {
-      const responseUser = await fetch(`${api_url_local}/user/${id}`, {
+      const responseUser = await fetch(`${api_url_local}/student/${id}`, {
         method: 'GET',
       });
 
       const responseUserJson: Student[] = await responseUser.json();
-      const user = responseUserJson[0];
-      console.log(user);
+      const student = responseUserJson[0];
+      console.log(student);
 
       //const token = 'token';
       const token = {
@@ -48,7 +48,7 @@ const fetchDataUser = async (
       };
 
       //dispatch(userSlice.actions.login({ user, token }));
-      dispatch(userSlice.actions.login({ user }));
+      dispatch(studentSlice.actions.login({ student }));
       await AsyncStorage.setItem('token', JSON.stringify(token));
       await AsyncStorage.setItem('userType', userType);
 
@@ -74,13 +74,13 @@ const fetchDataUser = async (
     }
 
     if (userType === 'PROFESSOR') {
-      const responseUser = await fetch(`${api_url_local}/user/${id}`, {
+      const responseUser = await fetch(`${api_url_local}/teacher/${id}`, {
         method: 'GET',
       });
 
       const responseUserJson: Professor[] = await responseUser.json();
-      const user = responseUserJson[0];
-      console.log(user);
+      const professor = responseUserJson[0];
+      console.log(professor);
 
       //const token = 'token';
       const token = {
@@ -88,7 +88,7 @@ const fetchDataUser = async (
       };
 
       //dispatch(userSlice.actions.login({ user, token }));
-      dispatch(userSlice.actions.login({ user }));
+      dispatch(professorSlice.actions.login({ professor }));
       await AsyncStorage.setItem('token', JSON.stringify(token));
       await AsyncStorage.setItem('userType', userType);
 

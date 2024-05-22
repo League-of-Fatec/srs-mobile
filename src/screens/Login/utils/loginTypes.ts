@@ -1,24 +1,19 @@
-export type ProfessorDetails = {
-  car: string;
-};
-
-export type StudentDetails = {
-  course: string;
-  period: string;
-  semester: number;
-  studentId: string;
+export type User = {
+  firstName: string;
+  lastName: string;
 };
 
 export type Professor = {
-  firstName: string;
-  lastName: string;
-  userStudent: null;
-  userTeacher: ProfessorDetails;
+  id: number;
+  teacherId: string;
+  user: User;
 };
 
 export type Student = {
-  firstName: string;
-  lastName: string;
-  userStudent: StudentDetails;
-  userTeacher: null;
+  id: number;
+  studentId: string;
+  course: string;
+  semester: number;
+  period: string;
+  user: User;
 };
