@@ -1,32 +1,56 @@
 import { Professor, Student } from '@/screens/Login/utils/loginTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type UserState = {
-  user: Student | Professor | null;
+export type ProfessorState = {
+  professor: Professor | null;
   token: string | null;
 };
 
-export const initialState: UserState = {
-  user: null,
+export const initialProfessorState: ProfessorState = {
+  professor: null,
   token: null,
 };
 
-export type PayloadUserAction = {
-  user: Student | Professor;
-  //token: string;
+export type StudentState = {
+  student: Student | null;
+  token: string | null;
 };
 
-export const userSlice = createSlice({
-  name: 'user',
-  initialState,
+export const initialStudentState: StudentState = {
+  student: null,
+  token: null,
+};
+
+export type PayloadProfessorAction = {
+  professor: Professor;
+};
+
+export type PayloadStudentAction = {
+  student: Student;
+};
+
+export const professorSlice = createSlice({
+  name: 'professor',
+  initialState: initialProfessorState,
   reducers: {
-    login: (state, action: PayloadAction<PayloadUserAction>) => {
-      state.user = action.payload.user;
-      //state.token = action.payload.token;
+    login: (state, action: PayloadAction<PayloadProfessorAction>) => {
+      state.professor = action.payload.professor;
     },
     logout: (state) => {
-      state.user = null;
-      //state.token = null;
+      state.professor = null;
+    },
+  },
+});
+
+export const studentSlice = createSlice({
+  name: 'student',
+  initialState: initialStudentState,
+  reducers: {
+    login: (state, action: PayloadAction<PayloadStudentAction>) => {
+      state.student = action.payload.student;
+    },
+    logout: (state) => {
+      state.student = null;
     },
   },
 });
