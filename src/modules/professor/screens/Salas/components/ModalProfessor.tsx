@@ -2,21 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, TextInput, Button } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { ClassRoom } from '../types/SalaTypes';
+import { ClassRoom } from '../types/ClassroomTypes';
 import { Picker } from '@react-native-picker/picker';
 import { Calendar, DateData } from 'react-native-calendars';
 import { RadioButton } from 'react-native-paper';
 import HorizontalRow from './HorizontalRow';
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect, { Item } from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { eachDayOfInterval, format } from 'date-fns';
 import { errors } from '../utils/errors';
+import { ModalReservaSucesso } from './ModalReservaSucesso';
+import { ModalReservaFalha } from './ModalReservaFalha';
+import { ModalReservaCancel } from './ModalReservaCancel';
+import { ModalReservaRevisar } from './ModalReservaRevisar';
+import { api_url_local } from '@/utils/API_URLS';
+import { err } from 'react-native-svg';
+import { ResponseTypeCourses } from '../types/CourseTypes';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
     setModalVisible: (value: boolean) => void;
     selectedClassRoom: ClassRoom | null;
     setSelectedClassRoom: (value: ClassRoom | null) => void;
+    courses: Item[];
+    classes: Item[];
 };
 
 type MarkedDatesType = {
@@ -29,7 +38,7 @@ type MarkedDatesType = {
 };
 
 
-const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom }: ModalAlunoProps,) => {
+const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom, courses, classes }: ModalAlunoProps,) => {
 
     const [availability, setAvailability] = useState('S');
     const [isSubject, setSubject] = useState("")
@@ -47,6 +56,12 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const [times, setTimes] = useState(0);
 
     const [isReason, setReason] = useState("");
+
+    const [visibilityModalReservaSucesso, setVisibilityModalReservaSucesso] = useState(false);
+    const [visibilityModalReservaFalha, setVisibilityModalReservaFalha] = useState(false);
+    const [visibilityModalReservaCancel, setVisibilityModalReservaCancel] = useState(false);
+    const [visibilityModalReservaRevisar, setVisibilityModalReservaRevisar] = useState(false);
+
 
 
     const showBeginTimePicker = () => {
@@ -142,9 +157,31 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setSubject("");
     }
 
-    const checkInputs = () => {
-        //if (!isSubject);
-    }
+    const alertarModalProfessor = async () => {
+        // Aqui você pode colocar a lógica para pegar as informações e enviar para a API
+
+        const data = {
+            date: minimumDate,
+            start_time: isBeginTime,
+            end_time: isEndTime
+        };
+
+        // try {
+        //     const response = await fetch(`${api_url_local}/reservation`, {
+        //         body: JSON.stringify(data),
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     });
+
+        //     const responseJson = response.json();
+        //     console.log(responseJson)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+        console.warn(data);
+    };
 
     return (
         <Modal
@@ -187,11 +224,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             <RNPickerSelect
                                 onValueChange={(value) => setCourse(value)}
                                 placeholder={{ label: "Escolha o curso:", value: "" }}
-                                items={[
-                                    { label: 'DSM', value: 'DSM', key: 1 },
-                                    { label: 'Redes de Computadores', value: 'RC', key: 2 },
-                                    { label: 'Manutenção industrial', value: 'MI', key: 3 }
-                                ]}
+                                items={courses}
                             />
                             {!isCourse ? (
                                 <Text style={styles.textError}>{errors.course.text}</Text>
@@ -204,11 +237,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             <RNPickerSelect
                                 onValueChange={(value) => setSubject(value)}
                                 placeholder={{ label: "Escolha a matéria:", value: "" }}
-                                items={[
-                                    { label: 'Álgebra Linear', value: 'AL', key: 1 },
-                                    { label: 'Desenvolvimento Web', value: 'DW', key: 2 },
-                                    { label: 'Design Digital', value: 'DD', key: 3 }
-                                ]}
+                                items={classes}
                             />
                             {!isSubject ? (
                                 <Text style={styles.textError}>{errors.subject.text}</Text>
@@ -335,15 +364,34 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
-                                    onPress={() => console.log("Teste")}>
+                                    onPress={() => setVisibilityModalReservaRevisar(true)}>
                                     <Text style={styles.textStyle}>Confirmar Reserva</Text>
                                 </Pressable>
+                                <ModalReservaSucesso
+                                    visibilityModalReservaSucesso={visibilityModalReservaSucesso}
+                                    setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
+                                />
+                                <ModalReservaFalha
+                                    visibilityModalReservaFalha={visibilityModalReservaFalha}
+                                    setVisibilityModalReservaFalha={setVisibilityModalReservaFalha}
+                                />
+                                <ModalReservaCancel
+                                    visibilityModalReservaCancel={visibilityModalReservaCancel}
+                                    setVisibilityModalReservaCancel={setVisibilityModalReservaCancel}
+                                    setModalVisible={setModalVisible}
+                                />
+                                <ModalReservaRevisar
+                                    alertModalProfessor={alertarModalProfessor}
+                                    visibilityModalReservaRevisar={visibilityModalReservaRevisar}
+                                    setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
+                                />
                             </View>
                         </View>
 
+
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => whenClose()}>
+                            onPress={() => setVisibilityModalReservaCancel(true)}>
                             <Text style={styles.textStyle}>Fechar</Text>
                         </Pressable>
                     </ScrollView>

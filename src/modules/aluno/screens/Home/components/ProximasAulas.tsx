@@ -95,24 +95,6 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             <View style={styles.cardDescSala}>
                                 <Text style={styles.titleAula}>{proxAula.nomeSala}</Text>
                                 <Text style={styles.descSala}>{proxAula.horario}</Text>
-                                {/* 
-                                    <Animated.Text style={{
-                                        transform: [
-                                            {
-                                                translateX: moveAnimation.interpolate({
-                                                    inputRange: [0, 1],
-                                                    outputRange: [0, -50], // ajuste este valor de acordo com o tamanho do seu texto
-                                                })
-                                            }
-                                        ],
-                                        fontSize: 24,
-                                        fontWeight: 'bold',
-                                        flexWrap: 'nowrap',
-                                        zIndex: 10,
-                                    }}>
-                                        Este é um Animated.texto de exemplo que se move horizontalmente como em uma vitrine tecnológica.
-                                    </Animated.Text>
-                                    */}
                             </View>
 
 

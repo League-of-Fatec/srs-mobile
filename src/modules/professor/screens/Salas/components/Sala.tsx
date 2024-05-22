@@ -5,10 +5,14 @@ import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalProfessor from './ModalProfessor';
 import { api_url_local } from '@/utils/API_URLS';
-import { ClassRoom, ResponseTypeClassRooms } from '../types/SalaTypes';
+import { ClassRoom, ResponseTypeClassRooms } from '../types/ClassroomTypes';
 import Accordion from '@/components/shared/Accordion';
 import LoadingSalas from '@/components/shared/LoadingSalas';
-
+import { Course, ResponseTypeCourses } from '../types/CourseTypes';
+import { Item } from 'react-native-picker-select';
+import { Class, ResponseTypeClasses } from '../types/classTypes';
+import { useSelector } from 'react-redux';
+import { ProfessorState } from '@/redux/UserSlice';
 
 
 
@@ -19,19 +23,46 @@ const Sala = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectClassRoom, setSelectClassRoom] = useState<ClassRoom | null>(null);
     const [floors, setFloors] = useState<string[]>();
-    const [response, setResponse] = useState<ResponseTypeClassRooms>();
+    const [classrooms, setClassrooms] = useState<ResponseTypeClassRooms>();
+    const [courses, setCourses] = useState<Item[]>([]);
+    const [classes, setClasses] = useState<Item[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${api_url_local}/classrooms`, {
+                const responseClassrooms = await fetch(`${api_url_local}/classrooms`, {
                     method: "GET",
                 });
-                const responseJson: ResponseTypeClassRooms = await response.json();
-                const floors = (Object.keys(responseJson));
+                const responseClassroomsJson: ResponseTypeClassRooms = await responseClassrooms.json();
+                const floors = (Object.keys(responseClassroomsJson));
+
+                const responseCourses = await fetch(`${api_url_local}/courses`, {
+                    method: "GET",
+                });
+                const responseCoursesJson: ResponseTypeCourses = await responseCourses.json();
+
+                const coursesMapeados = responseCoursesJson.map((item: Course, index) => {
+                    return { label: item.name, value: item.id, key: item.id };
+                });
+
+                const responseClasses = await fetch(`${api_url_local}/classes/${professor.professor?.id}`, {
+                    method: "GET",
+                });
+                const responseClassesJson: ResponseTypeClasses = await responseClasses.json();
+                const classesMapeadas = responseClassesJson.map((item: Class, index) => {
+                    return { label: item.name, value: item.id, key: item.id };
+                });
+
+                console.log(classes);
+
+
                 setFloors(floors);
-                setResponse(responseJson);
+                setCourses(coursesMapeados);
+                setClasses(classesMapeadas);
+                setClassrooms(responseClassroomsJson);
                 setIsLoading(false)
 
             } catch (error) {
@@ -58,7 +89,7 @@ const Sala = () => {
                     <View style={styles.containerSalas} key={index}>
                         <Accordion title={`${floor}° Andar`}>
                             <ScrollView style={styles.scrollSalas}>
-                                {response && response[floor].map((classroom, index) => (
+                                {classrooms && classrooms[floor].map((classroom, index) => (
 
                                     <TouchableOpacity
                                         style={[styles.botaoSala, { backgroundColor: colorButton[numAleat()] }]}
@@ -84,6 +115,8 @@ const Sala = () => {
                     setModalVisible={setModalVisible}
                     selectedClassRoom={selectClassRoom}
                     setSelectedClassRoom={setSelectClassRoom}
+                    courses={courses}
+                    classes={classes}
                 />
             </ScrollView>
         </View>

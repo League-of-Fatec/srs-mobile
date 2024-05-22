@@ -4,12 +4,13 @@ import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { UserState } from '@/redux/UserSlice';
+import { ProfessorState } from '@/redux/UserSlice';
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
-    const { user, token } = useSelector((state: { user: UserState }) => state.user);
+    const { professor, token } = useSelector((state: { professor: ProfessorState }) => state.professor);
+
 
 
     return (
@@ -22,8 +23,8 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 <Text style={{
                     fontWeight: "bold",
                     fontSize: 20
-                }}>{user?.firstName}</Text>
-                <Text>{user?.userTeacher?.car}</Text>
+                }}>{professor?.user.firstName}</Text>
+                <Text>RA: {professor?.teacherId}</Text>
             </View>
             <View style={{ flex: 0.3 }}>
                 {/*<TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>*/}

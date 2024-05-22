@@ -5,14 +5,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalCarteirinha from './ModalCarteirinha';
 import ModalQrCode from './ModalQrCode';
 import { useSelector } from 'react-redux';
-import { UserState } from '@/redux/UserSlice';
+import { StudentState } from '@/redux/UserSlice';
 
 const InfoAluno = () => {
 
     const [modalCarteirinhaVisible, setModalCarteirinhaVisibility] = useState(false);
     const [modalQrCodeVisible, setModalQrCodeVisibility] = useState(false);
 
-    const { user, token } = useSelector((state: { user: UserState }) => state.user);
+    const { student, token } = useSelector((state: { student: StudentState }) => state.student);
 
     return (
         <View style={styles.containerInfoAluno}>
@@ -25,18 +25,18 @@ const InfoAluno = () => {
                     </View>
                     <View style={styles.infoAlunoView}>
                         <View style={styles.infoAluno}>
-                            <Text style={styles.nomeAluno}>{user?.firstName} {user?.lastName}</Text>
+                            <Text style={styles.nomeAluno}>{student?.user.firstName} {student?.user.lastName}</Text>
                             <View style={styles.descAlunoView}>
                                 <Text style={styles.descAluno}>Curso: </Text>
-                                <Text style={styles.descAluno}>{user?.userStudent?.course}</Text>
+                                <Text style={styles.descAluno}>{student?.course}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
                                 <Text style={styles.descAluno}>Período: </Text>
-                                <Text style={styles.descAluno}>{user?.userStudent?.period}</Text>
+                                <Text style={styles.descAluno}>{student?.period}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
                                 <Text style={styles.descAluno}>RA: </Text>
-                                <Text style={styles.descAluno}>{user?.userStudent?.studentId}</Text>
+                                <Text style={styles.descAluno}>{student?.studentId}</Text>
                             </View>
                         </View>
 

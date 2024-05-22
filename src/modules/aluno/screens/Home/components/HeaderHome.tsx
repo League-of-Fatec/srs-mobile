@@ -4,21 +4,14 @@ import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { UserState } from '@/redux/UserSlice';
+import { StudentState } from '@/redux/UserSlice';
 import FatecSvg from '@/assets/svg/FatecSvg';
 
 
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
-    const { user, token } = useSelector((state: { user: UserState }) => state.user);
-
-    if (user !== undefined) {
-        if (user?.firstName !== undefined) {
-            console.warn("O usuário: ", user?.firstName, "está logado!");
-            console.log("O usuário: ", user?.firstName, "está logado!");
-        }
-    }
+    const { student, token } = useSelector((state: { student: StudentState }) => state.student);
     const aluno =
     {
         nome: "Graves Emanuel",
@@ -36,7 +29,7 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 </View>
                 <View style={styles.infoProf}>
                     <Text style={styles.textHomeSaudacao}>Olá, </Text>
-                    <Text style={styles.textHome}>{user?.firstName}</Text>
+                    <Text style={styles.textHome}>{student?.user.firstName}</Text>
                 </View>
             </View>
 

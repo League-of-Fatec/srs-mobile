@@ -17,7 +17,7 @@ export default function Home({ navigation }: { navigation: NavigationProp<any> }
         <View style={styles.container}>
             <HeaderHome navigation={navigation} />
             <View style={styles.containerPrincipal}>
-                <ProximasAulas />
+                <ProximasAulas navigation={navigation} />
                 <SalasFavoritas />
             </View>
         </View >

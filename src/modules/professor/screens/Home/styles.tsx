@@ -27,14 +27,6 @@ export default StyleSheet.create({
         paddingLeft: 13,
         paddingRight: 13
     },
-    containerProximasAulas: {
-        //marginTop: '5%',
-        paddingTop: '5%',
-        height: '45%',
-        //marginBottom: '3%'
-        paddingBottom: '3%'
-
-    },
     containerSalasFavoritas: {
         height: '55%'
     },
@@ -62,13 +54,6 @@ export default StyleSheet.create({
         backgroundColor: "#D9D9D9",
         marginBottom: 10,
         borderRadius: 10
-    },
-    itemAula: {
-        backgroundColor: "#D9D9D9",
-        width: 215,
-        borderRadius: 15,
-        marginRight: 15,
-        padding: 10
     },
     titleEvento: {
 
@@ -120,4 +105,93 @@ export default StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
+    // Seção de próximas aulas
+
+    containerProximasAulas: {
+        paddingTop: '5%',
+        height: '56%',
+        paddingBottom: '2%',
+
+    },
+    titleProximasAulas: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
+        marginBottom: 10
+    },
+
+    // Cards Próximas aulas
+
+    itemAula: {
+        backgroundColor: "#D9D9D9",
+        width: 235,
+        borderRadius: 15,
+        marginRight: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 2,
+    },
+    titleAula: {
+        fontWeight: 'bold',
+        fontSize: 22,
+        marginBottom: 5
+    },
+    nomeProfessor: {
+        fontWeight: 'bold',
+    },
+    descSala: {
+        fontWeight: 'bold',
+    },
+    descAula: {
+
+    },
+    viewAula: {
+
+
+    },
+    botaoVerMais: {
+        width: '25%',
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        marginTop: 20,
+        paddingVertical: 9,
+        paddingHorizontal: 15,
+        backgroundColor: '#6D1C1C',
+        borderRadius: 10,
+    },
+    textoBotaoVerMais: {
+        fontWeight: 'bold',
+        color: '#FFFFFF'
+    },
+    cardAula: {
+        height: '50%',
+        flexDirection: 'row',
+        width: '100%',
+
+    },
+    cardFotoProfessor: {
+        flexDirection: 'row',
+    },
+
+    iconProf: {
+        width: '22%',
+        alignSelf: 'center',
+        margin: 5,
+        padding: 5,
+        borderRadius: 100,
+        backgroundColor: '#FFFFFF',
+        fontSize: 40,
+    },
+    cardDescAula: {
+        width: '73%',
+        justifyContent: 'center',
+    },
+    cardDescSala: {
+        height: '37%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+
 });
