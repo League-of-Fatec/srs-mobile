@@ -1,9 +1,9 @@
 export type Course = {
-  id: number;
-  name: string;
-  schoolId: number;
-  period: string;
-  created_at: string;
+  courseId: number;
+  course: {
+    id: number;
+    name: string;
+  };
 };
 
 export type ResponseTypeCourses = Course[];
