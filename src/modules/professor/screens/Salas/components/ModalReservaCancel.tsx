@@ -8,10 +8,11 @@ type PropsModalReservaCancel = {
     visibilityModalReservaCancel: boolean;
     setVisibilityModalReservaCancel: (value: boolean) => void;
     setModalVisible: (value: boolean) => void;
+    whenClose: () => void;
 };
 
 
-export const ModalReservaCancel = ({ visibilityModalReservaCancel, setVisibilityModalReservaCancel, setModalVisible }: PropsModalReservaCancel) => {
+export const ModalReservaCancel = ({ visibilityModalReservaCancel, setVisibilityModalReservaCancel, setModalVisible, whenClose }: PropsModalReservaCancel) => {
 
     const editModal = () => {
         setVisibilityModalReservaCancel(false);
@@ -20,6 +21,7 @@ export const ModalReservaCancel = ({ visibilityModalReservaCancel, setVisibility
     const closeModal = () => {
         setVisibilityModalReservaCancel(false);
         setModalVisible(false);
+        whenClose();
     }
 
     return (
@@ -35,10 +37,10 @@ export const ModalReservaCancel = ({ visibilityModalReservaCancel, setVisibility
                             name='close' size={30} color={"#000000"} />
                     </View>
                     <View style={ReservaStyle.textReservaContainer}>
-                        <Text style={ReservaStyle.textReserva}>Tem certeza que deseja</Text>
-                        <Text style={ReservaStyle.textReserva}>retornar? Todas as</Text>
-                        <Text style={ReservaStyle.textReserva}>informações inseridas serão</Text>
-                        <Text style={ReservaStyle.textReserva}>apagadas</Text>
+                        <Text style={ReservaStyle.textReservaCancel}>Tem certeza que deseja</Text>
+                        <Text style={ReservaStyle.textReservaCancel}>retornar? Todas as</Text>
+                        <Text style={ReservaStyle.textReservaCancel}>informações inseridas serão</Text>
+                        <Text style={ReservaStyle.textReservaCancel}>apagadas</Text>
                     </View>
                     <View style={ReservaStyle.buttonContainerCancel} >
                         <TouchableOpacity onPress={() => editModal()} style={ReservaStyle.buttonEdit}>

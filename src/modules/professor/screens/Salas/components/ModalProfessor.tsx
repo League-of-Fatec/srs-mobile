@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, TextInput, Button } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, TextInput, Button, BackHandler } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ClassRoom } from '../types/ClassroomTypes';
@@ -14,10 +14,13 @@ import { errors } from '../utils/errors';
 import { ModalReservaSucesso } from './ModalReservaSucesso';
 import { ModalReservaFalha } from './ModalReservaFalha';
 import { ModalReservaCancel } from './ModalReservaCancel';
-import { ModalReservaRevisar } from './ModalReservaRevisar';
+import { ModalReservaRevisar, ReviewCurrentData } from './ModalReservaRevisar';
 import { api_url_local } from '@/utils/API_URLS';
-import { err } from 'react-native-svg';
-import { ResponseTypeCourses } from '../types/CourseTypes';
+import { useSelector } from 'react-redux';
+import { ProfessorState } from '@/redux/UserSlice';
+import { Class, ResponseTypeClasses } from '../types/classTypes';
+import Row from './Row';
+import { useNavigation } from '@react-navigation/native';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -25,44 +28,68 @@ type ModalAlunoProps = {
     selectedClassRoom: ClassRoom | null;
     setSelectedClassRoom: (value: ClassRoom | null) => void;
     courses: Item[];
-    classes: Item[];
 };
 
-type MarkedDatesType = {
+const weekDays = [
+    "Seg",
+    "Ter",
+    "Qua",
+    "Qui",
+    "Sex",
+    "Sab"
+];
+
+interface MarkedDates {
     [key: string]: {
-        startingDay?: boolean;
-        endingDay?: boolean;
-        color: string;
-        textColor: string;
+        customStyles: {
+            container: {
+                backgroundColor: string;
+            };
+            text: {
+                color: string;
+            };
+        };
     };
-};
+}
 
 
-const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom, courses, classes }: ModalAlunoProps,) => {
 
-    const [availability, setAvailability] = useState('S');
-    const [isSubject, setSubject] = useState("")
-    const [isCourse, setCourse] = useState("")
+const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom, courses }: ModalAlunoProps,) => {
+
+    const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
+
+    const [courseId, setCourseId] = useState<number | null>(null);
+    const [courseName, setCourseName] = useState<string | null>(null);
+    const [subjectId, setSubjectId] = useState<number | null>(null);
+    const [subjectName, setSubjectName] = useState<string | null>(null);
+    const [dates, setDates] = useState<string[]>([]);
+    const [beginTime, setBeginTime] = useState<string | null>(null);
+    const [endTime, setEndTime] = useState<string | null>(null);
+    const [reason, setReason] = useState<string | null>(null);
+    const [availability, setAvailability] = useState<string>('S');
+
+    const [isFinish, setFinish] = useState(true);
+
     const [isErrors, setErrors] = useState(errors);
+
+    const [isClassesVisible, setClassesVisibility] = useState(true);
 
     const [isBeginTimePickerVisible, setBeginTimePickerVisibility] = useState(false);
     const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
-    const [isBeginTime, setBeginTime] = useState("");
-    const [isEndTime, setEndTime] = useState("");
 
-    const [minimumDate, setMinimumDate] = useState('');
-    const [maximumDate, setMaximumDate] = useState('');
-    const [markedDates, setMarkedDates] = useState<MarkedDatesType>({})
-    const [times, setTimes] = useState(0);
 
-    const [isReason, setReason] = useState("");
+    const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+    const [classes, setClasses] = useState<Item[]>([]);
+
 
     const [visibilityModalReservaSucesso, setVisibilityModalReservaSucesso] = useState(false);
     const [visibilityModalReservaFalha, setVisibilityModalReservaFalha] = useState(false);
     const [visibilityModalReservaCancel, setVisibilityModalReservaCancel] = useState(false);
     const [visibilityModalReservaRevisar, setVisibilityModalReservaRevisar] = useState(false);
 
+    const [reviewData, setReviewData] = useState<ReviewCurrentData | null>(null);
 
+    const colors = ["yellow", "green", "blue", "purple", "pink"];
 
     const showBeginTimePicker = () => {
         setBeginTimePickerVisibility(true);
@@ -77,6 +104,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const hideEndTime = () => {
         setEndTimePickerVisibility(false);
     };
+
+
 
     const handleConfirmTimeBegin = (date: Date) => {
         date.setHours(date.getHours() - 1);
@@ -96,92 +125,171 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         hideEndTime();
     };
 
+    function aleatorizarCor() {
+        return colors[Math.floor(Math.random() * 5)];
+    }
 
+    // const handleDayPress = (day: DateData) => {
     const handleDayPress = (day: DateData) => {
 
-        if (times == 0) {
-            setMinimumDate(day.dateString);
-            setTimes(times + 1);
-        } else if (times == 1) {
-            setMaximumDate(day.dateString);
-            setTimes(times + 1);
-        } else if (times == 2) {
-            setMinimumDate(day.dateString);
-            setTimes(1);
-        }
-    }
 
-    const parseLocalDate = (dateString: string) => {
-        const [year, month, day] = dateString.split('-').map(Number);
-        return new Date(year, month - 1, day);
-    };
-
-    useEffect(() => {
-        if (minimumDate && maximumDate && times === 2) {
-            markDays();
-        }
-    }, [minimumDate, maximumDate, times]);
-
-    const markDays = () => {
-        const startDate = parseLocalDate(minimumDate);
-        const endDate = parseLocalDate(maximumDate);
-
-        let newMarkedDates: { [date: string]: any } = {};
-
-        eachDayOfInterval({ start: startDate, end: endDate }).forEach((date) => {
-            const dateString = format(date, 'yyyy-MM-dd');
-            if (dateString === minimumDate) {
-                newMarkedDates[dateString] = { startingDay: true, color: 'red', marked: true };
-            } else if (dateString === maximumDate) {
-                newMarkedDates[dateString] = { endingDay: true, color: 'yellow', marked: true };
-            } else {
-                newMarkedDates[dateString] = { color: 'green', marked: true };
+        // Verifica se o dia já está marcado
+        if (markedDates[day.dateString]) {
+            // Cria uma cópia do estado anterior
+            const newState = { ...markedDates };
+            // Remove o dia marcado
+            delete newState[day.dateString];
+            // Remove a data do array de datas
+            const index = dates.indexOf(day.dateString);
+            if (index > -1) {
+                dates.splice(index, 1);
             }
-        });
-
-        setMarkedDates(newMarkedDates);
+            setMarkedDates(newState);
+        } else {
+            // Adiciona o dia marcado
+            const newState = {
+                ...markedDates,
+                [day.dateString]: {
+                    customStyles: {
+                        container: {
+                            backgroundColor: aleatorizarCor()
+                        },
+                        text: {
+                            color: 'black'
+                        }
+                    }
+                }
+            };
+            dates.push(day.dateString);
+            setMarkedDates(newState);
+        }
     }
-
-
-
 
     const whenClose = () => {
         setModalVisible(!modalVisible);
-        setMaximumDate("");
-        setMinimumDate("");
-        setTimes(0);
         setMarkedDates({});
-        setBeginTime("");
-        setEndTime("");
-        setCourse("");
-        setSubject("");
+        setBeginTime(null);
+        setEndTime(null);
+        setCourseId(null);
+        setCourseName(null);
+        setSubjectId(null);
+        setSubjectName(null);
+        setDates([]);
+        setReviewData(null);
+        setReason(null);
     }
 
     const alertarModalProfessor = async () => {
         // Aqui você pode colocar a lógica para pegar as informações e enviar para a API
 
-        const data = {
-            date: minimumDate,
-            start_time: isBeginTime,
-            end_time: isEndTime
-        };
 
-        // try {
-        //     const response = await fetch(`${api_url_local}/reservation`, {
-        //         body: JSON.stringify(data),
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //     });
+        const promises = dates.map(async (date) => {
+            // const data = {
+            //     teacherId: professor.professor?.id,
+            //     classId: subject,
+            //     classroomId: selectedClassRoom?.id,
+            //     date,
+            //     start_time: beginTime,
+            //     end_time: endTime,
+            //     availableForExchange: availability,
+            //     reason,
+            // };
 
-        //     const responseJson = response.json();
-        //     console.log(responseJson)
-        // } catch (error) {
-        //     console.error(error);
-        // }
-        console.warn(data);
+
+            try {
+                //setInfoReservation(data);
+                // const response = await fetch(`${api_url_local}/reservation`, {
+                //     body: JSON.stringify(data),
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                // });
+
+                // const responseJson = response.json();
+                // console.log(responseJson)
+            } catch (error) {
+                // console.error(error);
+            }
+        });
+        await Promise.all(promises);
+
+        setVisibilityModalReservaSucesso(true);
     };
+
+    const setClassesByCourse = async (value: string) => {
+        console.log(value);
+        if (!value) {
+            courses = [];
+            setClasses([]);
+            setClassesVisibility(true);
+            return;
+        }
+
+        // courseId e teacherId
+        try {
+            const responseClasses = await fetch(`${api_url_local}/classes/courses/${value}/teacher/${professor.professor?.id}`, {
+                method: 'GET'
+            }
+            );
+
+            const responseClassesJson: ResponseTypeClasses = await responseClasses.json();
+            const classesMapeadas = responseClassesJson.map((item: Class, index) => {
+                return { label: item.name, value: [item.id, item.name], key: item.id };
+            });
+            setClasses(classesMapeadas);
+            setClassesVisibility(false);
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+    const handleReason = (reason: string) => {
+
+        if (reason.length < 280) {
+            setReason(reason);
+        }
+    }
+
+    useEffect(() => {
+        if (
+            courseId &&
+            subjectId &&
+            dates.length > 0 &&
+            beginTime &&
+            endTime &&
+            reason
+        ) {
+            setFinish(false);
+        } else {
+            setFinish(true);
+        }
+
+    }, [courseId, subjectId, dates, beginTime, reason]);
+
+    const handleReviewData = () => {
+        let disponibilidade = "";
+
+        if (availability === "S") {
+            disponibilidade = "Sim";
+        } else if (availability === "N") {
+            disponibilidade = "Não";
+        }
+
+        const currentData = {
+            classroomName: selectedClassRoom?.name,
+            dates,
+            beginTime,
+            endTime,
+            courseName,
+            subjectName,
+            disponibilidade,
+            reason
+
+        };
+        setReviewData(currentData);
+    }
 
     return (
         <Modal
@@ -194,18 +302,11 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <ScrollView>
-                        <View>
-                            <Text style={styles.modalNomeSala}>{selectedClassRoom?.name}</Text>
-                            <Text style={styles.modalText}>Disponivel até</Text>
-                            <View style={styles.viewHorarios}>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                                <Text style={styles.modalHorario}>12:00</Text>
-                            </View>
-                        </View>
+                        <Text style={styles.modalNomeSala}>{selectedClassRoom?.name}</Text>
+
                         <View style={styles.viewItens}>
-                            <Text>Itens</Text>
-                            <View>
+                            <Text style={styles.textItens}>Itens</Text>
+                            <View style={styles.viewItensSalas}>
                                 {selectedClassRoom?.items.map((itemClassRoom, index) => {
                                     return (
                                         <View style={styles.viewItem} key={index}>
@@ -219,27 +320,75 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 })}
                             </View>
                         </View>
+                        <Row />
+
+                        <View style={styles.timelineContainer}>
+                            <Text style={styles.timelineTitle}>Cronograma</Text>
+
+                            <ScrollView horizontal={true}>
+                                {weekDays.map((weekDay, index) => {
+                                    return (
+                                        <View style={styles.timelineWeekDayView} key={index}>
+                                            <View style={styles.timelineTextView}>
+                                                <Text style={styles.timelineText}>{weekDay}</Text>
+                                            </View>
+                                            <View style={styles.viewTimelineContainer}>
+                                                <View style={styles.viewTimeline}>
+                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                </View>
+                                                <View style={styles.viewTimeline}>
+                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                </View>
+                                                <View style={styles.viewTimeline}>
+                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )
+                                })}
+                            </ScrollView>
+                            <TouchableOpacity style={styles.timelineButton} >
+                                <Text style={styles.timelineTextButton}>Mais Detalhes</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <Row />
+
+                        <Text style={styles.titleReservation}>Reserva</Text>
                         <View style={styles.containerCourses}>
                             <Text style={styles.courseName}>Curso:</Text>
                             <RNPickerSelect
-                                onValueChange={(value) => setCourse(value)}
+                                onValueChange={(value) => {
+                                    setCourseId(parseInt(value[0]));
+                                    setCourseName(value[1]);
+                                    setClassesByCourse(value[0]);
+                                }}
                                 placeholder={{ label: "Escolha o curso:", value: "" }}
                                 items={courses}
                             />
-                            {!isCourse ? (
+                            {!courseId ? (
                                 <Text style={styles.textError}>{errors.course.text}</Text>
                             ) : (
                                 <Text style={styles.textError}></Text>
                             )}
                         </View>
-                        <View style={styles.containerSubjects}>
-                            <Text style={styles.subjectName}>Matéria:</Text>
+                        <View style={styles.containerClasses}>
+                            <Text style={styles.classTitle}>Matéria:</Text>
                             <RNPickerSelect
-                                onValueChange={(value) => setSubject(value)}
+                                onValueChange={(value) => {
+
+                                    setSubjectId(parseInt(value[0]));
+                                    setSubjectName(value[1]);
+
+                                }}
                                 placeholder={{ label: "Escolha a matéria:", value: "" }}
                                 items={classes}
+                                disabled={isClassesVisible}
                             />
-                            {!isSubject ? (
+                            {!subjectId ? (
                                 <Text style={styles.textError}>{errors.subject.text}</Text>
                             ) : (
                                 <Text style={styles.textError}></Text>
@@ -249,11 +398,9 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
                         <View style={styles.containerCalendar}>
                             <Calendar
-                                markingType='period'
+                                markingType='custom'
                                 onDayPress={handleDayPress}
                                 markedDates={{
-                                    [minimumDate]: { startingDay: true, marked: true, color: 'red' },
-                                    [maximumDate]: { endingDay: true, marked: true, color: 'yellow' },
                                     ...markedDates
                                 }}
                                 theme={{
@@ -265,40 +412,43 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                         <View style={styles.containerReservation}>
                             <HorizontalRow />
                             <View style={styles.startAndEndDate}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text>Data Inicio: </Text>
-                                    <Text>{minimumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text>Data Fim: </Text>
-                                    <Text>{maximumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
-                                </View>
-                                {!minimumDate || !maximumDate ? (
-                                    <Text style={styles.textError}>{errors.chooseDate.text}</Text>
-                                ) : (
-                                    <Text style={styles.textError}></Text>
-                                )
+                                <View style={styles.centeredDate}>
+                                    <View style={styles.containerDate}>
+                                        <Text style={styles.dateLabel1}>Data da reserva: </Text>
+                                        <View style={{ flexDirection: 'column' }}>
+                                            {dates.map((date, index) => {
+                                                return <Text style={styles.reservatedDateText} key={index}>{date.split('-').reverse().join("-").replaceAll("-", "/")}</Text>;
+                                            })}
+                                        </View>
+                                    </View>
 
-                                }
+
+
+                                    {/* 
+                                    <Text style={styles.dateLabel2}>{minimumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
+                                    */}
+
+                                </View>
+
                             </View>
                             <View style={styles.selectTimeView}>
                                 <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
-                                <Text style={{ fontSize: 18 }}>Selecione um horário</Text>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Selecione um horário</Text>
                                 <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginLeft: 10 }} />
                             </View>
 
                             <View style={styles.startAndEndTime}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity onPress={showBeginTimePicker}>
-                                        <Text>Inicio: </Text>
+                                <View style={styles.labelTimeView}>
+                                    <TouchableOpacity style={styles.labelTime} onPress={showBeginTimePicker}>
+                                        <Text style={styles.labelTimeText}>Inicio: </Text>
                                     </TouchableOpacity>
-                                    <Text>{isBeginTime}</Text>
+                                    <TouchableOpacity style={styles.labelTime} onPress={showEndTimePicker}>
+                                        <Text style={styles.labelTimeText}>Fim: </Text>
+                                    </TouchableOpacity>
                                 </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity onPress={showEndTimePicker}>
-                                        <Text>Fim: </Text>
-                                    </TouchableOpacity>
-                                    <Text>{isEndTime}</Text>
+                                <View style={styles.valueTimeView}>
+                                    <Text style={styles.valueTime}>{beginTime}</Text>
+                                    <Text style={styles.valueTime}>{endTime}</Text>
                                 </View>
 
                                 <DateTimePickerModal
@@ -317,7 +467,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 />
 
                             </View>
-                            {!isBeginTime || !isEndTime ? (
+                            {!beginTime || !endTime ? (
                                 <Text style={[styles.textError, {
                                     textAlign: 'center'
                                 }]}>{errors.chooseTime.text}</Text>
@@ -329,6 +479,25 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
                             <HorizontalRow />
                             <View>
+                                <Text>Motivo</Text>
+                                <TextInput style={styles.reasonTextInput}
+                                    multiline={true}
+                                    placeholder='Esta mensagem será encaminhada
+                                    para o professor - Limite 280 caracteres'
+                                    onChangeText={(value) => handleReason(value)}
+                                    maxLength={280}
+
+                                />
+
+                                {!reason ? (
+                                    <Text style={styles.textError}>{errors.reason.text}</Text>
+                                ) : (
+                                    <Text style={styles.textError}></Text>
+                                )}
+                            </View>
+
+                            <HorizontalRow />
+                            <View>
                                 <Text>Disponível para troca?</Text>
                                 <View style={{}}>
                                     <RadioButton.Group
@@ -336,64 +505,56 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                         value={availability}
                                     >
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <RadioButton value='S' />
+                                            <RadioButton value="S" />
                                             <Text>Sim</Text>
-                                            <RadioButton value='N' />
+                                            <RadioButton value="N" />
                                             <Text>Não</Text>
                                         </View>
 
                                     </RadioButton.Group>
                                 </View>
                             </View>
-                            <HorizontalRow />
-                            <View>
-                                <Text>Motivo</Text>
-                                <TextInput style={styles.reasonTextInput}
-                                    multiline={true}
-                                    placeholder='Esta mensagem será encaminhada
-                                    para o professor - Limite 280 caracteres'
-                                    onChangeText={(value) => setReason(value)}
-
-                                />
-
-                                {!isReason ? (
-                                    <Text style={styles.textError}>{errors.reason.text}</Text>
-                                ) : (
-                                    <Text style={styles.textError}></Text>
-                                )}
-
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setVisibilityModalReservaRevisar(true)}>
-                                    <Text style={styles.textStyle}>Confirmar Reserva</Text>
-                                </Pressable>
-                                <ModalReservaSucesso
-                                    visibilityModalReservaSucesso={visibilityModalReservaSucesso}
-                                    setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
-                                />
-                                <ModalReservaFalha
-                                    visibilityModalReservaFalha={visibilityModalReservaFalha}
-                                    setVisibilityModalReservaFalha={setVisibilityModalReservaFalha}
-                                />
-                                <ModalReservaCancel
-                                    visibilityModalReservaCancel={visibilityModalReservaCancel}
-                                    setVisibilityModalReservaCancel={setVisibilityModalReservaCancel}
-                                    setModalVisible={setModalVisible}
-                                />
-                                <ModalReservaRevisar
-                                    alertModalProfessor={alertarModalProfessor}
-                                    visibilityModalReservaRevisar={visibilityModalReservaRevisar}
-                                    setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
-                                />
-                            </View>
                         </View>
 
+                        <TouchableOpacity
+                            disabled={isFinish}
+                            style={[
+                                styles.button,
+                                styles.buttonClose,
+                                { opacity: isFinish ? 0.5 : 1 }
+                            ]}
 
-                        <Pressable
+                            onPress={() => {
+                                handleReviewData();
+                                setVisibilityModalReservaRevisar(true)
+                            }}>
+                            <Text style={styles.textStyle}>Confirmar Reserva</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setVisibilityModalReservaCancel(true)}>
                             <Text style={styles.textStyle}>Fechar</Text>
-                        </Pressable>
+                        </TouchableOpacity>
+                        <ModalReservaSucesso
+                            visibilityModalReservaSucesso={visibilityModalReservaSucesso}
+                            setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
+                        />
+                        <ModalReservaFalha
+                            visibilityModalReservaFalha={visibilityModalReservaFalha}
+                            setVisibilityModalReservaFalha={setVisibilityModalReservaFalha}
+                        />
+                        <ModalReservaCancel
+                            visibilityModalReservaCancel={visibilityModalReservaCancel}
+                            setVisibilityModalReservaCancel={setVisibilityModalReservaCancel}
+                            setModalVisible={setModalVisible}
+                            whenClose={whenClose}
+                        />
+                        <ModalReservaRevisar
+                            alertModalProfessor={alertarModalProfessor}
+                            visibilityModalReservaRevisar={visibilityModalReservaRevisar}
+                            setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
+                            data={reviewData}
+                        />
                     </ScrollView>
                 </View>
             </View>
