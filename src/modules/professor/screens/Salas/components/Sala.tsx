@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, BackHandler } from 'react-native';
 import { List } from 'react-native-paper';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -30,6 +30,8 @@ const Sala = () => {
 
     const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,34 +41,26 @@ const Sala = () => {
                 const responseClassroomsJson: ResponseTypeClassRooms = await responseClassrooms.json();
                 const floors = (Object.keys(responseClassroomsJson));
 
-                const responseCourses = await fetch(`${api_url_local}/courses`, {
+                const responseCourses = await fetch(`${api_url_local}/classes/courses/${professor.professor?.id}`, {
                     method: "GET",
                 });
                 const responseCoursesJson: ResponseTypeCourses = await responseCourses.json();
-
                 const coursesMapeados = responseCoursesJson.map((item: Course, index) => {
-                    return { label: item.name, value: item.id, key: item.id };
+                    return { label: item.course.name, value: [item.course.id, item.course.name], key: item.course.id };
                 });
 
-                const responseClasses = await fetch(`${api_url_local}/classes/${professor.professor?.id}`, {
-                    method: "GET",
-                });
-                const responseClassesJson: ResponseTypeClasses = await responseClasses.json();
-                const classesMapeadas = responseClassesJson.map((item: Class, index) => {
-                    return { label: item.name, value: item.id, key: item.id };
-                });
 
-                console.log(classes);
 
 
                 setFloors(floors);
                 setCourses(coursesMapeados);
-                setClasses(classesMapeadas);
                 setClassrooms(responseClassroomsJson);
-                setIsLoading(false)
+
 
             } catch (error) {
                 console.error(error);
+            } finally {
+                setIsLoading(false);
             }
         }
 
@@ -116,7 +110,6 @@ const Sala = () => {
                     selectedClassRoom={selectClassRoom}
                     setSelectedClassRoom={setSelectClassRoom}
                     courses={courses}
-                    classes={classes}
                 />
             </ScrollView>
         </View>
