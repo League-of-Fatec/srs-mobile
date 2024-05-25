@@ -51,6 +51,7 @@ export default StyleSheet.create({
         bottom: 15,
     },
     buttonContainerCancel: {
+        alignSelf: 'center',
         width: '80%',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -78,13 +79,13 @@ export default StyleSheet.create({
         backgroundColor: 'green'
     },
     textReserva: {
-        textAlign: 'center',
-        fontSize: 17
+        marginLeft: 10,
+        fontSize: 15,
+        marginBottom: 5,
     },
     textReservaBold: {
         fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 17
+        fontSize: 15
     },
     textButton: {
         textAlign: 'center',
@@ -93,7 +94,14 @@ export default StyleSheet.create({
     },
 
     // Modal Revise suas informações
+
+    viewInfo: {
+        flexDirection: 'row',
+        marginBottom: 10
+    },
     textReservaContainerRevisar: {
+        padding: 15,
+        width: '100%',
         marginBottom: '5%',
     },
 
@@ -104,34 +112,47 @@ export default StyleSheet.create({
         backgroundColor: '#FFFFFF',
         margin: '1%',
         width: '90%',
-        height: '60%'
+
     },
 
     infoContainer: {
-        flexDirection: 'row'
+        width: '70%',
+    },
+    infoContainerTitle: {
+        width: '30%',
     },
     textReservaRevisar: {
-        padding: 30,
+        alignSelf: 'center',
+        paddingTop: 15,
+        paddingBottom: 40,
+        margin: 10,
     },
     textReservaDescricaoTitle: {
-        textAlign: 'center',
         fontSize: 15,
     },
     textReservaDescricao: {
         fontWeight: 'bold',
-        textAlign: 'center',
         fontSize: 15,
     },
     titleRevisar: {
-        paddingVertical: 10,
+        textAlign: 'center',
+        paddingBottom: 16,
         fontSize: 18,
         fontWeight: 'bold'
     },
+
     descricaoContainer: {
+        alignSelf: 'center',
         height: 100,
         backgroundColor: '#d9d9d9',
         padding: 7,
-        width: '70%'
+        width: '95%'
+    },
+
+    // Modal Cancele
+
+    textReservaCancel: {
+        textAlign: 'center',
     }
 
 });
