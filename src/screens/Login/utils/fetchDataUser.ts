@@ -27,7 +27,6 @@ const fetchDataUser = async (
     });
 
     const responseLoginJson = await responseLogin.json();
-    console.log(responseLoginJson);
     const id = responseLoginJson[0].id;
     const userType = responseLoginJson[0].userType;
 
@@ -40,7 +39,6 @@ const fetchDataUser = async (
 
       const responseUserJson: Student[] = await responseUser.json();
       const student = responseUserJson[0];
-      console.log(student);
 
       //const token = 'token';
       const token = {
@@ -80,7 +78,6 @@ const fetchDataUser = async (
 
       const responseUserJson: Professor[] = await responseUser.json();
       const professor = responseUserJson[0];
-      console.log(professor);
 
       //const token = 'token';
       const token = {
@@ -92,9 +89,7 @@ const fetchDataUser = async (
       await AsyncStorage.setItem('token', JSON.stringify(token));
       await AsyncStorage.setItem('userType', userType);
 
-      const currentToken = await AsyncStorage.getItem('token');
       const currentUserType = await AsyncStorage.getItem('userType');
-      console.log(currentUserType);
       navigation.navigate('HomeProfessor');
 
       // Código para não permitir que o usuário volte para a tela de login
