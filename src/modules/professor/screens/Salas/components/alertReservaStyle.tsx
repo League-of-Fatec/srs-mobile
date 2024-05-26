@@ -128,6 +128,7 @@ export default StyleSheet.create({
         margin: 10,
     },
     textReservaDescricaoTitle: {
+        textAlign: 'center',
         fontSize: 15,
     },
     textReservaDescricao: {
@@ -152,6 +153,10 @@ export default StyleSheet.create({
     // Modal Cancele
 
     textReservaCancel: {
+        textAlign: 'center',
+    },
+    textReservaSuccess: {
+        fontSize: 18,
         textAlign: 'center',
     }
 

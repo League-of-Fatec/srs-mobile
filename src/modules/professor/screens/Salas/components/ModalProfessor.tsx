@@ -9,7 +9,7 @@ import { RadioButton } from 'react-native-paper';
 import HorizontalRow from './HorizontalRow';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { eachDayOfInterval, format } from 'date-fns';
+import { eachDayOfInterval, format, formatDate } from 'date-fns';
 import { errors } from '../utils/errors';
 import { ModalReservaSucesso } from './ModalReservaSucesso';
 import { ModalReservaFalha } from './ModalReservaFalha';
@@ -76,7 +76,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
     const [isBeginTimePickerVisible, setBeginTimePickerVisibility] = useState(false);
     const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
-
+    const [isButtonEndTimeVisible, setButtonEndTimeVisibility] = useState(true);
 
     const [markedDates, setMarkedDates] = useState<MarkedDates>({});
     const [classes, setClasses] = useState<Item[]>([]);
@@ -98,7 +98,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setEndTimePickerVisibility(true);
     };
 
-    const hideBeginningTime = () => {
+    const hideBeginTime = () => {
         setBeginTimePickerVisibility(false);
     };
     const hideEndTime = () => {
@@ -111,18 +111,56 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         date.setHours(date.getHours() - 1);
         const dateTime = date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' });
         const time = dateTime.split(" ")[1];
-        console.warn("A date has been picked: ", date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' }));
+
+        const hour = date.getHours() + 1;
+        if (hour < 6 || hour > 23) {
+            hideBeginTime();
+            setBeginTime("");
+            Alert.alert('Erro!', 'Os horários de reservas permitidos são entre as 06:00 da manhã e as 23:00 da noite!');
+            return;
+        }
+
         setBeginTime(time);
-        hideBeginningTime();
+        hideBeginTime();
     };
 
     const handleConfirmTimeEnd = (date: Date) => {
         date.setHours(date.getHours() - 1);
         const dateTime = date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' });
         const time = dateTime.split(" ")[1];
-        console.warn("A date has been picked: ", date.toLocaleString("pt-br", { timeZone: 'America/Sao_Paulo' }));
+
+        const hour = date.getHours() + 1;
+        if (hour < 6 || hour > 23) {
+            hideEndTime();
+            setEndTime("");
+            Alert.alert('Erro!', 'Os horários de reservas permitidos são entre as 06:00 da manhã e as 23:00 da noite!');
+            return;
+        }
+
+        if (beginTime) {
+            const beginHour = beginTime.split(":")[0];
+
+            // Lembrar de perguntar sobre a hr igual
+            if (parseInt(beginHour) > hour) {
+                hideEndTime();
+                setBeginTime("");
+                setEndTime("");
+                Alert.alert('Erro!', 'A hora de inicio está maior ou igual que a de fim, preencha os horários novamente!');
+                return;
+            }
+        }
+
+        if (time === beginTime) {
+            hideEndTime();
+            setBeginTime("");
+            setEndTime("");
+            Alert.alert('Algo deu errado!', 'Os horários de início e fim não podem ser os mesmos. Por favor, selecione um horário diferente.');
+            return;
+        }
+
         setEndTime(time);
         hideEndTime();
+
     };
 
     function aleatorizarCor() {
@@ -166,7 +204,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     }
 
     const whenClose = () => {
-        setModalVisible(!modalVisible);
+        setModalVisible(false);
         setMarkedDates({});
         setBeginTime(null);
         setEndTime(null);
@@ -184,41 +222,37 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
 
         const promises = dates.map(async (date) => {
-            // const data = {
-            //     teacherId: professor.professor?.id,
-            //     classId: subject,
-            //     classroomId: selectedClassRoom?.id,
-            //     date,
-            //     start_time: beginTime,
-            //     end_time: endTime,
-            //     availableForExchange: availability,
-            //     reason,
-            // };
+            const data = {
+                teacherId: professor.professor?.id,
+                classId: subjectId,
+                classroomId: selectedClassRoom?.id,
+                date,
+                start_time: beginTime,
+                end_time: endTime,
+                availableForExchange: availability,
+                reason,
+            };
 
 
             try {
-                //setInfoReservation(data);
-                // const response = await fetch(`${api_url_local}/reservation`, {
-                //     body: JSON.stringify(data),
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                // });
+                const response = await fetch(`${api_url_local}/reservation`, {
+                    body: JSON.stringify(data),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-                // const responseJson = response.json();
-                // console.log(responseJson)
+                const responseJson = response.json();
+                console.log("Resposta da reserva", responseJson);
             } catch (error) {
-                // console.error(error);
+                console.error(error);
             }
         });
         await Promise.all(promises);
-
-        setVisibilityModalReservaSucesso(true);
     };
 
     const setClassesByCourse = async (value: string) => {
-        console.log(value);
         if (!value) {
             courses = [];
             setClasses([]);
@@ -290,6 +324,20 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         };
         setReviewData(currentData);
     }
+
+    useEffect(() => {
+        if (!modalVisible) {
+            whenClose();
+        }
+    }, [modalVisible]);
+
+    useEffect(() => {
+        if (beginTime === "" || beginTime == null) {
+            setButtonEndTimeVisibility(true);
+        } else {
+            setButtonEndTimeVisibility(false);
+        }
+    }, [beginTime]);
 
     return (
         <Modal
@@ -403,6 +451,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 markedDates={{
                                     ...markedDates
                                 }}
+                                minDate={formatDate(new Date(), 'yyyy-MM-dd')}
+                                maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
                                 theme={{
                                     arrowColor: '#6D1C1C',
                                     todayTextColor: '#6D1C1C',
@@ -440,10 +490,17 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             <View style={styles.startAndEndTime}>
                                 <View style={styles.labelTimeView}>
                                     <TouchableOpacity style={styles.labelTime} onPress={showBeginTimePicker}>
-                                        <Text style={styles.labelTimeText}>Inicio: </Text>
+                                        <Text style={styles.labelTimeText}>Inicio</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.labelTime} onPress={showEndTimePicker}>
-                                        <Text style={styles.labelTimeText}>Fim: </Text>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.labelTime,
+                                            { opacity: isButtonEndTimeVisible ? 0.5 : 1 }
+                                        ]}
+                                        onPress={showEndTimePicker}
+                                        disabled={isButtonEndTimeVisible}
+                                    >
+                                        <Text style={styles.labelTimeText}>Fim</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.valueTimeView}>
@@ -456,7 +513,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     mode="time"
                                     is24Hour={true}
                                     onConfirm={handleConfirmTimeBegin}
-                                    onCancel={hideBeginningTime}
+                                    onCancel={hideBeginTime}
                                 />
                                 <DateTimePickerModal
                                     isVisible={isEndTimePickerVisible}
@@ -538,6 +595,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                         <ModalReservaSucesso
                             visibilityModalReservaSucesso={visibilityModalReservaSucesso}
                             setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
+                            setVisibilityModalProfessor={setModalVisible}
+
                         />
                         <ModalReservaFalha
                             visibilityModalReservaFalha={visibilityModalReservaFalha}
@@ -553,6 +612,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             alertModalProfessor={alertarModalProfessor}
                             visibilityModalReservaRevisar={visibilityModalReservaRevisar}
                             setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
+                            visibilityModalReservaSucesso={visibilityModalReservaSucesso}
+                            setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
                             data={reviewData}
                         />
                     </ScrollView>

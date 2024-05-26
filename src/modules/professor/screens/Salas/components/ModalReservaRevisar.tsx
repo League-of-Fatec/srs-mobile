@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import ReservaStyle from "./alertReservaStyle";
+import LoadingLogin from "@/components/shared/LoadingLogin";
+import LoadingReserva from "@/components/shared/LoadingReserva";
 
 
 type PropsModalReservaRevisar = {
     visibilityModalReservaRevisar: boolean;
+    visibilityModalReservaSucesso: boolean;
     setVisibilityModalReservaRevisar: (value: boolean) => void;
+    setVisibilityModalReservaSucesso: (value: boolean) => void;
     alertModalProfessor: () => void;
     data: ReviewCurrentData | null;
 };
@@ -21,16 +25,38 @@ export type ReviewCurrentData = {
     reason: string | null,
 }
 
-export const ModalReservaRevisar = ({ visibilityModalReservaRevisar, setVisibilityModalReservaRevisar, alertModalProfessor, data }: PropsModalReservaRevisar) => {
+export const ModalReservaRevisar = ({ visibilityModalReservaRevisar, setVisibilityModalReservaRevisar, visibilityModalReservaSucesso, setVisibilityModalReservaSucesso, alertModalProfessor, data }: PropsModalReservaRevisar) => {
 
-    const confirmReservation = () => {
-        alertModalProfessor();
-        setVisibilityModalReservaRevisar(false);
+    const [isLoading, setLoading] = useState(false);
+    const [isEditButtonVisible, setVisibilityEditButton] = useState(false);
+
+    const confirmReservation = async () => {
+
+        try {
+            setVisibilityEditButton(true);
+            setLoading(true);
+            await alertModalProfessor();
+
+        } catch (error) {
+            console.error(error);
+            console.warn("Algo deu errado")
+        } finally {
+            setLoading(false);
+            setVisibilityEditButton(false);
+            setVisibilityModalReservaRevisar(false);
+            setVisibilityModalReservaSucesso(true)
+        }
+    }
+
+    const cleanReviewData = () => {
+        data = null;
     }
 
     useEffect(() => {
-        console.log(data);
-    }, [data]);
+        if (!visibilityModalReservaRevisar) {
+            cleanReviewData();
+        }
+    }, [visibilityModalReservaRevisar]);
 
     return (
         <Modal
@@ -109,11 +135,19 @@ export const ModalReservaRevisar = ({ visibilityModalReservaRevisar, setVisibili
 
 
                         <View style={ReservaStyle.buttonContainerCancel} >
-                            <TouchableOpacity onPress={() => setVisibilityModalReservaRevisar(false)} style={ReservaStyle.buttonEdit}>
+                            <TouchableOpacity
+                                disabled={isEditButtonVisible}
+                                style={[
+                                    ReservaStyle.buttonEdit,
+                                    { opacity: isEditButtonVisible ? 0.5 : 1 }
+                                ]}
+                                onPress={() => setVisibilityModalReservaRevisar(false)}
+                            >
                                 <Text style={ReservaStyle.textButton}>Editar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => confirmReservation()} style={ReservaStyle.buttonConfirm}>
-                                <Text style={ReservaStyle.textButton}>Confirmar</Text>
+                                {!isLoading ? <Text style={ReservaStyle.textButton}>Confirmar</Text> : <LoadingReserva />}
+
                             </TouchableOpacity>
                         </View>
                     </View>
