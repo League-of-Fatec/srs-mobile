@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import styles from './styles';
@@ -7,6 +7,7 @@ import { NavigationProp } from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
 import fetchDataUser from './utils/fetchDataUser';
 import LoadingLogin from '@/components/shared/LoadingLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -53,6 +54,17 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
 
     }
 
+    useEffect(() => {
+        const test = async () => {
+            const token = await AsyncStorage.getItem("Token");
+            const userType = await AsyncStorage.getItem("UserType");
+
+            console.log("Token: ", token);
+            console.log("UserType: ", userType);
+        }
+
+        test();
+    }, []);
 
 
     return (

@@ -52,6 +52,8 @@ const fetchDataUser = async (
 
       const currentToken = await AsyncStorage.getItem('token');
       const currentUserType = await AsyncStorage.getItem('userType');
+      console.log(currentToken);
+      console.log(currentUserType);
 
       navigation.navigate('HomeAluno');
 

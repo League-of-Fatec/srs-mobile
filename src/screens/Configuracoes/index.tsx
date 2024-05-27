@@ -26,6 +26,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
     const [userType, setUserType] = useState<string | null>("");
     const [firstName, setFirstName] = useState<string | undefined>("");
     const [lastName, setLastName] = useState<string | undefined>("");
+    const [id, setId] = useState("");
 
     const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
     const student = useSelector((state: { student: StudentState }) => state.student);
@@ -38,6 +39,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
             if (userType === "PROFESSOR") {
                 setFirstName(professor?.professor?.user.firstName);
                 setLastName(professor?.professor?.user.lastName);
+                //setId(professor.professor?.teacherId);
             }
             if (userType === "ALUNO") {
                 setFirstName(student?.student?.user.firstName);
