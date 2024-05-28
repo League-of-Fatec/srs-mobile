@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable } from 'react-native';
-import { List } from 'react-native-paper';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalAluno from './ModalAluno';
@@ -8,10 +7,6 @@ import { api_url_local } from '@/utils/API_URLS';
 import { ClassRoom, ResponseTypeClassRooms } from '../types/SalaTypes';
 import Accordion from '@/components/shared/Accordion';
 import LoadingSalas from '@/components/shared/LoadingSalas';
-
-
-
-
 
 const Sala = () => {
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, BackHandler } from 'react-native';
-import { List } from 'react-native-paper';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalProfessor from './ModalProfessor';
@@ -10,16 +9,19 @@ import Accordion from '@/components/shared/Accordion';
 import LoadingSalas from '@/components/shared/LoadingSalas';
 import { Course, ResponseTypeCourses } from '../types/CourseTypes';
 import { Item } from 'react-native-picker-select';
-import { Class, ResponseTypeClasses } from '../types/classTypes';
 import { useSelector } from 'react-redux';
 import { ProfessorState } from '@/redux/UserSlice';
+import { SalaRouteProp } from '..';
 
 
+interface SalaProps {
+    route?: SalaRouteProp | null; // Definindo route como prop opcional
+}
 
 
-const Sala = () => {
+const Sala = ({ route }: SalaProps) => {
 
-    const [colorButton, setColorButton] = useState(['#6DCE31', '#FAAF40', '#B54646']);
+    const [colorButton, setColorButton] = useState(['#6DCE31', '#FAAF40', '#cc564d']);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectClassRoom, setSelectClassRoom] = useState<ClassRoom | null>(null);
     const [floors, setFloors] = useState<string[]>();
@@ -30,7 +32,15 @@ const Sala = () => {
 
     const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
 
-
+    useEffect(() => {
+        if (route?.params) {
+            console.log(route);
+            const { selectedRoom } = route.params;
+            setModalVisible(true)
+            setSelectClassRoom(selectedRoom);
+            route = null;
+        }
+    }, [route]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,14 +58,9 @@ const Sala = () => {
                 const coursesMapeados = responseCoursesJson.map((item: Course, index) => {
                     return { label: item.course.name, value: [item.course.id, item.course.name], key: item.course.id };
                 });
-
-
-
-
                 setFloors(floors);
                 setCourses(coursesMapeados);
                 setClassrooms(responseClassroomsJson);
-
 
             } catch (error) {
                 console.error(error);
@@ -75,6 +80,8 @@ const Sala = () => {
         const numAleat = Math.floor(Math.random() * 3)
         return numAleat;
     }
+
+
 
     return (
         <View style={styles.containerAndares}>
