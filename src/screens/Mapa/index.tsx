@@ -25,7 +25,7 @@ export default function Mapa() {
                 <Modal visible={modalIsVisible} transparent={true}>
                     <ImageViewer imageUrls={images} />
                     <TouchableOpacity onPress={() => setModalVisibility(false)} style={styles.botaoFechar}>
-                        <Text style={styles.textoBotao}>Sair</Text>
+                        <Text style={styles.textoBotao}>Voltar</Text>
                     </TouchableOpacity>
                 </Modal>
 

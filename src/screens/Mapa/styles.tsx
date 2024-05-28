@@ -1,3 +1,4 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -5,7 +6,7 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF'
+        backgroundColor: COLORS.corNeutra
     },
     text: {
         fontSize: 20,
@@ -13,7 +14,6 @@ export default StyleSheet.create({
     },
     containerImagem: {
         flex: 1,
-        //backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
         margin: 25
@@ -24,11 +24,11 @@ export default StyleSheet.create({
     botaoAbrir: {
         borderRadius: 20,
         padding: 15,
-        backgroundColor: "#6D1C1C",
+        backgroundColor: COLORS.corPrincipal,
     },
     botaoFechar: {
         padding: 15,
-        backgroundColor: "#6D1C1C",
+        backgroundColor: COLORS.corPrincipal,
     },
     textoBotao: {
         textAlign: 'center',
