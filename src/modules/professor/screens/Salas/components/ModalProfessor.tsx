@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable, TextInput, Button, BackHandler } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { ClassRoom } from '../types/ClassroomTypes';
-import { Picker } from '@react-native-picker/picker';
+import { ClassRoom, ResponseFavoriteClassroom } from '../types/ClassroomTypes';
 import { Calendar, DateData } from 'react-native-calendars';
 import { RadioButton } from 'react-native-paper';
 import HorizontalRow from './HorizontalRow';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { eachDayOfInterval, format, formatDate } from 'date-fns';
+import { formatDate } from 'date-fns';
 import { errors } from '../utils/errors';
 import { ModalReservaSucesso } from './ModalReservaSucesso';
 import { ModalReservaFalha } from './ModalReservaFalha';
@@ -20,7 +19,9 @@ import { useSelector } from 'react-redux';
 import { ProfessorState } from '@/redux/UserSlice';
 import { Class, ResponseTypeClasses } from '../types/classTypes';
 import Row from './Row';
-import { useNavigation } from '@react-navigation/native';
+import { developing } from '@/utils/developing';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import LoadingModalProfessor from '@/components/shared/LoadingModalProfessor';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -67,9 +68,10 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const [endTime, setEndTime] = useState<string | null>(null);
     const [reason, setReason] = useState<string | null>(null);
     const [availability, setAvailability] = useState<string>('S');
+    const [rating, setRating] = useState(0);
+    const [favoriteClassroomId, setFavoriteClassroomId] = useState<number | null>(null);
 
     const [isFinish, setFinish] = useState(true);
-
     const [isErrors, setErrors] = useState(errors);
 
     const [isClassesVisible, setClassesVisibility] = useState(true);
@@ -88,6 +90,9 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const [visibilityModalReservaRevisar, setVisibilityModalReservaRevisar] = useState(false);
 
     const [reviewData, setReviewData] = useState<ReviewCurrentData | null>(null);
+
+
+    const [isLoading, setLoading] = useState(false);
 
     const colors = ["yellow", "green", "blue", "purple", "pink"];
 
@@ -215,6 +220,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         setDates([]);
         setReviewData(null);
         setReason(null);
+        setFavoriteClassroomId(null);
+        setRating(0);
     }
 
     const alertarModalProfessor = async () => {
@@ -243,8 +250,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                     },
                 });
 
-                const responseJson = response.json();
-                console.log("Resposta da reserva", responseJson);
             } catch (error) {
                 console.error(error);
             }
@@ -302,6 +307,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
     }, [courseId, subjectId, dates, beginTime, reason]);
 
+
     const handleReviewData = () => {
         let disponibilidade = "";
 
@@ -339,6 +345,86 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         }
     }, [beginTime]);
 
+
+
+    useEffect(() => {
+        const getFavoriteClassroom = async () => {
+
+            setLoading(true);
+            if (!selectedClassRoom?.id) return;
+
+            try {
+                const responseFavoriteClassroom = await fetch(`${api_url_local}/favoriteClassroom/${professor.professor?.id}/${selectedClassRoom?.id}`, {
+                    method: "GET",
+                });
+                const responseFavoriteClassroomJson = await responseFavoriteClassroom.json();
+
+                if (responseFavoriteClassroomJson.length > 0) {
+                    setFavoriteClassroomId(responseFavoriteClassroomJson[0].id);
+                    setRating(1);
+                } else {
+                    setRating(0);
+                }
+
+            } catch (error) {
+                console.error("Erro no get: ", error);
+                setRating(0);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        getFavoriteClassroom();
+    }, [modalVisible]);
+
+    const handleFavoriteClassroomRating = () => {
+        if (rating === 1) {
+            removeFavoriteClassroom();
+        }
+        if (rating === 0) {
+            addFavoriteClassroom();
+        }
+    }
+
+    const addFavoriteClassroom = async () => {
+
+        const data = {
+            teacherId: professor.professor?.id,
+            classroomId: selectedClassRoom?.id,
+        };
+
+        try {
+            const response = await fetch(`${api_url_local}/favoriteClassroom`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const responseJson: ResponseFavoriteClassroom = await response.json();
+            setFavoriteClassroomId(responseJson.data[0].id);
+            if (responseJson) return;
+        } catch (error) {
+            console.error("Erro no add: ", error);
+        } finally {
+            setRating(1);
+        }
+
+    }
+
+    const removeFavoriteClassroom = async () => {
+        try {
+            await fetch(`${api_url_local}/favoriteClassroom/${favoriteClassroomId}`, {
+                method: 'DELETE',
+            });
+
+        } catch (error) {
+            console.error("Erro no delete: ", error);
+        } finally {
+            setRating(0);
+        }
+    }
+
     return (
         <Modal
             animationType="fade"
@@ -347,277 +433,301 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
             onRequestClose={() => {
                 setModalVisible(!modalVisible);
             }}>
+
             <View style={styles.centeredView}>
+
                 <View style={styles.modalView}>
-                    <ScrollView>
-                        <Text style={styles.modalNomeSala}>{selectedClassRoom?.name}</Text>
-
-                        <View style={styles.viewItens}>
-                            <Text style={styles.textItens}>Itens</Text>
-                            <View style={styles.viewItensSalas}>
-                                {selectedClassRoom?.items.map((itemClassRoom, index) => {
-                                    return (
-                                        <View style={styles.viewItem} key={index}>
-                                            <Text style={styles.qtdItens}>{itemClassRoom.qntd}</Text>
-                                            <Ionicons
-                                                style={styles.iconItem} name='desktop-outline'
-                                            />
-                                            <Text style={styles.nomeItem}>{itemClassRoom.type}</Text>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>
-                        <Row />
-
-                        <View style={styles.timelineContainer}>
-                            <Text style={styles.timelineTitle}>Cronograma</Text>
-
-                            <ScrollView horizontal={true}>
-                                {weekDays.map((weekDay, index) => {
-                                    return (
-                                        <View style={styles.timelineWeekDayView} key={index}>
-                                            <View style={styles.timelineTextView}>
-                                                <Text style={styles.timelineText}>{weekDay}</Text>
-                                            </View>
-                                            <View style={styles.viewTimelineContainer}>
-                                                <View style={styles.viewTimeline}>
-                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
-                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
-                                                </View>
-                                                <View style={styles.viewTimeline}>
-                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
-                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
-                                                </View>
-                                                <View style={styles.viewTimeline}>
-                                                    <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
-                                                    <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    )
-                                })}
-                            </ScrollView>
-                            <TouchableOpacity style={styles.timelineButton} >
-                                <Text style={styles.timelineTextButton}>Mais Detalhes</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <Row />
-
-                        <Text style={styles.titleReservation}>Reserva</Text>
-                        <View style={styles.containerCourses}>
-                            <Text style={styles.courseName}>Curso:</Text>
-                            <RNPickerSelect
-                                onValueChange={(value) => {
-                                    setCourseId(parseInt(value[0]));
-                                    setCourseName(value[1]);
-                                    setClassesByCourse(value[0]);
-                                }}
-                                placeholder={{ label: "Escolha o curso:", value: "" }}
-                                items={courses}
-                            />
-                            {!courseId ? (
-                                <Text style={styles.textError}>{errors.course.text}</Text>
-                            ) : (
-                                <Text style={styles.textError}></Text>
-                            )}
-                        </View>
-                        <View style={styles.containerClasses}>
-                            <Text style={styles.classTitle}>Matéria:</Text>
-                            <RNPickerSelect
-                                onValueChange={(value) => {
-
-                                    setSubjectId(parseInt(value[0]));
-                                    setSubjectName(value[1]);
-
-                                }}
-                                placeholder={{ label: "Escolha a matéria:", value: "" }}
-                                items={classes}
-                                disabled={isClassesVisible}
-                            />
-                            {!subjectId ? (
-                                <Text style={styles.textError}>{errors.subject.text}</Text>
-                            ) : (
-                                <Text style={styles.textError}></Text>
-                            )}
-
-                        </View>
-
-                        <View style={styles.containerCalendar}>
-                            <Calendar
-                                markingType='custom'
-                                onDayPress={handleDayPress}
-                                markedDates={{
-                                    ...markedDates
-                                }}
-                                minDate={formatDate(new Date(), 'yyyy-MM-dd')}
-                                maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
-                                theme={{
-                                    arrowColor: '#6D1C1C',
-                                    todayTextColor: '#6D1C1C',
-                                }}
-                            />
-                        </View>
-                        <View style={styles.containerReservation}>
-                            <HorizontalRow />
-                            <View style={styles.startAndEndDate}>
-                                <View style={styles.centeredDate}>
-                                    <View style={styles.containerDate}>
-                                        <Text style={styles.dateLabel1}>Data da reserva: </Text>
-                                        <View style={{ flexDirection: 'column' }}>
-                                            {dates.map((date, index) => {
-                                                return <Text style={styles.reservatedDateText} key={index}>{date.split('-').reverse().join("-").replaceAll("-", "/")}</Text>;
-                                            })}
-                                        </View>
-                                    </View>
-
-
-
-                                    {/* 
-                                    <Text style={styles.dateLabel2}>{minimumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
-                                    */}
-
-                                </View>
-
-                            </View>
-                            <View style={styles.selectTimeView}>
-                                <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
-                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Selecione um horário</Text>
-                                <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginLeft: 10 }} />
-                            </View>
-
-                            <View style={styles.startAndEndTime}>
-                                <View style={styles.labelTimeView}>
-                                    <TouchableOpacity style={styles.labelTime} onPress={showBeginTimePicker}>
-                                        <Text style={styles.labelTimeText}>Inicio</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.labelTime,
-                                            { opacity: isButtonEndTimeVisible ? 0.5 : 1 }
-                                        ]}
-                                        onPress={showEndTimePicker}
-                                        disabled={isButtonEndTimeVisible}
-                                    >
-                                        <Text style={styles.labelTimeText}>Fim</Text>
+                    {isLoading ? (
+                        <LoadingModalProfessor />
+                    ) : (
+                        <ScrollView>
+                            <View style={styles.viewNameClassroomStar}>
+                                <View style={styles.ratingView}>
+                                    <Text style={styles.modalNomeSala}>{selectedClassRoom?.name}</Text>
+                                    <TouchableOpacity onPress={() => handleFavoriteClassroomRating()}>
+                                        <StarRatingDisplay
+                                            rating={rating}
+                                            maxStars={1}
+                                        />
                                     </TouchableOpacity>
                                 </View>
-                                <View style={styles.valueTimeView}>
-                                    <Text style={styles.valueTime}>{beginTime}</Text>
-                                    <Text style={styles.valueTime}>{endTime}</Text>
-                                </View>
-
-                                <DateTimePickerModal
-                                    isVisible={isBeginTimePickerVisible}
-                                    mode="time"
-                                    is24Hour={true}
-                                    onConfirm={handleConfirmTimeBegin}
-                                    onCancel={hideBeginTime}
-                                />
-                                <DateTimePickerModal
-                                    isVisible={isEndTimePickerVisible}
-                                    mode="time"
-                                    is24Hour={true}
-                                    onConfirm={handleConfirmTimeEnd}
-                                    onCancel={hideEndTime}
-                                />
+                                <TouchableOpacity onPress={() => whenClose()}>
+                                    <Ionicons
+                                        style={styles.iconClose} name='close'
+                                    />
+                                </TouchableOpacity>
 
                             </View>
-                            {!beginTime || !endTime ? (
-                                <Text style={[styles.textError, {
-                                    textAlign: 'center'
-                                }]}>{errors.chooseTime.text}</Text>
-                            ) : (
-                                <Text style={[styles.textError, {
-                                    textAlign: 'center'
-                                }]}></Text>
-                            )}
 
-                            <HorizontalRow />
-                            <View>
-                                <Text>Motivo</Text>
-                                <TextInput style={styles.reasonTextInput}
-                                    multiline={true}
-                                    placeholder='Esta mensagem será encaminhada
-                                    para o professor - Limite 280 caracteres'
-                                    onChangeText={(value) => handleReason(value)}
-                                    maxLength={280}
 
+                            <View style={styles.viewItens}>
+                                <Text style={styles.textItens}>Itens</Text>
+                                <View style={styles.viewItensSalas}>
+                                    {selectedClassRoom?.items.map((itemClassRoom, index) => {
+                                        return (
+                                            <View style={styles.viewItem} key={index}>
+                                                <Text style={styles.qtdItens}>{itemClassRoom.qntd}</Text>
+                                                <Ionicons
+                                                    style={styles.iconItem} name='desktop-outline'
+                                                />
+                                                <Text style={styles.nomeItem}>{itemClassRoom.type}</Text>
+                                            </View>
+                                        )
+                                    })}
+                                </View>
+                            </View>
+                            <Row />
+
+                            <View style={styles.timelineContainer}>
+                                <Text style={styles.timelineTitle}>Cronograma</Text>
+
+                                <ScrollView horizontal={true}>
+                                    {weekDays.map((weekDay, index) => {
+                                        return (
+                                            <View style={styles.timelineWeekDayView} key={index}>
+                                                <View style={styles.timelineTextView}>
+                                                    <Text style={styles.timelineText}>{weekDay}</Text>
+                                                </View>
+                                                <View style={styles.viewTimelineContainer}>
+                                                    <View style={styles.viewTimeline}>
+                                                        <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                        <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                    </View>
+                                                    <View style={styles.viewTimeline}>
+                                                        <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                        <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                    </View>
+                                                    <View style={styles.viewTimeline}>
+                                                        <Text style={styles.timeViewTimeline}>19:00 - 20:40</Text>
+                                                        <Text style={styles.nameViewTimeline}>Geraldo Vicent</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        )
+                                    })}
+                                </ScrollView>
+                                <TouchableOpacity style={styles.timelineButton} onPress={() => developing()}>
+                                    <Text style={styles.timelineTextButton}>Mais Detalhes</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <Row />
+
+                            <Text style={styles.titleReservation}>Reserva</Text>
+                            <View style={styles.containerCourses}>
+                                <Text style={styles.courseName}>Curso:</Text>
+                                <RNPickerSelect
+                                    onValueChange={(value) => {
+                                        setCourseId(parseInt(value[0]));
+                                        setCourseName(value[1]);
+                                        setClassesByCourse(value[0]);
+                                    }}
+                                    placeholder={{ label: "Escolha o curso:", value: "" }}
+                                    items={courses}
                                 />
-
-                                {!reason ? (
-                                    <Text style={styles.textError}>{errors.reason.text}</Text>
+                                {!courseId ? (
+                                    <Text style={styles.textError}>{errors.course.text}</Text>
                                 ) : (
                                     <Text style={styles.textError}></Text>
                                 )}
                             </View>
+                            <View style={styles.containerClasses}>
+                                <Text style={styles.classTitle}>Matéria:</Text>
+                                <RNPickerSelect
+                                    onValueChange={(value) => {
 
-                            <HorizontalRow />
-                            <View>
-                                <Text>Disponível para troca?</Text>
-                                <View style={{}}>
-                                    <RadioButton.Group
-                                        onValueChange={newValue => setAvailability(newValue)}
-                                        value={availability}
-                                    >
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <RadioButton value="S" />
-                                            <Text>Sim</Text>
-                                            <RadioButton value="N" />
-                                            <Text>Não</Text>
+                                        setSubjectId(parseInt(value[0]));
+                                        setSubjectName(value[1]);
+
+                                    }}
+                                    placeholder={{ label: "Escolha a matéria:", value: "" }}
+                                    items={classes}
+                                    disabled={isClassesVisible}
+                                />
+                                {!subjectId ? (
+                                    <Text style={styles.textError}>{errors.subject.text}</Text>
+                                ) : (
+                                    <Text style={styles.textError}></Text>
+                                )}
+
+                            </View>
+
+                            <View style={styles.containerCalendar}>
+                                <Calendar
+                                    markingType='custom'
+                                    onDayPress={handleDayPress}
+                                    markedDates={{
+                                        ...markedDates
+                                    }}
+                                    minDate={formatDate(new Date(), 'yyyy-MM-dd')}
+                                    maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
+                                    theme={{
+                                        arrowColor: '#6D1C1C',
+                                        todayTextColor: '#6D1C1C',
+                                    }}
+                                />
+                            </View>
+                            <View style={styles.containerReservation}>
+                                <HorizontalRow />
+                                <View style={styles.startAndEndDate}>
+                                    <View style={styles.centeredDate}>
+                                        <View style={styles.containerDate}>
+                                            <Text style={styles.dateLabel1}>Data da reserva: </Text>
+                                            <View style={{ flexDirection: 'column' }}>
+                                                {dates.map((date, index) => {
+                                                    return <Text style={styles.reservatedDateText} key={index}>{date.split('-').reverse().join("-").replaceAll("-", "/")}</Text>;
+                                                })}
+                                            </View>
                                         </View>
 
-                                    </RadioButton.Group>
+
+
+                                        {/* 
+                                    <Text style={styles.dateLabel2}>{minimumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
+                                    */}
+
+                                    </View>
+
+                                </View>
+                                <View style={styles.selectTimeView}>
+                                    <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Selecione um horário</Text>
+                                    <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginLeft: 10 }} />
+                                </View>
+
+                                <View style={styles.startAndEndTime}>
+                                    <View style={styles.labelTimeView}>
+                                        <TouchableOpacity style={styles.labelTime} onPress={showBeginTimePicker}>
+                                            <Text style={styles.labelTimeText}>Inicio</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.labelTime,
+                                                { opacity: isButtonEndTimeVisible ? 0.5 : 1 }
+                                            ]}
+                                            onPress={showEndTimePicker}
+                                            disabled={isButtonEndTimeVisible}
+                                        >
+                                            <Text style={styles.labelTimeText}>Fim</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.valueTimeView}>
+                                        <Text style={styles.valueTime}>{beginTime}</Text>
+                                        <Text style={styles.valueTime}>{endTime}</Text>
+                                    </View>
+
+                                    <DateTimePickerModal
+                                        isVisible={isBeginTimePickerVisible}
+                                        mode="time"
+                                        is24Hour={true}
+                                        onConfirm={handleConfirmTimeBegin}
+                                        onCancel={hideBeginTime}
+                                    />
+                                    <DateTimePickerModal
+                                        isVisible={isEndTimePickerVisible}
+                                        mode="time"
+                                        is24Hour={true}
+                                        onConfirm={handleConfirmTimeEnd}
+                                        onCancel={hideEndTime}
+                                    />
+
+                                </View>
+                                {!beginTime || !endTime ? (
+                                    <Text style={[styles.textError, {
+                                        textAlign: 'center'
+                                    }]}>{errors.chooseTime.text}</Text>
+                                ) : (
+                                    <Text style={[styles.textError, {
+                                        textAlign: 'center'
+                                    }]}></Text>
+                                )}
+
+                                <HorizontalRow />
+                                <View>
+                                    <Text>Motivo</Text>
+                                    <TextInput style={styles.reasonTextInput}
+                                        multiline={true}
+                                        placeholder='Esta mensagem será encaminhada
+                                    para o professor - Limite 280 caracteres'
+                                        onChangeText={(value) => handleReason(value)}
+                                        maxLength={280}
+
+                                    />
+
+                                    {!reason ? (
+                                        <Text style={styles.textError}>{errors.reason.text}</Text>
+                                    ) : (
+                                        <Text style={styles.textError}></Text>
+                                    )}
+                                </View>
+
+                                <HorizontalRow />
+                                <View>
+                                    <Text>Disponível para troca?</Text>
+                                    <View style={{}}>
+                                        <RadioButton.Group
+                                            onValueChange={newValue => setAvailability(newValue)}
+                                            value={availability}
+                                        >
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <RadioButton value="S" />
+                                                <Text>Sim</Text>
+                                                <RadioButton value="N" />
+                                                <Text>Não</Text>
+                                            </View>
+
+                                        </RadioButton.Group>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
 
-                        <TouchableOpacity
-                            disabled={isFinish}
-                            style={[
-                                styles.button,
-                                styles.buttonClose,
-                                { opacity: isFinish ? 0.5 : 1 }
-                            ]}
+                            <TouchableOpacity
+                                disabled={isFinish}
+                                style={[
+                                    styles.button,
+                                    styles.buttonClose,
+                                    { opacity: isFinish ? 0.5 : 1 }
+                                ]}
 
-                            onPress={() => {
-                                handleReviewData();
-                                setVisibilityModalReservaRevisar(true)
-                            }}>
-                            <Text style={styles.textStyle}>Confirmar Reserva</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setVisibilityModalReservaCancel(true)}>
-                            <Text style={styles.textStyle}>Fechar</Text>
-                        </TouchableOpacity>
-                        <ModalReservaSucesso
-                            visibilityModalReservaSucesso={visibilityModalReservaSucesso}
-                            setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
-                            setVisibilityModalProfessor={setModalVisible}
+                                onPress={() => {
+                                    handleReviewData();
+                                    setVisibilityModalReservaRevisar(true)
+                                }}>
+                                <Text style={styles.textStyle}>Confirmar Reserva</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setVisibilityModalReservaCancel(true)}>
+                                <Text style={styles.textStyle}>Fechar</Text>
+                            </TouchableOpacity>
+                            <ModalReservaSucesso
+                                visibilityModalReservaSucesso={visibilityModalReservaSucesso}
+                                setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
+                                setVisibilityModalProfessor={setModalVisible}
 
-                        />
-                        <ModalReservaFalha
-                            visibilityModalReservaFalha={visibilityModalReservaFalha}
-                            setVisibilityModalReservaFalha={setVisibilityModalReservaFalha}
-                        />
-                        <ModalReservaCancel
-                            visibilityModalReservaCancel={visibilityModalReservaCancel}
-                            setVisibilityModalReservaCancel={setVisibilityModalReservaCancel}
-                            setModalVisible={setModalVisible}
-                            whenClose={whenClose}
-                        />
-                        <ModalReservaRevisar
-                            alertModalProfessor={alertarModalProfessor}
-                            visibilityModalReservaRevisar={visibilityModalReservaRevisar}
-                            setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
-                            visibilityModalReservaSucesso={visibilityModalReservaSucesso}
-                            setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
-                            data={reviewData}
-                        />
-                    </ScrollView>
+                            />
+                            <ModalReservaFalha
+                                visibilityModalReservaFalha={visibilityModalReservaFalha}
+                                setVisibilityModalReservaFalha={setVisibilityModalReservaFalha}
+                            />
+                            <ModalReservaCancel
+                                visibilityModalReservaCancel={visibilityModalReservaCancel}
+                                setVisibilityModalReservaCancel={setVisibilityModalReservaCancel}
+                                setModalVisible={setModalVisible}
+                                whenClose={whenClose}
+                            />
+                            <ModalReservaRevisar
+                                alertModalProfessor={alertarModalProfessor}
+                                visibilityModalReservaRevisar={visibilityModalReservaRevisar}
+                                setVisibilityModalReservaRevisar={setVisibilityModalReservaRevisar}
+                                visibilityModalReservaSucesso={visibilityModalReservaSucesso}
+                                setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}
+                                data={reviewData}
+                            />
+                        </ScrollView>
+                    )}
                 </View>
+
             </View>
         </Modal>
     )
