@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, View, } from 'react-native';
 import styles from './styles';
-//import WeekCalendar from './calendario';
 import Header from '@/components/shared/HeaderEstatico';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import formatDate from './utils/formatDate';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useSelector } from 'react-redux';
-import { UserState } from '@/redux/UserSlice';
-
 
 export default function Calendario() {
 
-
-    const user = useSelector((state: { user: UserState }) => state.user);
     //const [date, setDate] = useState(new Date());
     const [selected, setSelected] = useState('');
     const [truth, setTruth] = useState(false)

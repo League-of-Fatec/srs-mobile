@@ -1,55 +1,12 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-  weekDayText: {
-    color: 'gray',
-    marginBottom: 5,
-  },
-  label: {
-    fontSize: 14,
-    color: 'black',
-    textAlign: 'center',
-  },
-  selectedLabel: {
-    fontSize: 20,
-    color: '#ffffff',
-    textAlign: 'center',
-    backgroundColor: '#6D1C1C',
-    borderRadius: 180
-
-  },
-  touchable: {
-    borderRadius: 20,
-    padding: 10,
-    height: 60,
-    width: 60,
-  },
-  selectedTouchable: {
-    borderRadius: 20,
-    padding: 10,
-    height: 60,
-    width: 60,
-    //Bakcgroundcolor: 'green',
-  },
-  weekDayItem: {
-    alignItems: 'center',
-  },
-  containerMA: {
-    height: 63,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center'
-
-  },
-  mesEano: {
-    fontSize: 20
+    backgroundColor: COLORS.corNeutra
   },
   agenda: {
-    //backgroundColor: "#FFFFFF",
     borderColor: 'gray',
     height: 'auto',
   },
@@ -61,7 +18,7 @@ export default StyleSheet.create({
     marginRight: 20,
     marginVertical: 25,
     padding: 10,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: COLORS.corSecundaria,
     borderRadius: 100
   },
   timeInfo: {
