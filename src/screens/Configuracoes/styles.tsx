@@ -1,17 +1,18 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: COLORS.corNeutra
     },
     btnVoltar: {
         position: 'absolute',
         left: 30
     },
     header: {
-        backgroundColor: '#D9D9D9',
+        backgroundColor: COLORS.corSecundaria,
         flexDirection: 'row',
         width: '100%',
         height: 87,
@@ -27,7 +28,6 @@ export default StyleSheet.create({
     containerGeral: {
         marginHorizontal: '8%',
         marginTop: '8%',
-        backgroundColor: 'red'
     },
     containerPrincipal: {
         flex: 1,
@@ -37,8 +37,6 @@ export default StyleSheet.create({
         margin: '8%',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        //backgroundColor: 'red'
-
     },
     infoConta: {
         flex: 1,
@@ -60,15 +58,12 @@ export default StyleSheet.create({
         marginHorizontal: '8%',
         flexDirection: 'column',
         alignItems: 'center',
-        //backgroundColor: 'yellow'
     },
     itemOpcoes: {
-
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        //backgroundColor: 'blue',
-        height: '12%'
+        height: 60,
 
     },
     linhaOpcoes: {
