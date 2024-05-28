@@ -1,12 +1,13 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: COLORS.corNeutra
     },
     headerHome: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         padding: 30,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,
@@ -23,15 +24,17 @@ export default StyleSheet.create({
     },
     containerPrincipal: {
         flex: 1,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: COLORS.corNeutra,
         paddingLeft: 13,
         paddingRight: 13
     },
     containerSalasFavoritas: {
-        height: '55%'
+        flex: 1,
+        justifyContent: 'center',
+        height: '43%',
     },
     page: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 25
@@ -51,9 +54,13 @@ export default StyleSheet.create({
 
     },
     itemLista: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
+        padding: 20,
         marginBottom: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
     },
     titleEvento: {
 
@@ -72,7 +79,7 @@ export default StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: 'white',
+        backgroundColor: COLORS.corNeutra,
         borderRadius: 20,
         padding: 35,
         alignItems: 'center',
@@ -123,7 +130,7 @@ export default StyleSheet.create({
     // Cards Próximas aulas
 
     itemAula: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         width: 235,
         borderRadius: 15,
         marginRight: 15,
@@ -157,7 +164,7 @@ export default StyleSheet.create({
         marginTop: 20,
         paddingVertical: 9,
         paddingHorizontal: 15,
-        backgroundColor: '#6D1C1C',
+        backgroundColor: COLORS.corPrincipal,
         borderRadius: 10,
     },
     textoBotaoVerMais: {
@@ -180,7 +187,7 @@ export default StyleSheet.create({
         margin: 5,
         padding: 5,
         borderRadius: 100,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: COLORS.corNeutra,
         fontSize: 40,
     },
     cardDescAula: {
@@ -192,6 +199,59 @@ export default StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    viewNoFavoriteClassrooms: {
+        height: 210,
+        flex: 1,
+        justifyContent: 'center',
 
+    },
+    viewTextNoFav: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
+    textNoFav1: {
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    textNoFav2: {
+        textAlign: 'center',
+        fontSize: 18,
+        fontStyle: 'italic',
+    },
+    buttonNoFav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+        backgroundColor: COLORS.corPrincipal,
+        borderRadius: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 20,
+    },
+    textNoFav3: {
+        color: COLORS.corNeutra,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    textNoFav4: {
+        marginTop: 13,
+        marginBottom: 8,
+        textAlign: 'center',
+        fontSize: 14,
+        fontStyle: 'italic',
+    },
+    iconNoFav: {
+        marginLeft: 4,
+        color: COLORS.corNeutra,
+        fontSize: 16
+    },
+    textSalaFav: {
+        fontSize: 15
+    },
+    textAndarSalaFav: {
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
 });

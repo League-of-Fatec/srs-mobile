@@ -1,8 +1,9 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     header: {
-        backgroundColor: '#D9D9D9',
+        backgroundColor: COLORS.corSecundaria,
         flexDirection: 'row',
         width: '100%',
         height: 87,

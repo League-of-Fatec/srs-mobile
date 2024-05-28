@@ -1,3 +1,4 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -12,11 +13,9 @@ export default StyleSheet.create({
         flex: 1,
         marginTop: '8%',
         marginHorizontal: '3%',
-        //backgroundColor: 'pink',
     },
     containerSalas: {
         margin: '0%',
-        //backgroundColor: 'blue',
     },
     scrollSalas: {
         margin: '4%',
@@ -30,8 +29,6 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        //backgroundColor: 'yellow',
-
         height: 57,
         borderRadius: 7,
         marginVertical: 5
@@ -45,6 +42,7 @@ export default StyleSheet.create({
     infoIcons: {
         fontSize: 25,
         marginRight: 12,
+        color: '#FFFFFF',
     },
 
     centeredView: {
@@ -55,7 +53,7 @@ export default StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: 'white',
+        backgroundColor: COLORS.corNeutra,
         borderRadius: 20,
         width: '86%',
         height: 'auto',
@@ -78,16 +76,36 @@ export default StyleSheet.create({
         elevation: 2,
     },
     buttonClose: {
-        backgroundColor: '#6D1C1C',
+        backgroundColor: COLORS.corPrincipal,
     },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
     },
-    modalNomeSala: {
-        fontWeight: 'bold',
-        marginBottom: 15,
+    viewNameClassroomStar: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
+    ratingView: {
+        flex: 1,
+        alignItems: 'center',
+
+        flexDirection: 'row',
+    },
+    viewClose: {
+
+    },
+    iconClose: {
+        fontSize: 30,
+        color: COLORS.corPrincipal,
+    },
+    modalNomeSala: {
+        fontSize: 17,
+        fontWeight: 'bold',
+    },
+
     modalText: {
         marginBottom: 15,
     },
@@ -103,7 +121,7 @@ export default StyleSheet.create({
         alignSelf: 'flex-end',
         paddingVertical: 7,
         paddingHorizontal: 7,
-        backgroundColor: '#6D1C1C',
+        backgroundColor: COLORS.corPrincipal,
         width: '28%'
     },
     timelineTextButton: {
@@ -136,7 +154,7 @@ export default StyleSheet.create({
     viewTimelineContainer: {
         paddingVertical: 15,
         borderRightWidth: 4,
-        borderRightColor: '#D3D3D3',
+        borderRightColor: COLORS.corSecundaria,
         width: 130,
         height: 180,
     },
@@ -144,7 +162,7 @@ export default StyleSheet.create({
         width: '80%',
         height: 'auto',
         alignSelf: 'center',
-        backgroundColor: '#f3f3f3',
+        backgroundColor: COLORS.corSecundaria2,
         marginBottom: 5,
         borderRadius: 7,
     },
@@ -164,7 +182,7 @@ export default StyleSheet.create({
     viewItens: {
         alignSelf: 'center',
         borderRadius: 15,
-        backgroundColor: '#f3f3f3',
+        backgroundColor: COLORS.corSecundaria2,
         marginTop: 25,
         width: '85%',
         paddingVertical: '5%',
@@ -189,7 +207,7 @@ export default StyleSheet.create({
         width: 35,
         paddingVertical: 6,
         marginRight: 25,
-        backgroundColor: '#D9D9D9',
+        backgroundColor: COLORS.corSecundaria,
         justifyContent: 'center',
         alignSelf: 'center'
     },
@@ -259,7 +277,7 @@ export default StyleSheet.create({
         borderTopRightRadius: 6,
         borderBottomWidth: 0,
         textAlign: 'center',
-        backgroundColor: '#d9d9d9',
+        backgroundColor: COLORS.corSecundaria,
         paddingHorizontal: 5,
         paddingVertical: 2,
     },
@@ -295,7 +313,7 @@ export default StyleSheet.create({
         width: '50%',
         paddingHorizontal: 10,
         paddingVertical: 3,
-        backgroundColor: '#d9d9d9',
+        backgroundColor: COLORS.corSecundaria,
         borderRadius: 4,
         marginBottom: 6,
     },

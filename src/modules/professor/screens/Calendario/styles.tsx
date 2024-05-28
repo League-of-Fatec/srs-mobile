@@ -1,9 +1,10 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: COLORS.corNeutra
   },
   weekDayText: {
     color: 'gray',
@@ -18,7 +19,7 @@ export default StyleSheet.create({
     fontSize: 20,
     color: '#ffffff',
     textAlign: 'center',
-    backgroundColor: '#6D1C1C',
+    backgroundColor: COLORS.corPrincipal,
     borderRadius: 180
 
   },
@@ -49,7 +50,6 @@ export default StyleSheet.create({
     fontSize: 20
   },
   agenda: {
-    //backgroundColor: "#FFFFFF",
     borderColor: 'gray',
     height: 'auto',
   },
@@ -61,7 +61,7 @@ export default StyleSheet.create({
     marginRight: 20,
     marginVertical: 25,
     padding: 10,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: COLORS.corSecundaria,
     borderRadius: 100
   },
   timeInfo: {

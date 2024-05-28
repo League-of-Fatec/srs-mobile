@@ -8,7 +8,6 @@ export default StyleSheet.create({
         fontSize: 15,
     },
     containerNotificacoes: {
-        //backgroundColor: 'red',
         flex: 1,
         marginTop: '1.5%',
         marginHorizontal: '2%',

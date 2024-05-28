@@ -1,15 +1,16 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: COLORS.corNeutra
     },
 
     // Estilos do header
 
     headerHome: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         paddingVertical: 30,
         padding: 13,
         borderBottomLeftRadius: 35,
@@ -43,7 +44,7 @@ export default StyleSheet.create({
     },
     containerPrincipal: {
         flex: 1,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: COLORS.corNeutra,
         paddingLeft: 13,
         paddingRight: 13
     },
@@ -62,7 +63,7 @@ export default StyleSheet.create({
 
     },
     topCarteirinha: {
-        backgroundColor: '#d9d9d9',
+        backgroundColor: COLORS.corSecundaria,
         flexDirection: 'row',
         height: '80%',
         borderTopLeftRadius: 15,
@@ -82,7 +83,7 @@ export default StyleSheet.create({
     },
     infoAlunoView: {
         justifyContent: 'center',
-        backgroundColor: '#d9d9d9',
+        backgroundColor: COLORS.corSecundaria,
         width: '70%',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -103,7 +104,7 @@ export default StyleSheet.create({
     },
     bottomCarteirinha: {
         flexDirection: 'row',
-        backgroundColor: '#3a3a3a',
+        backgroundColor: COLORS.telaHome.carteirinha.corPrincipal,
         height: '20%',
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
@@ -137,7 +138,7 @@ export default StyleSheet.create({
 
 
     itemLista: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         marginBottom: 10,
         borderRadius: 10
     },
@@ -170,7 +171,7 @@ export default StyleSheet.create({
         height: '10%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#6D1C1C',
+        backgroundColor: COLORS.corPrincipal,
     },
     textoFooterCarteirinha: {
         fontSize: 25,
@@ -201,7 +202,7 @@ export default StyleSheet.create({
     // Cards Próximas aulas
 
     itemAula: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: COLORS.corSecundaria,
         width: 235,
         borderRadius: 15,
         marginRight: 15,

@@ -1,3 +1,4 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -14,7 +15,7 @@ export default StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: COLORS.corNeutra,
         margin: '1%',
         width: '90%',
         height: '40%'
@@ -109,7 +110,7 @@ export default StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: COLORS.corNeutra,
         margin: '1%',
         width: '90%',
 
@@ -145,7 +146,7 @@ export default StyleSheet.create({
     descricaoContainer: {
         alignSelf: 'center',
         height: 100,
-        backgroundColor: '#d9d9d9',
+        backgroundColor: COLORS.corSecundaria,
         padding: 7,
         width: '95%'
     },
