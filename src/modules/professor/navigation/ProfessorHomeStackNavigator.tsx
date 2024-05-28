@@ -1,4 +1,3 @@
-import { NavigationContainer } from '@react-navigation/native';
 import Home from '@/professor/screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import Configuracoes from '@/screens/Configuracoes';

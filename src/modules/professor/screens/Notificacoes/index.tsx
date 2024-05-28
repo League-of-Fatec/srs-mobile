@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Header from '@/components/shared/HeaderEstatico';
 

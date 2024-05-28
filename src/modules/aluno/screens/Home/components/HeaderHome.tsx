@@ -1,13 +1,10 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native';
+import { Image, Text, TouchableOpacity, View, } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { StudentState } from '@/redux/UserSlice';
-import FatecSvg from '@/assets/svg/FatecSvg';
-
-
 
 const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
 

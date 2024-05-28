@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import styles from '../styles';
 import { useAnimatedRef } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';

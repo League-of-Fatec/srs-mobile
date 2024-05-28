@@ -1,10 +1,5 @@
-import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-//import Calendario from '../screens/Calendario/index';
-//import Mapa from '../screens/Mapa/index';
-//import Salas from '../screens/Salas/index';
-//import Notificacoes from '../screens/Notificacoes/index';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfessorHomeStackNavigator from '@/professor/navigation/ProfessorHomeStackNavigator';
 import Calendario from '../screens/Calendario';

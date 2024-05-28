@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, Dimensions, Modal, Alert, Pressable } from 'react-native';
+import { View } from 'react-native';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { StatusBar } from 'expo-status-bar';
-import { List } from 'react-native-paper';
-
 import { NavigationProp } from '@react-navigation/native';
 import HeaderHome from './components/HeaderHome';
 import ProximasAulas from './components/ProximasAulas';
@@ -18,7 +14,7 @@ export default function Home({ navigation }: { navigation: NavigationProp<any> }
             <HeaderHome navigation={navigation} />
             <View style={styles.containerPrincipal}>
                 <ProximasAulas navigation={navigation} />
-                <SalasFavoritas />
+                <SalasFavoritas navigation={navigation} />
             </View>
         </View >
     );

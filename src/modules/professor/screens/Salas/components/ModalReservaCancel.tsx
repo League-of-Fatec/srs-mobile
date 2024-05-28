@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReservaStyle from './alertReservaStyle';
-import { set } from "date-fns";
 
 type PropsModalReservaCancel = {
     visibilityModalReservaCancel: boolean;

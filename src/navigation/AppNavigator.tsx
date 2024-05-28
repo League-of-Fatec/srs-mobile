@@ -1,5 +1,4 @@
 
-import Home from '@/aluno/screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '@/screens/Login';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
 const Stack = createStackNavigator();
-
 
 export default function AppNavigator() {
 

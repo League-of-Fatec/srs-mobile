@@ -1,5 +1,4 @@
-import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Calendario from '../screens/Calendario/index';
 import Salas from '../screens/Salas/index';
@@ -7,6 +6,7 @@ import Notificacoes from '../screens/Notificacoes/index';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeStackNavigator from './AlunoHomeStackNavigator';
 import Mapa from '@/screens/Mapa';
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 
 
 const Tab = createBottomTabNavigator();
@@ -27,8 +27,8 @@ export default function AlunoTabNavigator() {
                     position: 'relative',
                     marginBottom: '17%'
                 },
-                tabBarInactiveTintColor: '#000000',
-                tabBarActiveTintColor: '#6D1C1C',
+                tabBarInactiveTintColor: COLORS.tabBar.corSecundaria,
+                tabBarActiveTintColor: COLORS.tabBar.corPrincipal,
 
             }
         }>

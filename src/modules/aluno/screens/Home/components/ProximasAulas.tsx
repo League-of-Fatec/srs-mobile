@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { Text, TouchableOpacity, View, ScrollView, Dimensions, Animated } from 'react-native';
+import React from 'react';
+import { Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import styles from '../styles';
 import { useAnimatedRef } from 'react-native-reanimated';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type proxAulas = {
@@ -14,30 +14,6 @@ type proxAulas = {
 }
 
 const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
-
-    // const moveAnimation = useRef(new Animated.Value(0)).current;
-
-    // const startAnimation = () => {
-    //     Animated.loop(
-    //         Animated.sequence([
-    //             Animated.timing(moveAnimation, {
-    //                 toValue: -1,
-    //                 duration: 5000,
-    //                 useNativeDriver: true,
-    //             }),
-    //             Animated.timing(moveAnimation, {
-    //                 toValue: 0,
-    //                 duration: 5000,
-    //                 useNativeDriver: true,
-    //             }),
-    //         ]),
-    //     ).start();
-    // };
-
-    // useEffect(() => {
-    //     startAnimation();
-    // }, []);
-
 
     const proximasAulas: proxAulas[] = [
         {

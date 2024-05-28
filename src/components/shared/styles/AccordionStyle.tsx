@@ -1,17 +1,13 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     accordionButtonContainer: {
-        paddingVertical: '5%',
-        paddingHorizontal: '0%',
-        backgroundColor: "#FFFFFF",
-        borderRadius: 7,
+        alignSelf: 'center',
+        width: '90%',
+        backgroundColor: COLORS.corNeutra,
         marginVertical: 5,
-
-        // borderColor: "black",
-        // borderBottomWidth: 3,
-        // borderRightWidth: 3,
-
+        borderRadius: 7,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -20,9 +16,12 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-
     },
     accordionButton: {
+        backgroundColor: COLORS.corNeutra,
+        borderRadius: 7,
+        paddingVertical: '5%',
+        paddingHorizontal: '0%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%'

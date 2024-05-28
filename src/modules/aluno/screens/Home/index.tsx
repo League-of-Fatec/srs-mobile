@@ -6,7 +6,6 @@ import HeaderHome from './components/HeaderHome';
 import ProximasAulas from './components/ProximasAulas';
 import InfoAluno from "./components/InfoAluno";
 
-
 export default function Home({ navigation }: { navigation: NavigationProp<any> }) {
 
     return (

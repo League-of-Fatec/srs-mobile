@@ -6,6 +6,7 @@ export type ModalQroCodeProps = {
     modalQrCodeVisible: boolean;
     setModalQrCodeVisibility: (value: boolean) => void;
 };
+
 const ModalQrCode = ({ modalQrCodeVisible, setModalQrCodeVisibility }: ModalQroCodeProps) => {
     return (
         <Modal visible={modalQrCodeVisible} animationType="slide" transparent={true}>

@@ -6,6 +6,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { professorSlice, ProfessorState, studentSlice, StudentState } from '@/redux/UserSlice';
+import { developing } from '@/utils/developing';
 
 type StackProps = {
     Home: undefined,
@@ -31,11 +32,12 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
     const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
     const student = useSelector((state: { student: StudentState }) => state.student);
 
+
+
     useEffect(() => {
 
         const configUser = async () => {
             const userType = await AsyncStorage.getItem("userType");
-
             if (userType === "PROFESSOR") {
                 setFirstName(professor?.professor?.user.firstName);
                 setLastName(professor?.professor?.user.lastName);
@@ -51,7 +53,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
         }
 
         configUser();
-    }, [userType]);
+    }, []);
 
 
     const logout = async () => {
@@ -88,7 +90,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     </View>
                     <View style={styles.infoConta}>
                         <Text style={styles.nomeConta}>{firstName} {lastName}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => developing()}>
                             <Text style={styles.editarConta}>Editar Conta</Text>
                         </TouchableOpacity>
                     </View>
@@ -125,7 +127,9 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                             style={styles.infoIcons} name='list-outline'
                         />
                         <Text style={styles.infoTitulo}>Acesso Via Digital</Text>
-                        <Switch style={styles.infoSwitch}
+                        <Switch style={[styles.infoSwitch, { opacity: 0.5 }]}
+
+                            disabled
                             trackColor={{ false: "#767577", true: "#767577" }}
                             thumbColor={isEnabledAcessoViaDigital ? "#f4f3f4" : "#f4f3f4"}
                             onValueChange={toggleSwitchAcessoViaDigital}
@@ -133,27 +137,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                         />
                     </View>
                     <View style={styles.linhaOpcoes} />
-                    <TouchableOpacity style={styles.itemOpcoes}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
-                        <Text style={styles.infoTitulo}>Calendário</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='arrow-forward'
-                        />
-                    </TouchableOpacity>
-                    <View style={styles.linhaOpcoes} />
-                    <TouchableOpacity style={styles.itemOpcoes}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
 
-                        <Text style={styles.infoTitulo}>Tela Inicial</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='arrow-forward'
-                        />
-                    </TouchableOpacity>
-                    <View style={styles.linhaOpcoes} />
                     <TouchableOpacity style={styles.itemOpcoes} onPress={logout}>
                         <Ionicons
                             style={styles.infoIcons} name='list-outline'

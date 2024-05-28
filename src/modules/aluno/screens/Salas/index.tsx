@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '@/components/shared/HeaderEstatico';
 import Sala from './components/Sala';
 

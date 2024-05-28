@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import ReservaStyle from "./alertReservaStyle";
-import LoadingLogin from "@/components/shared/LoadingLogin";
 import LoadingReserva from "@/components/shared/LoadingReserva";
 
 

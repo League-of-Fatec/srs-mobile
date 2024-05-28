@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Modal, Alert, Pressable } from 'react-native';
+import React from 'react';
+import { Text, View, Modal, Pressable } from 'react-native';
 import styles from '../styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ClassRoom } from '../types/SalaTypes';
-
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -11,7 +10,6 @@ type ModalAlunoProps = {
     selectedClassRoom: ClassRoom | null;
     setSelectedClassRoom: (value: ClassRoom | null) => void;
 };
-
 
 const ModalAluno = ({ modalVisible, setModalVisible, selectedClassRoom, setSelectedClassRoom }: ModalAlunoProps,) => {
 
