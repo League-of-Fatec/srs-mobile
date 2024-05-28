@@ -21,3 +21,12 @@ export type ClassRoom = {
   create_at: Date;
   items: ItemsClassRooms[];
 };
+
+export type ResponseFavoriteClassroom = {
+  data: FavoriteClassroom[];
+  error: Error | null | {};
+};
+
+export type FavoriteClassroom = {
+  id: number;
+};
