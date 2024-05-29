@@ -146,7 +146,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     descSala: {
-        fontWeight: 'bold',
+        fontStyle: 'italic'
     },
     descAula: {
 

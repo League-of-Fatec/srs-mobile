@@ -1,52 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import styles from '../styles';
 import { useAnimatedRef } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
-
-type proxAulas = {
-    nomeSala: string,
-    andar: string,
-    nomeProfessor: string,
-    curso: string,
-    horario: string
-}
+import { api_url_local } from '@/utils/API_URLS';
+import { ProfessorState } from '@/redux/UserSlice';
+import { useSelector } from 'react-redux';
+import { ResponseTypeClassesByTeacherIdByWeekDay } from '../utils/ResponseTypeClassesByTeacherIdByWeekDay';
+import { formatTime } from '@/utils/formatTime';
 
 const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
+
+    const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
     const animatedRef = useAnimatedRef<ScrollView>();
+    const [classes, setClasses] = useState<ResponseTypeClassesByTeacherIdByWeekDay>([]);
 
+    useEffect(() => {
 
-    const proximasAulas: proxAulas[] = [
-        {
-            nomeSala: "Laboratório A",
-            andar: "1° Andar",
-            nomeProfessor: "Professor tergolina Da silva cruz",
-            curso: "Banco de dados relacional",
-            horario: "12:00 -> 13:00"
-        },
-        {
-            nomeSala: "Laboratório B",
-            andar: "1° Andar",
-            nomeProfessor: "Professor Frietz",
-            curso: "Desenvolvimento Mobile",
-            horario: "19:00 -> 20:40"
-        },
-        {
-            nomeSala: "Laboratório C",
-            andar: "1° Andar",
-            nomeProfessor: "Professor Stephania",
-            curso: "Design Digital",
-            horario: "20:40 -> 22:40"
-        },
-        {
-            nomeSala: "Laboratório D",
-            andar: "1° Andar",
-            nomeProfessor: "Professor Eduardo",
-            curso: "Álgebra Linear",
-            horario: "09:00 -> 10:40"
-        },
-    ]
+        const date = new Date();
+        const weekDay = date.getDay();
+
+        (async () => {
+            if (weekDay) {
+                const response = await fetch(`${api_url_local}/classes/${professor.professor?.id}/${weekDay}`)
+                const responseJson: ResponseTypeClassesByTeacherIdByWeekDay = await response.json();
+                setClasses(responseJson);
+            }
+
+        })();
+
+    }, []);
 
     return (
         <View style={styles.containerProximasAulas}>
@@ -57,20 +41,22 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 ref={animatedRef}
                 contentContainerStyle={{ paddingLeft: 10 }}
             >
-                {proximasAulas.map((proxAula, index) => {
+                {classes.map((currentClass, index) => {
                     return (
                         <TouchableOpacity style={styles.itemAula} key={index}>
                             <View style={styles.cardAula}>
                                 <Ionicons style={styles.iconProf}
                                     name='person' />
                                 <View style={styles.cardDescAula}>
-                                    <Text style={styles.nomeProfessor}>{proxAula.nomeProfessor}</Text>
-                                    <Text style={styles.descAula}>{proxAula.curso}</Text>
+                                    {/* <Text style={styles.nomeProfessor}>
+                                        {currentClass.userTeacher.user.firstName} {currentClass.userTeacher.user.lastName.split(" ")[currentClass.userTeacher.user.lastName.length - 1]}
+                                    </Text> */}
+                                    <Text style={styles.descAula}>{currentClass.name}</Text>
                                 </View>
                             </View>
                             <View style={styles.cardDescSala}>
-                                <Text style={styles.titleAula}>{proxAula.nomeSala}</Text>
-                                <Text style={styles.descSala}>{proxAula.horario}</Text>
+                                <Text style={styles.titleAula}>{currentClass.classroom.name} - {currentClass.classroom.floor}° Andar</Text>
+                                <Text style={styles.descSala}>Começa às {formatTime(currentClass.time)} horas</Text>
                             </View>
 
 
