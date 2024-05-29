@@ -33,6 +33,32 @@ export default StyleSheet.create({
         justifyContent: 'center',
         height: '43%',
     },
+    viewNoClasses: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: 350,
+    },
+    textNoClasses1: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 18
+    },
+    textNoClasses2: {
+        width: '70%',
+        textAlign: 'center',
+        fontSize: 16,
+        marginTop: 7,
+        marginBottom: 15,
+    },
+    textNoClasses3: {
+        textAlign: 'center',
+        fontStyle: 'italic',
+        fontSize: 16,
+        marginBottom: 40,
+
+    },
     page: {
         backgroundColor: COLORS.corSecundaria,
         justifyContent: 'center',
@@ -155,15 +181,26 @@ export default StyleSheet.create({
 
 
     },
-    botaoVerMais: {
-        width: '25%',
+    botaoVerMais1: {
+        width: 90,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
         marginTop: 20,
         paddingVertical: 9,
-        paddingHorizontal: 15,
+        backgroundColor: COLORS.corPrincipal,
+        borderRadius: 10,
+    },
+    botaoVerMais2: {
+        position: 'absolute',
+        bottom: 53,
+        width: 90,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        paddingVertical: 9,
         backgroundColor: COLORS.corPrincipal,
         borderRadius: 10,
     },
@@ -217,7 +254,7 @@ export default StyleSheet.create({
     },
     textNoFav2: {
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 15,
         fontStyle: 'italic',
     },
     buttonNoFav: {
@@ -226,17 +263,18 @@ export default StyleSheet.create({
         marginTop: 10,
         backgroundColor: COLORS.corPrincipal,
         borderRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 20,
+        width: 90,
+        textAlign: 'center',
+        justifyContent: 'center',
+        paddingVertical: 9,
     },
     textNoFav3: {
         color: COLORS.corNeutra,
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 16,
     },
     textNoFav4: {
-        marginTop: 13,
+        marginTop: 25,
         marginBottom: 8,
         textAlign: 'center',
         fontSize: 14,

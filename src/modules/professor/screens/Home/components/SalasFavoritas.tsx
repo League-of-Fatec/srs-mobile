@@ -88,8 +88,8 @@ const SalasFavoritas = ({ navigation }: { navigation: NavigationProp<any> }) => 
 
                         <View style={styles.viewNoFavoriteClassrooms}>
                             <View style={styles.viewTextNoFav}>
-                                <Text style={styles.textNoFav1}>Você não adicionou nenhuma sala </Text>
-                                <Text style={styles.textNoFav1}>como favorita</Text>
+                                <Text style={styles.textNoFav1}>Você não adicionou nenhuma</Text>
+                                <Text style={styles.textNoFav1}>sala como favorita</Text>
                                 <Text style={styles.textNoFav2}>Para Adicionar uma, vá a tela:</Text>
                                 <TouchableOpacity style={styles.buttonNoFav}
                                     onPress={() => navigation.navigate("Salas")}

@@ -27,7 +27,6 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 const responseJson: ResponseTypeClassesByTeacherIdByWeekDay = await response.json();
                 setClasses(responseJson);
             }
-
         })();
 
     }, []);
@@ -41,31 +40,43 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 ref={animatedRef}
                 contentContainerStyle={{ paddingLeft: 10 }}
             >
-                {classes.map((currentClass, index) => {
-                    return (
-                        <TouchableOpacity style={styles.itemAula} key={index}>
-                            <View style={styles.cardAula}>
-                                <Ionicons style={styles.iconProf}
-                                    name='person' />
-                                <View style={styles.cardDescAula}>
-                                    {/* <Text style={styles.nomeProfessor}>
-                                        {currentClass.userTeacher.user.firstName} {currentClass.userTeacher.user.lastName.split(" ")[currentClass.userTeacher.user.lastName.length - 1]}
-                                    </Text> */}
-                                    <Text style={styles.descAula}>{currentClass.name}</Text>
+                {classes.length === 0 ? (
+                    <View style={styles.viewNoClasses}>
+                        <Text style={styles.textNoClasses1}>Você não tem aulas no dia de hoje</Text>
+                        <Text style={styles.textNoClasses2}>Se quiser ver as aulas reservadas em qualquer dia no calendário</Text>
+                        <Text style={styles.textNoClasses3}>Clique no botão Ver Mais</Text>
+                    </View>
+                ) : (
+                    classes.map((currentClass, index) => {
+                        return (
+                            <TouchableOpacity style={styles.itemAula} key={index}>
+                                <View style={styles.cardAula}>
+                                    <Ionicons style={styles.iconProf}
+                                        name='person' />
+                                    <View style={styles.cardDescAula}>
+                                        {/* <Text style={styles.nomeProfessor}>
+                                            {currentClass.userTeacher.user.firstName} {currentClass.userTeacher.user.lastName.split(" ")[currentClass.userTeacher.user.lastName.length - 1]}
+                                        </Text> */}
+                                        <Text style={styles.descAula}>{currentClass.name}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.cardDescSala}>
-                                <Text style={styles.titleAula}>{currentClass.classroom.name} - {currentClass.classroom.floor}° Andar</Text>
-                                <Text style={styles.descSala}>Começa às {formatTime(currentClass.time)} horas</Text>
-                            </View>
+                                <View style={styles.cardDescSala}>
+                                    <Text style={styles.titleAula}>{currentClass.classroom.name} - {currentClass.classroom.floor}° Andar</Text>
+                                    <Text style={styles.descSala}>Começa às {formatTime(currentClass.time)} horas</Text>
+                                </View>
 
 
-                        </TouchableOpacity>
-                    )
-                })}
+                            </TouchableOpacity>
+                        )
+                    })
+                )}
+
             </ScrollView>
             <View style={{ width: '100%' }}>
-                <TouchableOpacity style={styles.botaoVerMais} onPress={() => navigation.navigate("Calendário")}>
+                <TouchableOpacity style={[
+                    classes.length > 0 ? styles.botaoVerMais1 : styles.botaoVerMais2
+                ]}
+                    onPress={() => navigation.navigate("Calendário")}>
                     <Text style={styles.textoBotaoVerMais}>Ver mais</Text>
                 </TouchableOpacity>
             </View>
