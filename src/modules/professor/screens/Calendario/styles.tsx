@@ -54,21 +54,54 @@ export default StyleSheet.create({
     height: 'auto',
   },
   icons: {
-    fontSize: 35,
+    fontSize: 30,
     alignSelf: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
-    marginRight: 20,
-    marginVertical: 25,
+    margin: 5,
+    marginLeft: 7,
+    marginRight: 17,
     padding: 10,
     backgroundColor: COLORS.corSecundaria,
     borderRadius: 100
   },
-  timeInfo: {
-    marginBottom: 15
+  viewReservations: {
+    paddingVertical: 10,
+    flexDirection: 'row',
   },
-  timeIcon: {
+  reservationInfo: {
 
+  },
+  textTime: {
+    fontStyle: 'italic',
+  },
+  textClassroomFloor: {
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  textCourseName: {
+    fontStyle: 'italic',
+    width: 310,
+  },
+  textClassName: {
+    fontStyle: 'italic',
+    width: 310,
+  },
+
+  viewCancelReservationButton: {
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  cancelReservationButton: {
+    alignSelf: 'center',
+    borderRadius: 20,
+    padding: 10,
+    width: 150,
+    backgroundColor: COLORS.corPrincipal
+  },
+  cancelReservationTextButton: {
+    textAlign: 'center',
+    color: COLORS.corNeutra,
+    fontWeight: 'bold',
   },
   linhaOpcoes: {
     borderBottomColor: 'gray',
@@ -78,7 +111,6 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   containerTime: {
-    flexDirection: 'row',
-    marginTop: 15
+
   }
 });

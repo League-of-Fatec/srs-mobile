@@ -1,65 +1,63 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, View, } from 'react-native';
+import { Alert, ScrollView, Text, TouchableOpacity, View, } from 'react-native';
 import styles from './styles';
 import Header from '@/components/shared/HeaderEstatico';
-import { Calendar } from 'react-native-calendars';
-import formatDate from './utils/formatDate';
+import { Calendar, DateData } from 'react-native-calendars';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { api_url_local } from '@/utils/API_URLS';
+import { useSelector } from 'react-redux';
+import { ProfessorState } from '@/redux/UserSlice';
+import { ResponseReservationsJson } from './utils/ResponseReservationsType';
+import { err } from 'react-native-svg';
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
+import { formatDate } from 'date-fns';
+import { ModalReservaCalendarioCancel } from './components/ModalReservaCalendarioCancel';
 
 
 export default function Calendario() {
+    const professor = useSelector((state: { professor: ProfessorState }) => state.professor);
+    const [modalVisible, setModalVisibility] = useState(false);
 
-    //const [date, setDate] = useState(new Date());
-    const [selected, setSelected] = useState('');
-    const [truth, setTruth] = useState(false)
+    const [selected, setSelected] = useState<string>('');
+    const [isDayPress, setDayPressed] = useState(false);
 
+    const [reservations, setReservations] = useState<ResponseReservationsJson>([]);
+    const [selectedReservation, setSelectedReservation] = useState<number | null>(null);
+    const [reservationId, setReservationId] = useState<number | null>(null);
 
-    const today = new Date().getDate()
+    const handleDayPressed = async (day: DateData) => {
 
-    const infoDays = [
-        {
-            statusClass: "Próxima Aula",
-            class: "LaboratórioA",
-            local: "1° Andar - Sala A55",
-            className: "RDC - Tipos de conexão"
+        try {
+            const response = await fetch(`${api_url_local}/reservations/${professor.professor?.id}/${day.dateString}`)
+            const responseReservations: ResponseReservationsJson = await response.json();
+            setReservations(responseReservations);
+        } catch (error) {
+            console.log(error);
+        }
 
-        },
-        {
-            statusClass: "Próxima Aula",
-            class: "Laboratório B",
-            local: "1° Andar - Sala A112",
-            className: "RDC - Tipos de conexão"
+    }
 
-        },
-        {
-            statusClass: "Próxima Aula",
-            class: "Laboratório C",
-            local: "1° Andar - Sala A153",
-            className: "RDC - Tipos de conexão"
-
-        },
-    ]
+    const formatTime = (time: string): string => {
+        const formattedTime = time.split(":").slice(0, -1).join(":");
+        return formattedTime;
+    }
 
     return (
         <View style={styles.container}>
-
             <Header title='Calendário' />
-            {/*
-            <View style={styles.containerMA}>
-                <Text style={styles.mesEano}>Mês - Ano</Text>
-            </View>
-            <WeekCalendar date={date} onChange={(newDate) => setDate(newDate)} />
-            */}
-
-
-
             <View style={{ flex: 0.5 }}>
                 <Calendar style={styles.agenda}
-
                     onDayPress={day => {
-                        const data = formatDate(day, today);
-                        setSelected(day.dateString);
-                        setTruth(true)
+                        if (selected === day.dateString) {
+                            setSelected("");
+                            setDayPressed(false);
+                            setReservations([]);
+                        } else {
+                            setSelected(day.dateString);
+                            setDayPressed(true);
+                            handleDayPressed(day);
+                        }
                     }}
                     markedDates={{
                         [selected]: {
@@ -68,6 +66,8 @@ export default function Calendario() {
                             selectedColor: '#6D1C1C'
                         },
                     }}
+                    minDate={formatDate(new Date(), 'yyyy-MM-dd')}
+                    maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
                     theme={{
                         arrowColor: '#6D1C1C',
                         todayTextColor: '#6D1C1C',
@@ -75,25 +75,59 @@ export default function Calendario() {
 
                 />
             </View>
-            <View style={{ flex: 0.5 }}>
+            <View style={{ flex: 0.5, marginTop: 15 }}>
 
                 <ScrollView>
-                    {infoDays.map((infoDay, index) => {
-                        if (truth) {
+                    <View style={styles.linhaOpcoes} />
+                    {reservations.map((reservation) => {
+                        if (isDayPress) {
                             return (
-                                <View key={index}>
+                                <View key={reservation.id}>
                                     <View style={styles.containerTime}>
-                                        <View >
-                                            <Ionicons
-                                                style={styles.icons} name='desktop-outline'
-                                            />
-                                        </View>
-                                        <View style={styles.timeInfo}>
-                                            <Text>{infoDay.statusClass}</Text>
-                                            <Text>{infoDay.class}</Text>
-                                            <Text>{infoDay.local}</Text>
-                                            <Text>{infoDay.className}</Text>
-                                        </View>
+                                        <TouchableOpacity onPress={() => {
+                                            if (selectedReservation === reservation.id) {
+                                                setSelectedReservation(null);
+                                            } else {
+                                                setSelectedReservation(reservation.id);
+                                            }
+                                        }}>
+                                            <View style={[
+                                                styles.viewReservations,
+                                                selectedReservation === reservation.id ? { backgroundColor: COLORS.corSecundaria2 } : null
+                                            ]
+
+                                            }>
+                                                <Ionicons
+                                                    style={styles.icons} name='desktop-outline'
+                                                />
+
+                                                <View style={styles.reservationInfo}>
+                                                    <Text style={styles.textTime}>{formatTime(reservation.start_time)} - {formatTime(reservation.end_time)}</Text>
+                                                    <Text style={styles.textClassroomFloor}>{reservation.classroom.name} - {reservation.classroom.floor}° Andar</Text>
+                                                    <Text style={styles.textCourseName}>{reservation.class.course.name}</Text>
+                                                    <Text style={styles.textClassName}>{reservation.class.name}</Text>
+                                                </View>
+
+
+                                            </View>
+                                            {selectedReservation === reservation.id && (
+                                                <View style={[
+                                                    styles.viewCancelReservationButton,
+                                                    selectedReservation === reservation.id ? { backgroundColor: COLORS.corSecundaria2 } : null
+                                                ]}>
+                                                    <TouchableOpacity style={styles.cancelReservationButton}
+                                                        onPress={() => {
+                                                            setReservationId(reservation.id)
+                                                            setModalVisibility(true);
+                                                        }}
+                                                    >
+                                                        <Text style={styles.cancelReservationTextButton}>Cancelar Reserva</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            )}
+                                        </TouchableOpacity>
+
+
                                     </View>
                                     <View style={styles.linhaOpcoes} />
                                 </View>
@@ -102,6 +136,14 @@ export default function Calendario() {
                     })}
                 </ScrollView>
             </View>
+            <ModalReservaCalendarioCancel
+                modalVisible={modalVisible}
+                setModalVisibility={setModalVisibility}
+                reservationId={reservationId}
+                setReservationId={setReservationId}
+                reservations={reservations}
+                setReservations={setReservations}
+            />
         </View>
 
     );
