@@ -176,6 +176,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
     const handleDayPress = (day: DateData) => {
 
 
+
+
         // Verifica se o dia já está marcado
         if (markedDates[day.dateString]) {
             // Cria uma cópia do estado anterior
@@ -190,6 +192,11 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
             setMarkedDates(newState);
         } else {
             // Adiciona o dia marcado
+            if (dates.length >= 12) {
+                Alert.alert("Erro", "Só é possível fazer 12 reservas consecutivas!");
+                return;
+            }
+
             const newState = {
                 ...markedDates,
                 [day.dateString]: {
@@ -425,6 +432,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
         }
     }
 
+
+
     return (
         <Modal
             animationType="fade"
@@ -570,28 +579,36 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                             <View style={styles.containerReservation}>
                                 <HorizontalRow />
                                 <View style={styles.startAndEndDate}>
-                                    <View style={styles.centeredDate}>
-                                        <View style={styles.containerDate}>
-                                            <Text style={styles.dateLabel1}>Data da reserva: </Text>
-                                            <View style={{ flexDirection: 'column' }}>
+
+                                    <View style={styles.containerDate}>
+                                        <Text style={styles.dateLabel1}>Data da reserva: </Text>
+                                        <View style={styles.viewDates}>
+
+                                            {dates.map((date, index) => {
+                                                if (index % 2 === 0) {
+                                                    return (
+                                                        <View key={index} style={styles.centeredDate}>
+                                                            <Text style={styles.reservatedDateText}>{formatDate(date, 'dd/MM/yyyy')}</Text>
+                                                            {dates[index + 1] && <Text style={styles.reservatedDateText}>{formatDate(dates[index + 1], 'dd/MM/yyyy')}</Text>}
+                                                        </View>
+                                                    );
+                                                } else {
+                                                    return null;
+                                                }
+                                            })}
+
+                                        </View>
+
+                                        {/* <View style={{ flexDirection: 'column' }}>
                                                 {dates.map((date, index) => {
                                                     return <Text style={styles.reservatedDateText} key={index}>{date.split('-').reverse().join("-").replaceAll("-", "/")}</Text>;
                                                 })}
-                                            </View>
-                                        </View>
-
-
-
-                                        {/* 
-                                    <Text style={styles.dateLabel2}>{minimumDate.split('-').reverse().join("-").replaceAll("-", "/")}</Text>
-                                    */}
-
+                                            </View> */}
                                     </View>
-
                                 </View>
                                 <View style={styles.selectTimeView}>
                                     <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginRight: 10 }} />
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Selecione um horário</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Selecione um horário</Text>
                                     <View style={{ borderBottomColor: '#DBDBDB', borderBottomWidth: 0.5, marginVertical: 10, width: '30%', marginLeft: 10 }} />
                                 </View>
 
@@ -680,26 +697,28 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                     </View>
                                 </View>
                             </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                            <TouchableOpacity
-                                disabled={isFinish}
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    { opacity: isFinish ? 0.5 : 1 }
-                                ]}
+                                <TouchableOpacity
+                                    style={styles.buttonClose}
+                                    onPress={() => setVisibilityModalReservaCancel(true)}>
+                                    <Text style={styles.textStyle}>Cancelar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    disabled={isFinish}
+                                    style={[
+                                        styles.buttonConfirm,
+                                        { opacity: isFinish ? 0.5 : 1 }
+                                    ]}
 
-                                onPress={() => {
-                                    handleReviewData();
-                                    setVisibilityModalReservaRevisar(true)
-                                }}>
-                                <Text style={styles.textStyle}>Confirmar Reserva</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => setVisibilityModalReservaCancel(true)}>
-                                <Text style={styles.textStyle}>Fechar</Text>
-                            </TouchableOpacity>
+                                    onPress={() => {
+                                        handleReviewData();
+                                        setVisibilityModalReservaRevisar(true)
+                                    }}>
+                                    <Text style={styles.textStyle}>Confirmar</Text>
+                                </TouchableOpacity>
+                            </View>
+
                             <ModalReservaSucesso
                                 visibilityModalReservaSucesso={visibilityModalReservaSucesso}
                                 setVisibilityModalReservaSucesso={setVisibilityModalReservaSucesso}

@@ -34,7 +34,6 @@ const Sala = ({ route }: SalaProps) => {
 
     useEffect(() => {
         if (route?.params) {
-            console.log(route);
             const { selectedRoom } = route.params;
             setModalVisible(true)
             setSelectClassRoom(selectedRoom);

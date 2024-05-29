@@ -71,11 +71,22 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginTop: 40,
         borderRadius: 20,
+
+    },
+    buttonConfirm: {
+        marginTop: 30,
+        borderRadius: 9,
         paddingVertical: 10,
         paddingHorizontal: 20,
         elevation: 2,
+        backgroundColor: 'green'
     },
     buttonClose: {
+        marginTop: 30,
+        borderRadius: 9,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        elevation: 2,
         backgroundColor: COLORS.corPrincipal,
     },
     textStyle: {
@@ -260,26 +271,37 @@ export default StyleSheet.create({
         paddingVertical: 20,
     },
     containerDate: {
+        width: 300,
         justifyContent: 'center',
     },
     centeredDate: {
+        flex: 1,
+        width: '100%',
         alignSelf: 'center',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     },
+    viewDates: {
+        flex: 1,
+    }
+    ,
     reservatedDateText: {
-        borderWidth: 1,
+        fontSize: 15,
+        borderRadius: 9,
+        backgroundColor: COLORS.corSecundaria,
         textAlign: 'center',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        marginBottom: 6,
+
     },
     dateLabel1: {
-        borderWidth: 1,
+        fontSize: 15,
         fontWeight: 'bold',
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-        borderBottomWidth: 0,
         textAlign: 'center',
-        backgroundColor: COLORS.corSecundaria,
-        paddingHorizontal: 5,
-        paddingVertical: 2,
+        paddingVertical: 10,
+        marginBottom: 12,
+
     },
     dateLabel2: {
         textAlign: 'center',
