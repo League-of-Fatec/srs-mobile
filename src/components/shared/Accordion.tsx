@@ -1,8 +1,6 @@
 import React, { ReactNode, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import AccordionStyle from './styles/AccordionStyle';
-import { SvgUri } from 'react-native-svg';
-import SvgComponent from '@/assets/svg/SalasSvg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type AccordionProps = {
@@ -20,14 +18,11 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
           <Text style={AccordionStyle.nomeAndar}>{title}</Text>
         </View>
         {!isOpen && (
-          <Ionicons
-            style={AccordionStyle.infoIcons} name='arrow-forward'
-          />
+          <Image source={require("@/assets/iconsPng/setaLado.png")} style={AccordionStyle.icons} />
         )}
         {isOpen && (
-          <Ionicons
-            style={AccordionStyle.infoIcons} name='arrow-down'
-          />
+          <Image source={require("@/assets/iconsPng/setaBaixo.png")} style={AccordionStyle.icons} />
+
         )}
       </TouchableOpacity>
       {isOpen && (
