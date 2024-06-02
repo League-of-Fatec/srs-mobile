@@ -1,3 +1,5 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
+import { FONTS_NAME } from '@/utils/FONTS_NAME';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -62,6 +64,58 @@ export default StyleSheet.create({
         fontSize: 12,
         textAlign: 'right',
         marginRight: 10,
-    }
+    },
+    viewStayConnected: {
+        flexDirection: 'row'
+    },
+    checkBox: {
+
+    },
+    textStayConnected: {
+        marginLeft: 10,
+    },
+
+    // Modal Esqueceu a senha
+
+    modalForgotPassword: {
+        backgroundColor: COLORS.corSecundaria,
+        borderRadius: 30,
+        width: '90%',
+        height: 400,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        alignSelf: 'center',
+    },
+
+    closeModalIcon: {
+        alignSelf: 'flex-end',
+        color: '#6D1C1C',
+        fontSize: 50,
+        marginTop: 10,
+        marginRight: 10,
+    },
+    viewFormForgotPassword: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20,
+        marginBottom: 65
+    },
+    textForgotPassword: {
+        fontSize: 17,
+        marginBottom: 15,
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    forgotPasswordBtn: {
+        width: "100%",
+        borderRadius: 10,
+        height: 45,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#3E74FF",
+    },
+
+
 
 });

@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux';
 import fetchDataUser from './utils/fetchDataUser';
 import LoadingLogin from '@/components/shared/LoadingLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFonts } from 'expo-font';
+import Checkbox from 'expo-checkbox';
+import { ModalForgotPassword } from './components/ModalForgotPassword';
+import validator from 'validator';
 
 
 export type StackLoginProps = {
@@ -22,11 +25,15 @@ export type StackLoginProps = {
 
 export default function Login({ navigation }: { navigation: NavigationProp<StackLoginProps> }) {
 
+
+
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [isSelected, setSelection] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const [modalVisible, setModalVisibility] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,8 +47,30 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
             // Tratamento de erros
             if (!email && !password) {
                 setIsLoading(false);
-                throw new Error("Falta a senha e o email");
+                setEmailError("Falta o email");
+                setPasswordError("Falta a senha");
+                return;
             }
+
+            if (!email) {
+                setIsLoading(false);
+                setEmailError("Falta o email");
+                return;
+            }
+
+            if (!validator.isEmail(email)) {
+                setIsLoading(false);
+                setEmailError("Formato de email incorreto!");
+                return;
+            }
+            setEmailError("");
+
+            if (!password) {
+                setIsLoading(false);
+                setPasswordError("Falta a senha");
+                return;
+            }
+            setPasswordError("");
 
             await fetchDataUser(email, password, dispatch, navigation);
         } catch (error) {
@@ -66,12 +95,19 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
         test();
     }, []);
 
+    const handleCheckBox = () => {
+        if (isSelected) {
+            setSelection(false);
+        } else if (!isSelected) {
+            setSelection(true);
+        }
+    }
 
     return (
         <View style={styles.containerFoto}>
             <View style={{ flex: 1, height: '30%', width: '100%' }}>
-                <Image source={require("@/assets/images/login/img-reuniao.jpg")} style={styles.image}></Image>
-
+                <Image source={require("@/assets/images/login/img-reuniao.jpg")} style={styles.image} />
+                {/* <HomeIcon wi /> */}
                 <View style={styles.container}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.textEmail}>E-mail</Text>
@@ -96,8 +132,14 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                             <Text style={styles.textError}>{passwordError}</Text>
                         </View>
 
-                        <View>
-                            <Text style={{}}>Manter-se Conectado</Text>
+                        <View style={styles.viewStayConnected}>
+                            <Checkbox
+                                value={isSelected}
+                                onValueChange={() => handleCheckBox()}
+                                style={styles.checkBox}
+                                color={"#3E74FF"}
+                            />
+                            <Text style={styles.textStayConnected}>Manter-se Conectado</Text>
                         </View>
 
 
@@ -114,7 +156,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                             <Text style={styles.textColorBtn}>ENTRAR ALUNO</Text>
                         </TouchableOpacity>
                         */}
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setModalVisibility(true)}>
                             <Text style={styles.forgot_button}>Esqueci minha senha</Text>
                         </TouchableOpacity>
 
@@ -122,6 +164,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                 </View>
 
             </View>
+            <ModalForgotPassword modalVisible={modalVisible} setModalVisibility={setModalVisibility} />
         </View >
     );
 }

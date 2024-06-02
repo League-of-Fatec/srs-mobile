@@ -5,6 +5,7 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { NavigationProp } from '@react-navigation/native';
 import { StackLoginProps } from '..';
 import { professorSlice, studentSlice } from '@/redux/UserSlice';
+import { Alert } from 'react-native';
 
 const fetchDataUser = async (
   email: string,
@@ -27,6 +28,12 @@ const fetchDataUser = async (
     });
 
     const responseLoginJson = await responseLogin.json();
+
+    if (!responseLogin.ok) {
+      Alert.alert('Erro', responseLoginJson.message);
+      return;
+    }
+
     const id = responseLoginJson[0].id;
     const userType = responseLoginJson[0].userType;
 
