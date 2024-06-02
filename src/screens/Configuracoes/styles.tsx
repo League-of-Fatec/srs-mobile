@@ -73,11 +73,19 @@ export default StyleSheet.create({
         opacity: 0.1,
         alignSelf: 'center'
     },
-    infoIcons: {
-        fontSize: 25,
-        marginRight: 12
+    icons: {
+        marginRight: 15,
+        width: 30,
+        height: 30,
+    },
+    iconSetaDireita: {
+        width: 20,
+        height: 20,
+        marginRight: 13
+
     },
     infoTitulo: {
+        fontSize: 16,
         flex: 1,
         justifyContent: 'flex-end',
     },

@@ -97,9 +97,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                 </View>
                 <View style={styles.containerOpcoes}>
                     <View style={styles.itemOpcoes}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
+                        <Image source={require("@/assets/iconsPng/noturno.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Modo Noturno</Text>
                         <Switch style={styles.infoSwitch}
                             trackColor={{ false: "#767577", true: "#767577" }}
@@ -110,9 +108,7 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     </View>
                     <View style={styles.linhaOpcoes} />
                     <View style={styles.itemOpcoes}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
+                        <Image source={require("@/assets/iconsPng/sino.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Notificações</Text>
                         <Switch style={styles.infoSwitch}
                             trackColor={{ false: "#767577", true: "#767577" }}
@@ -123,12 +119,9 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     </View>
                     <View style={styles.linhaOpcoes} />
                     <View style={styles.itemOpcoes}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
+                        <Image source={require("@/assets/iconsPng/digital.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Acesso Via Digital</Text>
                         <Switch style={[styles.infoSwitch, { opacity: 0.5 }]}
-
                             disabled
                             trackColor={{ false: "#767577", true: "#767577" }}
                             thumbColor={isEnabledAcessoViaDigital ? "#f4f3f4" : "#f4f3f4"}
@@ -139,13 +132,9 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     <View style={styles.linhaOpcoes} />
 
                     <TouchableOpacity style={styles.itemOpcoes} onPress={logout}>
-                        <Ionicons
-                            style={styles.infoIcons} name='list-outline'
-                        />
+                        <Image source={require("@/assets/iconsPng/saida.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Sair</Text>
-                        <Ionicons
-                            style={styles.infoIcons} name='arrow-forward'
-                        />
+                        <Image source={require("@/assets/iconsPng/setaLado.png")} style={styles.iconSetaDireita} />
                     </TouchableOpacity>
                 </View>
 
