@@ -63,12 +63,18 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             <Text style={styles.textNoClasses3}>Clique no botão Ver Mais</Text>
                         </View>
                     ) : (
-                        classes.map((currentClass, index) => {
+                        classes.sort((a, b) => {
+                            const timeA = formatTime(a.time);
+                            const timeB = formatTime(b.time);
+                            if (timeA < timeB) return -1;
+                            if (timeA > timeB) return 1;
+                            return 0;
+                        }).map((currentClass, index) => {
                             return (
                                 <TouchableOpacity style={styles.itemAula} key={index}>
                                     <View style={styles.cardAula}>
                                         <Ionicons style={styles.iconProf}
-                                            name='person' />
+                                            name='book' />
                                         <View style={styles.cardDescAula}>
                                             {/* <Text style={styles.nomeProfessor}>
                                             {currentClass.userTeacher.user.firstName} {currentClass.userTeacher.user.lastName.split(" ")[currentClass.userTeacher.user.lastName.length - 1]}

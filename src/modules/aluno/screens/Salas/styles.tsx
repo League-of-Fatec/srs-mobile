@@ -1,3 +1,4 @@
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -52,7 +53,7 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+
     },
     modalView: {
         margin: 20,
@@ -128,5 +129,74 @@ export default StyleSheet.create({
     nomeItem: {
         fontSize: 17,
     },
+
+    timelineContainer: {
+        width: '100%',
+    },
+    timelineButton: {
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 12,
+        alignSelf: 'flex-end',
+        paddingVertical: 7,
+        paddingHorizontal: 7,
+        backgroundColor: COLORS.corPrincipal,
+        width: '28%'
+    },
+    timelineTextButton: {
+        fontSize: 10,
+        textAlign: 'center',
+        color: '#FFFFFF',
+        fontWeight: 'bold'
+    },
+    timelineTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingBottom: 10,
+    },
+    timelineWeekDayView: {
+
+    },
+    timelineTextView: {
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 50,
+    },
+    timelineText: {
+        marginTop: 5,
+        fontSize: 18,
+        color: '#7f7f7f',
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    viewTimelineContainer: {
+        paddingVertical: 15,
+        borderRightWidth: 4,
+        borderRightColor: COLORS.corSecundaria,
+        width: 130,
+        height: 180,
+    },
+    viewTimeline: {
+        width: '80%',
+        height: 'auto',
+        alignSelf: 'center',
+        backgroundColor: COLORS.corSecundaria2,
+        marginBottom: 5,
+        borderRadius: 7,
+    },
+    timeViewTimeline: {
+        textAlign: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingHorizontal: 6,
+        fontWeight: 'bold',
+    },
+    nameViewTimeline: {
+        textAlign: 'center',
+        paddingBottom: 10,
+    },
+
 
 });
