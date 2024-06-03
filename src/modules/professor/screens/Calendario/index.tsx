@@ -75,8 +75,7 @@ export default function Calendario() {
 
                 />
             </View>
-            <View style={{ flex: 0.5, marginTop: 15 }}>
-
+            <View style={{ flex: 0.5, marginTop: '20%' }}>
                 <ScrollView>
                     <View style={styles.linhaOpcoes} />
                     {reservations.map((reservation) => {

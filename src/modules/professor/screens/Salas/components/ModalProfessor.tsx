@@ -22,6 +22,7 @@ import Row from './Row';
 import { developing } from '@/utils/developing';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import LoadingModalProfessor from '@/components/shared/LoadingModalProfessor';
+import formatarData from '@/utils/formatarData';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -174,7 +175,6 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
 
     // const handleDayPress = (day: DateData) => {
     const handleDayPress = (day: DateData) => {
-
 
 
 
@@ -588,8 +588,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                                 if (index % 2 === 0) {
                                                     return (
                                                         <View key={index} style={styles.centeredDate}>
-                                                            <Text style={styles.reservatedDateText}>{formatDate(date, 'dd/MM/yyyy')}</Text>
-                                                            {dates[index + 1] && <Text style={styles.reservatedDateText}>{formatDate(dates[index + 1], 'dd/MM/yyyy')}</Text>}
+                                                            <Text style={styles.reservatedDateText}>{formatarData(date)}</Text>
+                                                            {dates[index + 1] && <Text style={styles.reservatedDateText}>{formatarData(dates[index + 1])}</Text>}
                                                         </View>
                                                     );
                                                 } else {

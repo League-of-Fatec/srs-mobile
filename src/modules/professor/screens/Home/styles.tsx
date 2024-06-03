@@ -158,6 +158,7 @@ export default StyleSheet.create({
     itemAula: {
         backgroundColor: COLORS.corSecundaria,
         width: 235,
+        height: 205,
         borderRadius: 15,
         marginRight: 15,
         paddingVertical: 10,
