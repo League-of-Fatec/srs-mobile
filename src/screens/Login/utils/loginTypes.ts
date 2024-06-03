@@ -12,7 +12,9 @@ export type Professor = {
 export type Student = {
   id: number;
   studentId: string;
-  course: string;
+  course: {
+    name: string;
+  };
   semester: number;
   period: string;
   user: User;
