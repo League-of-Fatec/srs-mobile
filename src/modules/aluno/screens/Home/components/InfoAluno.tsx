@@ -27,15 +27,15 @@ const InfoAluno = () => {
                         <View style={styles.infoAluno}>
                             <Text style={styles.nomeAluno}>{student?.user.firstName} {student?.user.lastName}</Text>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>Curso: </Text>
-                                <Text style={styles.descAluno}>{student?.course}</Text>
+                                <Text style={styles.descAlunoLabel}>Curso: </Text>
+                                <Text style={styles.descAluno}>{student?.course.name}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>Período: </Text>
+                                <Text style={styles.descAlunoLabel}>Período: </Text>
                                 <Text style={styles.descAluno}>{student?.period}</Text>
                             </View>
                             <View style={styles.descAlunoView}>
-                                <Text style={styles.descAluno}>RA: </Text>
+                                <Text style={styles.descAlunoLabel}>RA: </Text>
                                 <Text style={styles.descAluno}>{student?.studentId}</Text>
                             </View>
                         </View>
