@@ -66,7 +66,7 @@ export default function Calendario() {
                             selectedColor: '#6D1C1C'
                         },
                     }}
-                    minDate={formatDate(new Date(), 'yyyy-MM-dd')}
+
                     maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
                     theme={{
                         arrowColor: '#6D1C1C',

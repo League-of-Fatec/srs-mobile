@@ -64,10 +64,10 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     const weekDay = dataAtual.getDay();
 
                     const date = currentDate();
-                    const fetchClasses = fetch(`${api_url_local}/classes/course/${student?.course.id}/${weekDay}`)
-                    const fetchReservations = fetch(`${api_url_local}/reservations/course/${student?.course.id}/${date}`)
+                    const fetchClasses = fetch(`${api_url_local}/classes/course/${student?.course.id}/${weekDay}`);
+                    const fetchReservations = fetch(`${api_url_local}/reservations/course/${student?.course.id}/${date}`);
 
-                    const [responseClasses, responseReservations] = await Promise.all([fetchClasses, fetchReservations])
+                    const [responseClasses, responseReservations] = await Promise.all([fetchClasses, fetchReservations]);
 
                     const responseClassesJson: ResponseTypeClassesByTeacherIdByWeekDay = await responseClasses.json();
                     let responseReservationsJson: ResponseTypeReservationsByCourseIdByDate[] = await responseReservations.json();
