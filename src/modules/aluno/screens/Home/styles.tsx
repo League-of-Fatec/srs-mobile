@@ -95,12 +95,17 @@ export default StyleSheet.create({
     },
     nomeAluno: {
         width: '80%',
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: 'bold',
         paddingBottom: 2,
     },
+    descAlunoLabel: {
+        fontWeight: 'bold',
+        width: '25%',
+    },
     descAluno: {
-
+        fontStyle: 'italic',
+        width: '73%',
     },
     bottomCarteirinha: {
         flexDirection: 'row',
@@ -186,10 +191,9 @@ export default StyleSheet.create({
     // Seção de próximas aulas
 
     containerProximasAulas: {
-
         paddingTop: '5%',
-        height: '63%',
-        paddingBottom: '10%',
+        height: '58%',
+        paddingBottom: '2%',
 
     },
     titleProximasAulas: {
@@ -201,9 +205,37 @@ export default StyleSheet.create({
 
     // Cards Próximas aulas
 
+    viewNoClasses: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: 350,
+    },
+    textNoClasses1: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 18
+    },
+    textNoClasses2: {
+        width: '70%',
+        textAlign: 'center',
+        fontSize: 16,
+        marginTop: 7,
+        marginBottom: 15,
+    },
+    textNoClasses3: {
+        textAlign: 'center',
+        fontStyle: 'italic',
+        fontSize: 16,
+        marginBottom: 40,
+
+    },
+
     itemAula: {
         backgroundColor: COLORS.corSecundaria,
         width: 235,
+        height: 200,
         borderRadius: 15,
         marginRight: 15,
         paddingVertical: 10,
@@ -218,7 +250,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     descSala: {
-        fontWeight: 'bold',
+        fontStyle: 'italic'
     },
     descAula: {
 
@@ -227,16 +259,27 @@ export default StyleSheet.create({
 
 
     },
-    botaoVerMais: {
-        width: '25%',
+    botaoVerMais1: {
+        width: 90,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
         marginTop: 20,
         paddingVertical: 9,
-        paddingHorizontal: 15,
-        backgroundColor: '#6D1C1C',
+        backgroundColor: COLORS.corPrincipal,
+        borderRadius: 10,
+    },
+    botaoVerMais2: {
+        position: 'absolute',
+        bottom: 36,
+        width: 90,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        paddingVertical: 9,
+        backgroundColor: COLORS.corPrincipal,
         borderRadius: 10,
     },
     textoBotaoVerMais: {
@@ -247,20 +290,6 @@ export default StyleSheet.create({
         height: '50%',
         flexDirection: 'row',
         width: '100%',
-
-    },
-    cardFotoProfessor: {
-        flexDirection: 'row',
-    },
-
-    iconProf: {
-        width: '22%',
-        alignSelf: 'center',
-        margin: 5,
-        padding: 5,
-        borderRadius: 100,
-        backgroundColor: '#FFFFFF',
-        fontSize: 40,
     },
     cardDescAula: {
         width: '73%',
@@ -271,7 +300,16 @@ export default StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 
+    iconAluno: {
+        width: '22%',
+        alignSelf: 'center',
+        margin: 5,
+        padding: 5,
+        borderRadius: 100,
+        backgroundColor: COLORS.corNeutra,
+        fontSize: 40,
+    },
 
 });
