@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import ReservaStyle from "./alertReservaStyle";
 import LoadingReserva from "@/components/shared/LoadingReserva";
+import formatarData from '@/utils/formatarData';
+import { formatTime } from "@/utils/formatTime";
 
 
 type PropsModalReservaRevisar = {
@@ -83,7 +85,7 @@ export const ModalReservaRevisar = ({ visibilityModalReservaRevisar, setVisibili
                             </View>
                             <View style={ReservaStyle.infoContainer}>
                                 {data?.dates.map((date, index) => {
-                                    return <Text style={ReservaStyle.textReservaBold} key={index}>{date}</Text>
+                                    return <Text style={ReservaStyle.textReservaBold} key={index}>{formatarData(date)}</Text>
                                 })}
                             </View>
                         </View>
@@ -92,7 +94,7 @@ export const ModalReservaRevisar = ({ visibilityModalReservaRevisar, setVisibili
                                 <Text style={ReservaStyle.textReserva}>Horário: </Text>
                             </View>
                             <View style={ReservaStyle.infoContainer}>
-                                <Text style={ReservaStyle.textReservaBold}>{data?.beginTime} - {data?.endTime}</Text>
+                                <Text style={ReservaStyle.textReservaBold}>{formatTime(data?.beginTime)} - {formatTime(data?.endTime)}</Text>
                             </View>
                         </View>
                         <View style={ReservaStyle.viewInfo}>

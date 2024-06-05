@@ -23,6 +23,7 @@ import { developing } from '@/utils/developing';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import LoadingModalProfessor from '@/components/shared/LoadingModalProfessor';
 import formatarData from '@/utils/formatarData';
+import { formatTime } from '@/utils/formatTime';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -629,8 +630,8 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.valueTimeView}>
-                                        <Text style={styles.valueTime}>{beginTime}</Text>
-                                        <Text style={styles.valueTime}>{endTime}</Text>
+                                        <Text style={styles.valueTime}>{formatTime(beginTime)}</Text>
+                                        <Text style={styles.valueTime}>{formatTime(endTime)}</Text>
                                     </View>
 
                                     <DateTimePickerModal

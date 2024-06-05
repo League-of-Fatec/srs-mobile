@@ -11,6 +11,7 @@ import { ClassesByTeacherIdByWeekDay, ResponseTypeClassesByTeacherIdByWeekDay } 
 import { formatTime } from '@/utils/formatTime';
 import LoadingSalasFavoritas from '@/components/shared/LoadingSalasFavoritas';
 import { ResponseReservation, ResponseReservationsJson } from '../../Calendario/utils/ResponseReservationsType';
+import { currentDate } from '@/utils/currentDate';
 
 
 export type ClassCard =
@@ -54,12 +55,12 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 setLoading(true);
 
                 try {
-                    const date = new Date();
-                    const weekDay = date.getDay();
-                    const currentDate = date.toISOString().split("T")[0];
+                    const dataAtual = new Date();
+                    const weekDay = dataAtual.getDay();
+                    const date = currentDate();
 
                     const fetchClasses = fetch(`${api_url_local}/classes/${professor.professor?.id}/${weekDay}`)
-                    const fetchReservations = fetch(`${api_url_local}/reservations/${professor.professor?.id}/${currentDate}`)
+                    const fetchReservations = fetch(`${api_url_local}/reservations/${professor.professor?.id}/${date}`)
 
                     const [responseClasses, responseReservations] = await Promise.all([fetchClasses, fetchReservations])
 
@@ -104,8 +105,8 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         combinedArray.sort((a, b) => {
                             const timeA = formatTime(a.time);
                             const timeB = formatTime(b.time);
-                            if (timeA < timeB) return -1;
-                            if (timeA > timeB) return 1;
+                            if (timeA && timeB && timeA < timeB) return -1;
+                            if (timeA && timeB && timeA > timeB) return 1;
                             return 0;
                         }).map((currentClass, index) => {
                             return (
@@ -114,9 +115,6 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                         <Ionicons style={styles.iconProf}
                                             name='book' />
                                         <View style={styles.cardDescAula}>
-                                            {/* <Text style={styles.nomeProfessor}>
-                                            {currentClass.userTeacher.user.firstName} {currentClass.userTeacher.user.lastName.split(" ")[currentClass.userTeacher.user.lastName.length - 1]}
-                                        </Text> */}
                                             <Text style={styles.descAula}>{currentClass.name}</Text>
                                         </View>
                                     </View>
