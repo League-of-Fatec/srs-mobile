@@ -13,6 +13,7 @@ export type Student = {
   id: number;
   studentId: string;
   course: {
+    id: number;
     name: string;
   };
   semester: number;
