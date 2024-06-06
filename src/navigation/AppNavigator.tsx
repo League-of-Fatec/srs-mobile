@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 export default function AppNavigator() {
 
-    const [initialRoute, setInitialRoute] = useState<string>();
+    const [initialRoute, setInitialRoute] = useState<string>("loginInicial");
 
     useEffect(() => {
 

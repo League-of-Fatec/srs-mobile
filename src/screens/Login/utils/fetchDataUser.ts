@@ -34,8 +34,10 @@ const fetchDataUser = async (
       return;
     }
 
-    const id = responseLoginJson[0].id;
-    const userType = responseLoginJson[0].userType;
+    console.log(responseLoginJson);
+
+    const id = responseLoginJson.id;
+    const userType = responseLoginJson.userType;
 
     //const { user } = await getUserData(id);
 
