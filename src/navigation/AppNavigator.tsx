@@ -4,7 +4,6 @@ import Login from '@/screens/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import AlunoTabNavigator from '@/aluno/navigation/AlunoTabNavigator'
 import ProfessorTabNavigator from '@/professor/navigation/ProfessorTabNavigator';
-import { ForgotPassword } from '@/screens/ForgotPassword';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
@@ -46,7 +45,6 @@ export default function AppNavigator() {
             <Stack.Navigator initialRouteName={initialRoute}>
                 <Stack.Group>
                     <Stack.Screen name="LoginInicial" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
                 </Stack.Group>
                 <Stack.Group>
                     <Stack.Screen name="HomeProfessor" component={ProfessorTabNavigator} options={{ headerShown: false }} />
