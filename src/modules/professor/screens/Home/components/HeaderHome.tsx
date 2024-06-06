@@ -24,7 +24,7 @@ const HeaderHome = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     fontWeight: "bold",
                     fontSize: 20
                 }}>{professor?.user.firstName}</Text>
-                <Text>RA: {professor?.teacherId}</Text>
+                <Text>Registro: {professor?.teacherId}</Text>
             </View>
             <View style={{ flex: 0.3 }}>
                 {/*<TouchableOpacity onPress={() => navigation.navigate("Configuracoes")}>*/}

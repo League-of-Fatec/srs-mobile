@@ -36,7 +36,7 @@ export const ModalForgotPassword = ({ modalVisible, setModalVisibility }: ModalF
             });
 
             const responseJson = await response.json();
-
+            console.log(responseJson);
             if (!response.ok) {
                 Alert.alert("Erro", responseJson.message);
                 return;
