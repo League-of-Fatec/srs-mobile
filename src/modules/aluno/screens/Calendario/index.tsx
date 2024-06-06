@@ -33,6 +33,20 @@ export default function Calendario() {
             const fetchReservations = await fetch(`${api_url_local}/reservations/course/${student?.course.id}/${day.dateString}`);
             let responseReservationsJson: ResponseTypeReservationsByCourseIdByDate[] = await fetchReservations.json();
             responseReservationsJson = responseReservationsJson.filter(reservation => reservation.class !== null);
+
+            responseReservationsJson.sort((a, b) => {
+                const timeA = a.start_time;
+                const timeB = b.start_time;
+
+                if (timeA < timeB) {
+                    return -1;
+                }
+                if (timeA > timeB) {
+                    return 1;
+                }
+                return 0;
+            });
+
             setReservations(responseReservationsJson);
         } catch (error) {
             console.log(error);
@@ -66,7 +80,6 @@ export default function Calendario() {
                             selectedColor: '#6D1C1C'
                         },
                     }}
-                    minDate={formatDate(new Date(), 'yyyy-MM-dd')}
                     maxDate={formatDate(new Date(new Date().getFullYear(), 11, 31), 'yyyy-MM-dd')}
                     theme={{
                         arrowColor: '#6D1C1C',

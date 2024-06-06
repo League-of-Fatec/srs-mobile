@@ -31,6 +31,20 @@ export default function Calendario() {
         try {
             const response = await fetch(`${api_url_local}/reservations/${professor.professor?.id}/${day.dateString}`)
             const responseReservations: ResponseReservationsJson = await response.json();
+
+            responseReservations.sort((a, b) => {
+                const timeA = a.start_time;
+                const timeB = b.start_time;
+
+                if (timeA < timeB) {
+                    return -1;
+                }
+                if (timeA > timeB) {
+                    return 1;
+                }
+                return 0;
+            });
+
             setReservations(responseReservations);
         } catch (error) {
             console.log(error);

@@ -99,7 +99,8 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     <View style={styles.itemOpcoes}>
                         <Image source={require("@/assets/iconsPng/noturno.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Modo Noturno</Text>
-                        <Switch style={styles.infoSwitch}
+                        <Switch style={[styles.infoSwitch, { opacity: 0.5 }]}
+                            disabled
                             trackColor={{ false: "#767577", true: "#767577" }}
                             thumbColor={isEnabledModoNoturno ? "#f4f3f4" : "#f4f3f4"}
                             onValueChange={toggleSwitchModoNoturno}
@@ -110,7 +111,8 @@ export default function Configuracoes({ navigation }: { navigation: NavigationPr
                     <View style={styles.itemOpcoes}>
                         <Image source={require("@/assets/iconsPng/sino.png")} style={styles.icons} />
                         <Text style={styles.infoTitulo}>Notificações</Text>
-                        <Switch style={styles.infoSwitch}
+                        <Switch style={[styles.infoSwitch, { opacity: 0.5 }]}
+                            disabled
                             trackColor={{ false: "#767577", true: "#767577" }}
                             thumbColor={isEnabledNotificacoes ? "#f4f3f4" : "#f4f3f4"}
                             onValueChange={toggleSwitchNotificacoes}

@@ -24,6 +24,7 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import LoadingModalProfessor from '@/components/shared/LoadingModalProfessor';
 import formatarData from '@/utils/formatarData';
 import { formatTime } from '@/utils/formatTime';
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 
 type ModalAlunoProps = {
     modalVisible: boolean;
@@ -664,6 +665,7 @@ const ModalProfessor = ({ modalVisible, setModalVisible, selectedClassRoom, setS
                                 <View>
                                     <Text>Motivo</Text>
                                     <TextInput style={styles.reasonTextInput}
+                                        selectionColor={COLORS.corPrincipal}
                                         multiline={true}
                                         placeholder='Esta mensagem será encaminhada
                                     para o professor - Limite 280 caracteres'

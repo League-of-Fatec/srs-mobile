@@ -12,6 +12,7 @@ import { formatTime } from '@/utils/formatTime';
 import LoadingSalasFavoritas from '@/components/shared/LoadingSalasFavoritas';
 import { ResponseTypeReservationsByCourseIdByDate } from '../types/ResponseTypeReservationsByCourseIdByDate';
 import { currentDate } from '@/utils/currentDate';
+import { currentWeekDay } from '@/utils/currentWeekDay';
 
 export type ClassCard =
     {
@@ -60,10 +61,9 @@ const ProximasAulas = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 setLoading(true);
 
                 try {
-                    const dataAtual = new Date();
-                    const weekDay = dataAtual.getDay();
-
                     const date = currentDate();
+                    const weekDay = currentWeekDay();
+
                     const fetchClasses = fetch(`${api_url_local}/classes/course/${student?.course.id}/${weekDay}`);
                     const fetchReservations = fetch(`${api_url_local}/reservations/course/${student?.course.id}/${date}`);
 

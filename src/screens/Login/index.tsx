@@ -8,10 +8,10 @@ import { useDispatch } from 'react-redux';
 import fetchDataUser from './utils/fetchDataUser';
 import LoadingLogin from '@/components/shared/LoadingLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFonts } from 'expo-font';
 import Checkbox from 'expo-checkbox';
 import { ModalForgotPassword } from './components/ModalForgotPassword';
 import validator from 'validator';
+import { COLORS } from '@/utils/COLORS_APP_LIGHT';
 
 
 export type StackLoginProps = {
@@ -113,10 +113,13 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                         <Text style={styles.textEmail}>E-mail</Text>
                         <View style={styles.inputView}>
                             <TextInput style={styles.TextInput}
+                                selectionColor={COLORS.corPrincipal}
                                 inputMode='email'
                                 placeholder='Digite seu email.'
                                 placeholderTextColor={'#003f5c'}
-                                onChangeText={(email) => setEmail(email)} />
+                                onChangeText={(email) => setEmail(email)}
+                                maxLength={255}
+                            />
                             <Text style={styles.textError}>{emailError}</Text>
                         </View>
 
@@ -124,11 +127,14 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                         <Text style={styles.textSenha}>Senha</Text>
                         <View style={styles.inputView}>
                             <TextInput
+                                selectionColor={COLORS.corPrincipal}
                                 style={styles.TextInput}
                                 placeholder="Digite sua Senha."
                                 placeholderTextColor="#003f5c"
                                 secureTextEntry={true}
-                                onChangeText={(senha) => setSenha(senha)} />
+                                onChangeText={(senha) => setSenha(senha)}
+                                maxLength={15}
+                            />
                             <Text style={styles.textError}>{passwordError}</Text>
                         </View>
 
@@ -137,7 +143,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                                 value={isSelected}
                                 onValueChange={() => handleCheckBox()}
                                 style={styles.checkBox}
-                                color={"#3E74FF"}
+                                color={COLORS.corPrincipal}
                             />
                             <Text style={styles.textStayConnected}>Manter-se Conectado</Text>
                         </View>
@@ -148,14 +154,6 @@ export default function Login({ navigation }: { navigation: NavigationProp<Stack
                                 {!isLoading ? "ENTRAR" : <LoadingLogin />}
                             </Text>
                         </TouchableOpacity>
-                        {/* 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "prof")}>
-                            <Text style={styles.textColorBtn}>ENTRAR PROFESSOR</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => handleSubmitLogin(email, senha, "aluno")}>
-                            <Text style={styles.textColorBtn}>ENTRAR ALUNO</Text>
-                        </TouchableOpacity>
-                        */}
                         <TouchableOpacity onPress={() => setModalVisibility(true)}>
                             <Text style={styles.forgot_button}>Esqueci minha senha</Text>
                         </TouchableOpacity>

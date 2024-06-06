@@ -43,7 +43,7 @@ export default StyleSheet.create({
     forgot_button: {
         height: 30,
         marginTop: '10%',
-        color: '#3E74FF',
+        color: COLORS.corPrincipal,
         marginLeft: '27%',
         marginRight: '27%',
     },
@@ -54,7 +54,7 @@ export default StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 20,
-        backgroundColor: "#3E74FF",
+        backgroundColor: COLORS.corPrincipal,
     },
     textColorBtn: {
         color: 'white'
@@ -113,7 +113,7 @@ export default StyleSheet.create({
         height: 45,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#3E74FF",
+        backgroundColor: COLORS.corPrincipal,
     },
 
 

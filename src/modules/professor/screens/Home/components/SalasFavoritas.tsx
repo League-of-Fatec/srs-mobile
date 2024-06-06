@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { ProfessorState } from '@/redux/UserSlice';
 import { ResponseJsonFavoriteClassrooms } from '../utils/FavoriteClassroomTypes';
 import { TouchableOpacity } from 'react-native';;
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import LoadingSalasFavoritas from '@/components/shared/LoadingSalasFavoritas';
 
 
@@ -27,20 +27,24 @@ const SalasFavoritas = ({ navigation }: { navigation: NavigationProp<any> }) => 
         return responseJson;
     };
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            try {
-                const response = await searchFavoriteClassrooms();
-                setClassrooms(response);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchData = async () => {
+                setLoading(true);
 
-        })();
-    }, []);
+                try {
+                    const response = await searchFavoriteClassrooms();
+                    setClassrooms(response);
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchData();
+        }, [])
+    );
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);

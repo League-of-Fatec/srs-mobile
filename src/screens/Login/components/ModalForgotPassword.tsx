@@ -5,6 +5,7 @@ import styles from "../styles";
 import LoadingForgotPassword from "@/components/shared/LoadingForgotPassword";
 import { api_url_local } from "@/utils/API_URLS";
 import { Alert } from "react-native";
+import { COLORS } from "@/utils/COLORS_APP_LIGHT";
 
 
 export type ModalForgotPasswordProps = {
@@ -42,6 +43,7 @@ export const ModalForgotPassword = ({ modalVisible, setModalVisibility }: ModalF
             }
 
             Alert.alert("Sucesso", "Link de recuperação de senha enviado, cheque sua caixa de entrada ou spam!")
+            setModalVisibility(false);
 
         } catch (error) {
             console.log(error);
@@ -53,7 +55,7 @@ export const ModalForgotPassword = ({ modalVisible, setModalVisibility }: ModalF
 
     return (
         <Modal
-            animationType="fade"
+            animationType="slide"
             visible={modalVisible}
             transparent={true}
         >
@@ -67,6 +69,7 @@ export const ModalForgotPassword = ({ modalVisible, setModalVisibility }: ModalF
                     <Text style={styles.textForgotPassword}>Recuperação de senha</Text>
                     <View style={styles.inputView}>
                         <TextInput style={styles.TextInput}
+                            selectionColor={COLORS.corPrincipal}
                             inputMode='email'
                             placeholder='Digite seu email.'
                             placeholderTextColor={'#003f5c'}
